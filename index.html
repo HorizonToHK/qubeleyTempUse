@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPATZ GLOBAL — 超級秘書AI指揮中心</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@200;300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,300&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans TC',sans-serif;background:#fff;color:#1a1a1a;overflow:hidden;height:100vh}
+.font-serif{font-family:'Cormorant Garamond',serif}
+.scroll::-webkit-scrollbar{width:3px}
+.scroll::-webkit-scrollbar-track{background:transparent}
+.scroll::-webkit-scrollbar-thumb{background:#e5e5e5;border-radius:4px}
+.scroll::-webkit-scrollbar-thumb:hover{background:#bbb}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .5s ease-out forwards}
+@keyframes pulse-ring{0%{transform:scale(.8);opacity:1}100%{transform:scale(1.6);opacity:0}}
+.pulse-ring{animation:pulse-ring 1.8s ease-out infinite}
+.typing-dot{animation:typing 1.4s infinite ease-in-out;fill:#1a1a1a}
+.typing-dot:nth-child(1){animation-delay:0s}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(-2px);opacity:1}}
+.tab-active{color:#1a1a1a!important;border-bottom:2px solid #1a1a1a}
+.card-hover{transition:all .3s ease}
+.card-hover:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.08)}
+.phase-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.5px}
+</style>
+</head>
+<body class="flex flex-col">
+
+<!-- ===== HEADER ===== -->
+<header class="h-14 flex items-center justify-between px-6 border-b border-gray-100 bg-white/80 backdrop-blur-md flex-shrink-0 z-30">
+  <div class="flex items-center gap-4">
+    <h1 class="text-lg font-medium tracking-wider">SPATZ <span class="font-light text-gray-400">GLOBAL</span></h1>
+    <span class="text-[9px] tracking-[.2em] uppercase text-gray-400 hidden sm:block border-l border-gray-200 pl-4">超級秘書AI指揮中心</span>
+  </div>
+  <div class="flex items-center gap-5 text-gray-400 text-xs">
+    <span id="header-date" class="hidden sm:block tracking-wider"></span>
+    <div class="flex items-center gap-1.5 border border-gray-200 rounded-full px-3 py-1">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="text-[10px] tracking-widest uppercase">AI Ready</span>
+    </div>
+    <div class="w-7 h-7 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-[11px] font-medium text-gray-700">王</div>
+  </div>
+</header>
+
+<!-- ===== BODY ===== -->
+<div class="flex flex-1 overflow-hidden">
+
+<!-- ===== MAIN ===== -->
+<main class="flex-1 flex flex-col overflow-hidden">
+
+  <!-- ── DASHBOARD STRIP ── -->
+  <div id="dashboard-strip" class="flex-shrink-0 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100 px-6 py-4">
+    <div class="max-w-[1400px] mx-auto flex flex-wrap gap-4" id="kpi-cards"></div>
+  </div>
+
+  <!-- ── TAB NAV ── -->
+  <div class="flex-shrink-0 border-b border-gray-100 px-6 bg-white">
+    <div class="max-w-[1400px] mx-auto flex gap-6 pt-1">
+      <button onclick="switchTab('intel')" data-tab="intel" class="tab-btn tab-active pb-2 text-[11px] tracking-[.15em] uppercase font-medium text-gray-900 border-b-2 border-transparent transition-all">📊 產品情報</button>
+      <button onclick="switchTab('fair')" data-tab="fair" class="tab-btn pb-2 text-[11px] tracking-[.15em] uppercase font-medium text-gray-400 border-b-2 border-transparent transition-all hover:text-gray-700">🏭 廣交會備戰</button>
+      <button onclick="switchTab('pitch')" data-tab="pitch" class="tab-btn pb-2 text-[11px] tracking-[.15em] uppercase font-medium text-gray-400 border-b-2 border-transparent transition-all hover:text-gray-700">📑 Pitch Deck</button>
+      <button onclick="switchTab('track')" data-tab="track" class="tab-btn pb-2 text-[11px] tracking-[.15em] uppercase font-medium text-gray-400 border-b-2 border-transparent transition-all hover:text-gray-700">👥 團隊追蹤</button>
+    </div>
+  </div>
+
+  <!-- ── TAB CONTENT ── -->
+  <div class="flex-1 overflow-y-auto scroll px-6 py-6" id="tab-content">
+    <!-- Dynamic content injected here -->
+  </div>
+
+</main>
+
+<!-- ===== AI ASSISTANT ===== -->
+<aside class="w-[280px] bg-[#FAFAFA] border-l border-gray-100 flex flex-col flex-shrink-0 z-20 hidden md:flex">
+  <div class="h-14 flex items-center justify-between px-5 border-b border-gray-100">
+    <div class="flex items-center gap-2">
+      <div class="w-2 h-2 bg-gray-900 rounded-full"></div>
+      <span class="text-[11px] font-medium tracking-widest uppercase">Assistant</span>
+    </div>
+    <button class="text-gray-400 hover:text-gray-900"><i class="ph ph-dots-three text-lg"></i></button>
+  </div>
+  <div id="chat-messages" class="flex-1 overflow-y-auto scroll p-4 space-y-4"></div>
+  <div class="p-3 bg-[#FAFAFA]">
+    <form id="chat-form" class="relative flex items-center">
+      <input type="text" id="chat-input" placeholder="詢問季節策略、品牌分析…" class="w-full bg-white border border-gray-200 text-[12px] rounded-full pl-4 pr-10 py-2.5 focus:outline-none focus:border-gray-900 transition-all shadow-sm placeholder-gray-300">
+      <button type="submit" class="absolute right-1.5 w-7 h-7 bg-gray-900 text-white rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors">
+        <i class="ph-bold ph-arrow-up text-[10px]"></i>
+      </button>
+    </form>
+  </div>
+</aside>
+
+</div><!-- /body flex -->
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  §1  CORE DATE ENGINE — auto detect Today()
+// ═══════════════════════════════════════════════════════════
+const TODAY     = new Date();
+const TODAY_STR = TODAY.toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+document.getElementById('header-date').textContent = TODAY_STR;
+
+const CANTON_FAIR = [
+  {phase:1, start:new Date(2026,3,15), end:new Date(2026,3,19),
+   label:'第一期', focus:'硬科技、家電、五金工具、照明電氣',
+   brands:['Silvercrest','Parkside','Tronic','Ultimate Speed'],
+   icon:'⚡', color:'blue'},
+  {phase:2, start:new Date(2026,3,23), end:new Date(2026,3,27),
+   label:'第二期', focus:'家居生活、禮品裝飾、戶外園藝',
+   brands:['Livarno Home','Florabest','Parkside'],
+   icon:'🏠', color:'green'},
+  {phase:3, start:new Date(2026,4,1),  end:new Date(2026,4,5),
+   label:'第三期', focus:'紡織服飾、玩具孕嬰童、運動休閒',
+   brands:['Esmara','Livergy','Lupilu','Playtive','Crivit'],
+   icon:'👕', color:'purple'}
+];
+
+function daysUntil(d){return Math.max(0,Math.ceil((d-TODAY)/864e5))}
+
+function getCurrentProcurementWindow(){
+  const m = TODAY.getMonth()+1;
+  if(m>=3&&m<=5)  return{target:'🎄 聖誕/冬季檔期',shelf:'11月–1月',urgency:'critical',color:'red',   desc:'Lidl 2026年底聖誕採購決策正處於黃金窗口(3–5月)。'};
+  if(m>=6&&m<=8)  return{target:'🌸 春季檔期',     shelf:'3月–5月', urgency:'active', color:'orange',desc:'鎖定明年春季園藝、復活節與廚房換新商品。'};
+  if(m>=9&&m<=11) return{target:'☀️ 夏季檔期',     shelf:'6月–8月', urgency:'plan',   color:'yellow',desc:'規劃露營、水上活動與輕薄防曬服飾。'};
+  return                {target:'🍂 秋季檔期',     shelf:'9月–11月',urgency:'plan',   color:'yellow',desc:'準備保暖紡織品與居家過冬商品。'};
+}
+const WINDOW = getCurrentProcurementWindow();
+
+// ═══════════════════════════════════════════════════════════
+//  §2  LIDL KATALOG OCR DATABASE (模擬 katalozi.net 萃取)
+// ═══════════════════════════════════════════════════════════
+const KATALOG_DB = [
+  // ── Silvercrest ──
+  {id:1,  brand:'Silvercrest',nameZH:'電動奶泡機',nameEN:'Electric Milk Frother',price:19.99,cat:'廚房小家電',
+   months:[1,3,10,12],shelfSeason:['spring','winter'],fairPhase:1,cert:['CE','GS'],
+   img:'https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=400&h=500&fit=crop',
+   note:'全年常態，冬季送禮與春季廚房檔期推案量↑'},
+  {id:2,  brand:'Silvercrest',nameZH:'氣炸鍋 3.5L',nameEN:'Air Fryer 3.5L',price:27.99,cat:'廚房小家電',
+   months:[3,4,9,12],shelfSeason:['spring','winter'],fairPhase:1,cert:['CE','GS'],
+   img:'https://images.unsplash.com/photo-1585515320310-259814833e62?w=400&h=500&fit=crop',
+   note:'2026年3月連續推波，建議FOB<$12尋找雙槽升級款'},
+  {id:3,  brand:'Silvercrest',nameZH:'氣炸鍋 5L 大容量',nameEN:'Air Fryer 5L XL',price:44.00,cat:'廚房小家電',
+   months:[3,11,12],shelfSeason:['spring','winter'],fairPhase:1,cert:['CE','GS'],
+   img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=500&fit=crop',
+   note:'高端款，聖誕送禮定位，FOB目標<$15'},
+  {id:4,  brand:'Silvercrest',nameZH:'數位溫控快煮壺',nameEN:'Digital Kettle',price:27.99,cat:'廚房小家電',
+   months:[12,1],shelfSeason:['winter'],fairPhase:1,cert:['CE','GS'],
+   img:'https://images.unsplash.com/photo-1513506003901-1e6a229e9d15?w=400&h=500&fit=crop',
+   note:'12月聖誕送禮主力SKU'},
+  {id:5,  brand:'Silvercrest',nameZH:'烤麵包機',nameEN:'Toaster',price:13.99,cat:'廚房小家電',
+   months:[2,3,9],shelfSeason:['spring','autumn'],fairPhase:1,cert:['CE','GS'],
+   img:'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400&h=500&fit=crop',
+   note:'春季廚房換新基本款'},
+  {id:6,  brand:'Silvercrest',nameZH:'自助餐電熱保溫爐',nameEN:'Buffet Warmer',price:32.99,cat:'廚房小家電',
+   months:[11,12],shelfSeason:['winter'],fairPhase:1,cert:['CE','GS'],
+   img:'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=500&fit=crop',
+   note:'聖誕派對情境商品'},
+
+  // ── Parkside ──
+  {id:10, brand:'Parkside',nameZH:'20V 充電電鑽',nameEN:'20V Cordless Drill',price:38.00,cat:'電動工具',
+   months:[2,3,4,9],shelfSeason:['spring','autumn'],fairPhase:1,cert:['CE','GS'],
+   img:'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=400&h=500&fit=crop',
+   note:'一電多機生態系核心，春季居家修繕爆款'},
+  {id:11, brand:'Parkside',nameZH:'高壓清洗機',nameEN:'Pressure Washer',price:55.00,cat:'電動工具',
+   months:[3,4,5],shelfSeason:['spring'],fairPhase:1,cert:['CE','GS'],
+   img:'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=500&fit=crop',
+   note:'春季園藝核心品，FOB目標<$22'},
+  {id:12, brand:'Parkside',nameZH:'旋轉三角打磨機',nameEN:'Detail Sander',price:19.99,cat:'電動工具',
+   months:[2,3],shelfSeason:['spring'],fairPhase:1,cert:['CE','GS'],
+   img:'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=400&h=500&fit=crop',
+   note:'「Priče iz mog vrta」園藝檔期主推'},
+  {id:13, brand:'Parkside',nameZH:'男用牛仔工作吊帶褲',nameEN:'Denim Work Overalls',price:18.99,cat:'工作服飾',
+   months:[2,3,4],shelfSeason:['spring'],fairPhase:3,cert:['OEKO-TEX'],
+   img:'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=500&fit=crop',
+   note:'春季DIY工作服，搭配工具生態系推出'},
+  {id:14, brand:'Parkside',nameZH:'32件螺絲起子組',nameEN:'32pc Screwdriver Set',price:11.00,cat:'手動工具',
+   months:[1,2,3,7,9],shelfSeason:['spring','autumn'],fairPhase:1,cert:['CE'],
+   img:'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=400&h=500&fit=crop',
+   note:'全年常備基本款，量大價優'},
+  {id:15, brand:'Parkside',nameZH:'耐磨工作褲',nameEN:'Heavy-Duty Work Trousers',price:11.99,cat:'工作服飾',
+   months:[2,3,9],shelfSeason:['spring','autumn'],fairPhase:3,cert:['OEKO-TEX'],
+   img:'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=500&fit=crop',
+   note:'與吊帶褲搭配推出'},
+
+  // ── Esmara / Livergy ──
+  {id:20, brand:'Esmara',nameZH:'純棉洋裝',nameEN:'Cotton Dress',price:5.99,cat:'女裝',
+   months:[3,4,5],shelfSeason:['spring'],fairPhase:3,cert:['OEKO-TEX 100'],
+   img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&h=500&fit=crop',
+   note:'春季轉向短褲與輕薄棉質洋裝'},
+  {id:21, brand:'Esmara',nameZH:'保暖內搭褲',nameEN:'Thermal Leggings',price:5.99,cat:'女裝',
+   months:[10,11,12],shelfSeason:['autumn','winter'],fairPhase:3,cert:['OEKO-TEX 100'],
+   img:'https://images.unsplash.com/photo-1519689680058-324335c77eba?w=400&h=500&fit=crop',
+   note:'10月大量上架，蓄熱發熱面料需求↑'},
+  {id:22, brand:'Livergy',nameZH:'男款斜紋布褲',nameEN:"Men's Twill Trousers",price:10.99,cat:'男裝',
+   months:[3,4,9,10],shelfSeason:['spring','autumn'],fairPhase:3,cert:['OEKO-TEX 100'],
+   img:'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=500&fit=crop',
+   note:'換季雙峰分佈'},
+  {id:23, brand:'Livergy',nameZH:'男用長版保暖內衣',nameEN:"Men's Thermal Underwear",price:5.99,cat:'男裝',
+   months:[10,11,12],shelfSeason:['autumn','winter'],fairPhase:3,cert:['OEKO-TEX 100'],
+   img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=500&fit=crop',
+   note:'冬季保暖核心SKU，尋找蓄熱新面料'},
+  {id:24, brand:'Esmara',nameZH:'針織毛衣',nameEN:'Knitted Sweater',price:13.99,cat:'女裝',
+   months:[10,11,12],shelfSeason:['autumn','winter'],fairPhase:3,cert:['OEKO-TEX 100'],
+   img:'https://images.unsplash.com/photo-1434389677669-e08b4cda3a49?w=400&h=500&fit=crop',
+   note:'熱升華材質，秋冬主打'},
+
+  // ── Livarno Home ──
+  {id:30, brand:'Livarno Home',nameZH:'聖誕發光裝飾屋',nameEN:'LED Christmas House',price:17.99,cat:'節慶裝飾',
+   months:[11,12],shelfSeason:['winter'],fairPhase:2,cert:['CE','RoHS'],
+   img:'https://images.unsplash.com/photo-1513506003901-1e6a229e9d15?w=400&h=500&fit=crop',
+   note:'11月初「Božić」檔期大量鋪貨，低功耗LED需求高'},
+  {id:31, brand:'Livarno Home',nameZH:'降臨節蠟燭',nameEN:'Advent Candle',price:5.49,cat:'節慶裝飾',
+   months:[11,12],shelfSeason:['winter'],fairPhase:2,cert:['REACH'],
+   img:'https://images.unsplash.com/photo-1575037614876-c385ec8bb1ab?w=400&h=500&fit=crop',
+   note:'環保無毒材質將大幅提升買單率'},
+  {id:32, brand:'Livarno Home',nameZH:'保暖毛毯',nameEN:'Fleece Blanket',price:5.99,cat:'室內紡織',
+   months:[10,11,12,1],shelfSeason:['autumn','winter'],fairPhase:2,cert:['OEKO-TEX 100'],
+   img:'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=400&h=500&fit=crop',
+   note:'深冬與初春交替頻繁出現'},
+  {id:33, brand:'Livarno Home',nameZH:'浴室浴簾',nameEN:'Shower Curtain',price:4.99,cat:'室內紡織',
+   months:[1,2,9,10],shelfSeason:['spring','autumn'],fairPhase:2,cert:[],
+   img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=500&fit=crop',
+   note:'換季翻新需求'},
+
+  // ── Lupilu / Playtive ──
+  {id:40, brand:'Lupilu',nameZH:'兒童連身睡衣套裝',nameEN:'Kids Onesie Pyjama Set',price:4.99,cat:'嬰童服飾',
+   months:[10,11,12],shelfSeason:['autumn','winter'],fairPhase:3,cert:['OEKO-TEX 100','EN71'],
+   img:'https://images.unsplash.com/photo-1519689680058-324335c77eba?w=400&h=500&fit=crop',
+   note:'隨成人品牌同步換季'},
+  {id:41, brand:'Playtive',nameZH:'ORB史萊姆',nameEN:'ORB Slime',price:5.49,cat:'兒童玩具',
+   months:[11,12],shelfSeason:['winter'],fairPhase:3,cert:['EN71','REACH'],
+   img:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=500&fit=crop',
+   note:'11/6「Igračke Božić」聖誕玩具專刊集中爆發'},
+  {id:42, brand:'Playtive',nameZH:'6件組環保黏土套裝',nameEN:'Eco Clay Set 6pcs',price:6.99,cat:'兒童玩具',
+   months:[11,12],shelfSeason:['winter'],fairPhase:3,cert:['EN71','REACH'],
+   img:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=500&fit=crop',
+   note:'手作屬性消耗性玩具，大受市場歡迎'},
+
+  // ── Crivit / Ultimate Speed / Tronic ──
+  {id:50, brand:'Crivit',nameZH:'戶外多功能刀具',nameEN:'Multi-Tool Knife',price:5.99,cat:'戶外休閒',
+   months:[4,5,6],shelfSeason:['spring','summer'],fairPhase:3,cert:['CE'],
+   img:'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=400&h=500&fit=crop',
+   note:'春末夏初露營檔期主推'},
+  {id:51, brand:'Crivit',nameZH:'高密防滑瑜珈墊',nameEN:'Anti-Slip Yoga Mat',price:9.00,cat:'運動健身',
+   months:[1,3,6,9],shelfSeason:['spring','autumn'],fairPhase:3,cert:[],
+   img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=500&fit=crop',
+   note:'全年常備，新年與夏季高峰'},
+  {id:52, brand:'Ultimate Speed',nameZH:'汽車頭燈LED替換燈泡',nameEN:'Car LED Headlight Bulb',price:5.99,cat:'汽車配件',
+   months:[1,2,11],shelfSeason:['winter'],fairPhase:1,cert:['CE','ECE R37'],
+   img:'https://images.unsplash.com/photo-1565026057447-bc90829ce0ae?w=400&h=500&fit=crop',
+   note:'深冬惡劣天氣需求，高流明長壽命為賣點'},
+  {id:53, brand:'Tronic',nameZH:'行動電源 10000mAh',nameEN:'Power Bank 10000mAh',price:9.99,cat:'電子配件',
+   months:[3,6,11,12],shelfSeason:['spring','summer','winter'],fairPhase:1,cert:['CE','FCC'],
+   img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=500&fit=crop',
+   note:'支援最新快充協定，突破€9.99零售價的成本極限'},
+
+  // ── Auriol / Cien (附加品牌) ──
+  {id:60, brand:'Auriol',nameZH:'室內溫濕度計',nameEN:'Thermo-Hygrometer',price:7.99,cat:'居家環境',
+   months:[10,11],shelfSeason:['autumn'],fairPhase:1,cert:['CE'],
+   img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=500&fit=crop',
+   note:'10月中旬出現，消費者居家過冬準備'},
+  {id:61, brand:'Cien',nameZH:'Beauty LED化妝鏡',nameEN:'LED Makeup Mirror',price:12.99,cat:'美妝配件',
+   months:[12],shelfSeason:['winter'],fairPhase:2,cert:['CE','RoHS'],
+   img:'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=400&h=500&fit=crop',
+   note:'12月聖誕送禮屬性極強'},
+];
+
+// ═══════════════════════════════════════════════════════════
+//  §3  TEAM DATA (模擬)
+// ═══════════════════════════════════════════════════════════
+const TEAM = [
+  {id:'T1',name:'Alex Chen',role:'歐洲區 Lidl 客戶經理',region:'EU-West',avatar:'A'},
+  {id:'T2',name:'Lisa Wang',role:'廣交會前線採購',region:'CN-GZ',avatar:'L'},
+  {id:'T3',name:'Marco Liu',role:'品質認證專員',region:'CN-SZ',avatar:'M'},
+  {id:'T4',name:'Sophie Lin',role:'簡報設計與行銷',region:'HK',avatar:'S'},
+];
+const TASKS = [
+  {id:1,assignee:'T2',title:'Phase 1 — 尋找雙槽氣炸鍋供應商 (FOB<$12)',status:'pending',  duePhase:1,brand:'Silvercrest'},
+  {id:2,assignee:'T2',title:'Phase 1 — 一電多機 Parkside 電池生態',      status:'pending',  duePhase:1,brand:'Parkside'},
+  {id:3,assignee:'T2',title:'Phase 2 — LED聖誕造型燈報價 (對標€17.99)', status:'pending',  duePhase:2,brand:'Livarno Home'},
+  {id:4,assignee:'T2',title:'Phase 2 — 可摺疊戶外植物架 Flat-pack',     status:'pending',  duePhase:2,brand:'Florabest'},
+  {id:5,assignee:'T2',title:'Phase 3 — 蓄熱發熱面料供應商 OEKO-TEX',    status:'pending',  duePhase:3,brand:'Esmara'},
+  {id:6,assignee:'T2',title:'Phase 3 — EN71無毒益智玩具/STEM套裝',      status:'pending',  duePhase:3,brand:'Playtive'},
+  {id:7,assignee:'T1',title:'寄送 Silvercrest 氣炸鍋 Pitch Deck 給 Lidl 採購',status:'in-progress',duePhase:1,brand:'Silvercrest'},
+  {id:8,assignee:'T3',title:'確認新款行動電源 CE/FCC 認證文件',          status:'in-progress',duePhase:1,brand:'Tronic'},
+  {id:9,assignee:'T4',title:'設計 2026 聖誕 Pitch Deck 範本',            status:'done',     duePhase:0,brand:'All'},
+];
+
+// ═══════════════════════════════════════════════════════════
+//  §4  KPI DASHBOARD
+// ═══════════════════════════════════════════════════════════
+function renderKPI(){
+  const d1 = daysUntil(CANTON_FAIR[0].start);
+  const urgCls = WINDOW.urgency==='critical'?'text-red-600 bg-red-50 border-red-100':'text-orange-600 bg-orange-50 border-orange-100';
+  document.getElementById('kpi-cards').innerHTML = `
+    <div class="flex-1 min-w-[160px] border rounded-lg p-3 ${urgCls} card-hover cursor-pointer" onclick="switchTab('fair')">
+      <div class="text-[9px] uppercase tracking-widest font-bold opacity-60 mb-1">廣交會倒數</div>
+      <div class="text-2xl font-serif font-bold">${d1>0?'D-'+d1:'🔴 進行中!'}</div>
+      <div class="text-[10px] mt-1 opacity-70">第139屆春季 · Phase 1: 4/15</div>
+    </div>
+    <div class="flex-1 min-w-[160px] border rounded-lg p-3 bg-gray-50 border-gray-100 card-hover">
+      <div class="text-[9px] uppercase tracking-widest font-bold text-gray-400 mb-1">當前採購窗口</div>
+      <div class="text-lg font-bold">${WINDOW.target}</div>
+      <div class="text-[10px] text-gray-500 mt-1">目標上架: ${WINDOW.shelf}</div>
+    </div>
+    <div class="flex-1 min-w-[160px] border rounded-lg p-3 bg-gray-50 border-gray-100 card-hover cursor-pointer" onclick="switchTab('intel')">
+      <div class="text-[9px] uppercase tracking-widest font-bold text-gray-400 mb-1">OCR 已解析商品</div>
+      <div class="text-2xl font-serif font-bold">${KATALOG_DB.length}</div>
+      <div class="text-[10px] text-gray-500 mt-1">跨 ${[...new Set(KATALOG_DB.map(p=>p.brand))].length} 個自有品牌</div>
+    </div>
+    <div class="flex-1 min-w-[160px] border rounded-lg p-3 bg-gray-50 border-gray-100 card-hover cursor-pointer" onclick="switchTab('track')">
+      <div class="text-[9px] uppercase tracking-widest font-bold text-gray-400 mb-1">待辦任務</div>
+      <div class="text-2xl font-serif font-bold">${TASKS.filter(t=>t.status!=='done').length}</div>
+      <div class="text-[10px] text-gray-500 mt-1">${TASKS.filter(t=>t.status==='pending').length} 待啟動 · ${TASKS.filter(t=>t.status==='in-progress').length} 進行中</div>
+    </div>`;
+}
+renderKPI();
+
+// ═══════════════════════════════════════════════════════════
+//  §5  TAB SWITCHING
+// ═══════════════════════════════════════════════════════════
+let currentTab = 'intel';
+function switchTab(tab){
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    const active = b.dataset.tab===tab;
+    b.classList.toggle('tab-active',active);
+    b.classList.toggle('text-gray-900',active);
+    b.classList.toggle('text-gray-400',!active);
+  });
+  const c = document.getElementById('tab-content');
+  c.scrollTo({top:0});
+  switch(tab){
+    case 'intel': renderIntel(); break;
+    case 'fair':  renderFair();  break;
+    case 'pitch': renderPitch(); break;
+    case 'track': renderTrack(); break;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  §6  VIEW: 產品情報
+// ═══════════════════════════════════════════════════════════
+let intelFilter = 'all';
+function renderIntel(){
+  const brands = [...new Set(KATALOG_DB.map(p=>p.brand))];
+  const data = intelFilter==='all'?KATALOG_DB:KATALOG_DB.filter(p=>p.brand===intelFilter);
+  const c = document.getElementById('tab-content');
+  c.innerHTML = `
+    <div class="max-w-[1400px] mx-auto fade-up">
+      <div class="mb-6">
+        <h2 class="text-2xl font-serif italic mb-1">Lidl Katalog 產品情報庫</h2>
+        <p class="text-xs text-gray-400">基於 katalozi.net 歷史圖冊 OCR 解析 · ${KATALOG_DB.length} 筆記錄 · 跨 2021–2026 年</p>
+      </div>
+      <div class="flex flex-wrap gap-2 mb-6">
+        <button onclick="intelFilter='all';renderIntel()" class="text-[10px] tracking-wider uppercase px-3 py-1.5 rounded-full border ${intelFilter==='all'?'bg-gray-900 text-white border-gray-900':'bg-white text-gray-500 border-gray-200 hover:border-gray-400'} transition-all">全部 (${KATALOG_DB.length})</button>
+        ${brands.map(b=>`<button onclick="intelFilter='${b}';renderIntel()" class="text-[10px] tracking-wider uppercase px-3 py-1.5 rounded-full border ${intelFilter===b?'bg-gray-900 text-white border-gray-900':'bg-white text-gray-500 border-gray-200 hover:border-gray-400'} transition-all">${b} (${KATALOG_DB.filter(p=>p.brand===b).length})</button>`).join('')}
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-[12px]">
+          <thead>
+            <tr class="border-b-2 border-gray-900 text-left">
+              <th class="pb-2 pr-3 text-[9px] tracking-widest uppercase text-gray-400 font-bold">品牌</th>
+              <th class="pb-2 pr-3 text-[9px] tracking-widest uppercase text-gray-400 font-bold">商品名稱</th>
+              <th class="pb-2 pr-3 text-[9px] tracking-widest uppercase text-gray-400 font-bold">分類</th>
+              <th class="pb-2 pr-3 text-[9px] tracking-widest uppercase text-gray-400 font-bold">終端價(€)</th>
+              <th class="pb-2 pr-3 text-[9px] tracking-widest uppercase text-gray-400 font-bold">出現月份</th>
+              <th class="pb-2 pr-3 text-[9px] tracking-widest uppercase text-gray-400 font-bold">認證</th>
+              <th class="pb-2 text-[9px] tracking-widest uppercase text-gray-400 font-bold">備註</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.map((p,i)=>`
+              <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors ${i%2===0?'':'bg-gray-50/50'}">
+                <td class="py-2.5 pr-3 font-bold text-[10px] tracking-wider uppercase">${p.brand}</td>
+                <td class="py-2.5 pr-3 font-medium">${p.nameZH}<br><span class="text-gray-400 text-[10px]">${p.nameEN}</span></td>
+                <td class="py-2.5 pr-3 text-gray-500">${p.cat}</td>
+                <td class="py-2.5 pr-3 font-bold">€${p.price.toFixed(2)}</td>
+                <td class="py-2.5 pr-3"><div class="flex gap-0.5 flex-wrap">${p.months.map(m=>`<span class="inline-block w-5 h-5 text-[9px] font-bold rounded ${isCurrentTargetMonth(m)?'bg-orange-100 text-orange-600 border border-orange-200':'bg-gray-100 text-gray-500'} flex items-center justify-center">${m}</span>`).join('')}</div></td>
+                <td class="py-2.5 pr-3"><div class="flex gap-1 flex-wrap">${p.cert.map(c=>`<span class="text-[8px] font-bold tracking-wider bg-emerald-50 text-emerald-600 px-1.5 py-0.5 rounded">${c}</span>`).join('')}</div></td>
+                <td class="py-2.5 text-gray-400 text-[11px] max-w-[200px]">${p.note}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function isCurrentTargetMonth(m){
+  // Highlight months relevant to current procurement window (Christmas = 11,12,1)
+  if(WINDOW.target.includes('聖誕')) return [11,12,1].includes(m);
+  if(WINDOW.target.includes('春季')) return [3,4,5].includes(m);
+  if(WINDOW.target.includes('夏季')) return [6,7,8].includes(m);
+  if(WINDOW.target.includes('秋季')) return [9,10,11].includes(m);
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  §7  VIEW: 廣交會備戰
+// ═══════════════════════════════════════════════════════════
+function renderFair(){
+  const c = document.getElementById('tab-content');
+  c.innerHTML = `
+    <div class="max-w-[1400px] mx-auto fade-up">
+      <div class="mb-8">
+        <h2 class="text-2xl font-serif italic mb-1">第139屆春季廣交會 · 精準備戰</h2>
+        <p class="text-xs text-gray-400">${WINDOW.desc}</p>
+      </div>
+      <div class="space-y-8">
+        ${CANTON_FAIR.map(ph=>{
+          const d = daysUntil(ph.start);
+          const isActive = TODAY>=ph.start && TODAY<=ph.end;
+          const isPast = TODAY>ph.end;
+          const statusTxt = isActive?'🔴 進行中':isPast?'✅ 已結束':d===0?'🔴 今日開幕':`D-${d}`;
+          const statusCls = isActive||d<=3?'text-red-600':'text-gray-600';
+          const products  = KATALOG_DB.filter(p=>p.fairPhase===ph.phase);
+          return `
+          <div class="border rounded-xl p-6 card-hover ${isActive?'border-red-200 bg-red-50/30':isPast?'border-gray-200 opacity-60':'border-gray-200'}">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <div class="flex items-center gap-3 mb-1">
+                  <span class="text-2xl">${ph.icon}</span>
+                  <h3 class="text-lg font-bold">${ph.label} <span class="text-gray-400 font-normal text-sm">(${ph.start.getMonth()+1}/${ph.start.getDate()} – ${ph.end.getMonth()+1}/${ph.end.getDate()})</span></h3>
+                  <span class="phase-badge ${isActive?'bg-red-100 text-red-600':d<=5?'bg-orange-100 text-orange-600':'bg-gray-100 text-gray-500'}">${statusTxt}</span>
+                </div>
+                <p class="text-sm text-gray-500">${ph.focus}</p>
+              </div>
+              <div class="text-right">
+                <div class="text-[9px] text-gray-400 uppercase tracking-widest mb-1">對接品牌</div>
+                <div class="flex gap-1 flex-wrap justify-end">${ph.brands.map(b=>`<span class="text-[10px] font-bold bg-gray-900 text-white px-2 py-0.5 rounded">${b}</span>`).join('')}</div>
+              </div>
+            </div>
+            <div class="border-t border-gray-100 pt-4">
+              <div class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-3">📋 AI 生成留意清單 (${products.length} 品項)</div>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                ${products.map(p=>`
+                  <div class="flex gap-3 p-3 rounded-lg bg-white border border-gray-100 hover:border-gray-300 transition-colors cursor-pointer" onclick="selectForPitch(${p.id})">
+                    <div class="w-12 h-12 rounded bg-gray-100 flex-shrink-0 overflow-hidden">
+                      <img src="${p.img}" class="w-full h-full object-cover" onerror="this.src='https://picsum.photos/seed/${p.id}/48/48'">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="font-medium text-[12px] truncate">${p.nameZH}</div>
+                      <div class="text-[10px] text-gray-400">${p.brand} · €${p.price.toFixed(2)}</div>
+                      <div class="text-[10px] text-orange-500 mt-0.5 truncate">${p.note}</div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  §8  VIEW: Pitch Deck 產生器
+// ═══════════════════════════════════════════════════════════
+let selectedPitchProducts = [];
+function selectForPitch(id){
+  if(!selectedPitchProducts.includes(id)) selectedPitchProducts.push(id);
+  switchTab('pitch');
+}
+
+function renderPitch(){
+  const selected = KATALOG_DB.filter(p=>selectedPitchProducts.includes(p.id));
+  const allBrands = [...new Set(KATALOG_DB.map(p=>p.brand))];
+  const c = document.getElementById('tab-content');
+  c.innerHTML = `
+    <div class="max-w-[1400px] mx-auto fade-up">
+      <div class="flex justify-between items-start mb-6">
+        <div>
+          <h2 class="text-2xl font-serif italic mb-1">Pitch Deck 自動產生器</h2>
+          <p class="text-xs text-gray-400">選取商品 → AI 自動填充季節洞察與利潤推算 → 匯出 PDF</p>
+        </div>
+        <button onclick="generatePitchPDF()" class="flex items-center gap-2 bg-gray-900 text-white text-[11px] tracking-widest uppercase font-bold px-5 py-2.5 rounded-full hover:bg-gray-700 transition-colors ${selected.length?'':'opacity-30 pointer-events-none'}">
+          <i class="ph-bold ph-download-simple"></i> 匯出 Pitch Deck
+        </button>
+      </div>
+
+      <!-- Quick Add -->
+      <div class="mb-6 p-4 border border-dashed border-gray-300 rounded-xl bg-gray-50">
+        <div class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-3">快速加入商品</div>
+        <div class="flex flex-wrap gap-2">
+          ${KATALOG_DB.map(p=>{
+            const isIn = selectedPitchProducts.includes(p.id);
+            return `<button onclick="togglePitchProduct(${p.id})" class="text-[10px] px-2.5 py-1.5 rounded-full border transition-all ${isIn?'bg-gray-900 text-white border-gray-900':'bg-white text-gray-500 border-gray-200 hover:border-gray-400'}">${p.brand}: ${p.nameZH}</button>`;
+          }).join('')}
+        </div>
+      </div>
+
+      <!-- Preview -->
+      ${selected.length ? `
+      <div class="border rounded-xl overflow-hidden">
+        <div class="bg-gray-900 text-white p-6">
+          <div class="text-[9px] tracking-[.3em] uppercase opacity-50 mb-2">SPATZ GLOBAL — PROACTIVE PITCH DECK</div>
+          <div class="text-xl font-serif font-bold">Lidl ${WINDOW.target} 主動提案</div>
+          <div class="text-sm opacity-60 mt-1">Generated ${TODAY_STR} · ${selected.length} SKUs · Canton Fair 139th</div>
+        </div>
+        <div class="p-6 space-y-6">
+          <!-- §1 Season Insight -->
+          <div>
+            <h3 class="text-sm font-bold mb-2 flex items-center gap-2"><span class="w-5 h-5 bg-orange-100 text-orange-600 rounded flex items-center justify-center text-[10px] font-bold">1</span> 季節性洞察 Seasonal Insight</h3>
+            <div class="text-[12px] text-gray-600 bg-orange-50 border border-orange-100 rounded-lg p-3">
+              ${WINDOW.desc} 根據 katalozi.net 歷史數據分析，Lidl 在此檔期的非食品促銷佔全年營收峰值。及早佈局可防範供應鏈斷鏈風險，搶佔品類策略制高點。
+            </div>
+          </div>
+          <!-- §2 Products -->
+          <div>
+            <h3 class="text-sm font-bold mb-2 flex items-center gap-2"><span class="w-5 h-5 bg-blue-100 text-blue-600 rounded flex items-center justify-center text-[10px] font-bold">2</span> 產品提案 Product Proposals</h3>
+            <div class="space-y-3">
+              ${selected.map(p=>`
+                <div class="flex gap-4 p-3 border rounded-lg">
+                  <div class="w-16 h-16 rounded bg-gray-100 overflow-hidden flex-shrink-0">
+                    <img src="${p.img}" class="w-full h-full object-cover" onerror="this.src='https://picsum.photos/seed/${p.id}/64/64'">
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <div class="font-bold text-[13px]">${p.nameZH} <span class="text-gray-400 font-normal">${p.nameEN}</span></div>
+                        <div class="text-[10px] text-gray-400 mt-0.5">${p.brand} · ${p.cat} · 認證: ${p.cert.join(', ')||'—'}</div>
+                      </div>
+                      <div class="text-right">
+                        <div class="font-bold">€${p.price.toFixed(2)}</div>
+                        <div class="text-[10px] text-gray-400">歷史終端零售價</div>
+                      </div>
+                    </div>
+                    <div class="text-[11px] text-orange-600 mt-1">💡 ${p.note}</div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          <!-- §3 Margin -->
+          <div>
+            <h3 class="text-sm font-bold mb-2 flex items-center gap-2"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded flex items-center justify-center text-[10px] font-bold">3</span> 利潤推算 Margin Prediction</h3>
+            <div class="text-[12px] text-gray-600 bg-emerald-50 border border-emerald-100 rounded-lg p-3">
+              AI 將自動比對「廣交會供應商 FOB 報價」與「Lidl 歷史終端零售價」，計算預估毛利空間。請在廣交會現場將供應商報價上傳至 Google Drive 觸發運算。
+            </div>
+          </div>
+          <!-- §4 Timeline -->
+          <div>
+            <h3 class="text-sm font-bold mb-2 flex items-center gap-2"><span class="w-5 h-5 bg-purple-100 text-purple-600 rounded flex items-center justify-center text-[10px] font-bold">4</span> 供應鏈排程 Supply Chain Timeline</h3>
+            <div class="flex gap-2 text-[10px] flex-wrap">
+              <span class="bg-gray-100 px-3 py-1.5 rounded-full">4月 廣交會打樣</span>
+              <span class="text-gray-300">→</span>
+              <span class="bg-gray-100 px-3 py-1.5 rounded-full">5月底前下單</span>
+              <span class="text-gray-300">→</span>
+              <span class="bg-gray-100 px-3 py-1.5 rounded-full">8月量產品檢</span>
+              <span class="text-gray-300">→</span>
+              <span class="bg-gray-100 px-3 py-1.5 rounded-full">10月抵鹿特丹港</span>
+              <span class="text-gray-300">→</span>
+              <span class="bg-orange-100 text-orange-600 px-3 py-1.5 rounded-full font-bold">11月 Lidl 上架</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      ` : `
+      <div class="text-center py-20 text-gray-300">
+        <i class="ph ph-file-text text-5xl mb-3 block"></i>
+        <p class="text-sm">尚未選取商品<br>請點選上方按鈕或至「廣交會備戰」頁面加入商品</p>
+      </div>`}
+    </div>`;
+}
+
+function togglePitchProduct(id){
+  const i = selectedPitchProducts.indexOf(id);
+  if(i>=0) selectedPitchProducts.splice(i,1); else selectedPitchProducts.push(id);
+  renderPitch();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  §9  VIEW: 團隊追蹤
+// ═══════════════════════════════════════════════════════════
+function renderTrack(){
+  const statusMap = {pending:'⏳ 待啟動','in-progress':'🔄 進行中',done:'✅ 完成'};
+  const statusCls = {pending:'bg-yellow-50 border-yellow-100','in-progress':'bg-blue-50 border-blue-100',done:'bg-green-50 border-green-100'};
+  const c = document.getElementById('tab-content');
+  c.innerHTML = `
+    <div class="max-w-[1400px] mx-auto fade-up">
+      <div class="mb-6">
+        <h2 class="text-2xl font-serif italic mb-1">全球團隊指揮 · 任務追蹤</h2>
+        <p class="text-xs text-gray-400">48小時未跟進 → 系統自動催辦 · 成交數據自動回饋預測模型</p>
+      </div>
+
+      <!-- Team -->
+      <div class="flex gap-3 mb-6 flex-wrap">
+        ${TEAM.map(t=>`
+          <div class="flex items-center gap-2 px-3 py-2 border rounded-lg bg-white">
+            <div class="w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center text-[11px] font-bold">${t.avatar}</div>
+            <div>
+              <div class="text-[12px] font-medium">${t.name}</div>
+              <div class="text-[10px] text-gray-400">${t.role}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <!-- Task Board -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        ${['pending','in-progress','done'].map(status=>`
+          <div>
+            <div class="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3">${statusMap[status]} (${TASKS.filter(t=>t.status===status).length})</div>
+            <div class="space-y-2">
+              ${TASKS.filter(t=>t.status===status).map(t=>{
+                const member = TEAM.find(m=>m.id===t.assignee);
+                return `
+                <div class="p-3 border rounded-lg ${statusCls[status]} card-hover">
+                  <div class="flex justify-between items-start mb-1">
+                    <span class="text-[9px] font-bold tracking-wider bg-gray-900 text-white px-1.5 py-0.5 rounded">${t.brand}</span>
+                    ${t.duePhase?`<span class="text-[9px] text-gray-400">Phase ${t.duePhase}</span>`:''}
+                  </div>
+                  <div class="text-[12px] font-medium mt-1">${t.title}</div>
+                  <div class="flex items-center gap-1.5 mt-2">
+                    <div class="w-5 h-5 rounded-full bg-gray-900 text-white flex items-center justify-center text-[8px] font-bold">${member?.avatar||'?'}</div>
+                    <span class="text-[10px] text-gray-400">${member?.name||'未指派'}</span>
+                  </div>
+                  ${status!=='done'?`
+                  <div class="flex gap-1.5 mt-2">
+                    ${status==='pending'?`<button onclick="moveTask(${t.id},'in-progress')" class="text-[9px] bg-blue-500 text-white px-2 py-0.5 rounded hover:bg-blue-600">開始</button>`:''}
+                    ${status==='in-progress'?`<button onclick="moveTask(${t.id},'done')" class="text-[9px] bg-emerald-500 text-white px-2 py-0.5 rounded hover:bg-emerald-600">完成</button>`:''}
+                  </div>`:''}
+                </div>`;
+              }).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+}
+
+function moveTask(id,newStatus){
+  const t = TASKS.find(t=>t.id===id);
+  if(t) t.status = newStatus;
+  renderTrack();
+  renderKPI();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  §10  PDF EXPORT — Pitch Deck
+// ═══════════════════════════════════════════════════════════
+function generatePitchPDF(){
+  const products = KATALOG_DB.filter(p=>selectedPitchProducts.includes(p.id));
+  if(!products.length) return alert('請先選取至少一項商品');
+
+  const rows = products.map((p,i)=>`
+    <tr>
+      <td style="padding:8px;border-bottom:1px solid #eee;font-weight:700;font-size:9px;letter-spacing:1px">${p.brand}</td>
+      <td style="padding:8px;border-bottom:1px solid #eee">
+        <strong>${p.nameZH}</strong><br>
+        <span style="color:#999;font-size:10px">${p.nameEN}</span>
+      </td>
+      <td style="padding:8px;border-bottom:1px solid #eee;color:#666">${p.cat}</td>
+      <td style="padding:8px;border-bottom:1px solid #eee;font-weight:700">€${p.price.toFixed(2)}</td>
+      <td style="padding:8px;border-bottom:1px solid #eee;font-size:10px;color:#666">${p.months.join(', ')}月</td>
+      <td style="padding:8px;border-bottom:1px solid #eee;font-size:9px;color:#059669">${p.cert.join(' ')}</td>
+      <td style="padding:8px;border-bottom:1px solid #eee;font-size:10px;color:#ea580c">${p.note}</td>
+    </tr>`).join('');
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+<title>SPATZ GLOBAL — Lidl Pitch Deck</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft JhengHei','PingFang TC',sans-serif;padding:30px 36px;font-size:11px;color:#1a1a1a}
+.tip{background:#fffbe6;border:1px solid #ffe58f;border-radius:4px;padding:8px 14px;margin-bottom:16px;font-size:10px;color:#7a6a00}
+.hd{background:#111827;color:#fff;padding:28px 32px;border-radius:8px;margin-bottom:24px}
+.hd h1{font-size:22px;letter-spacing:6px;font-weight:700}
+.hd .sub{font-size:10px;opacity:.5;margin-top:6px;letter-spacing:2px}
+.hd .title{font-size:16px;margin-top:12px}
+.section{margin-bottom:20px}
+.section h2{font-size:13px;font-weight:700;border-bottom:2px solid #1a1a1a;padding-bottom:6px;margin-bottom:10px}
+.insight{background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:10px 14px;font-size:11px;color:#9a3412;line-height:1.7}
+.timeline{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:10px}
+.timeline span{background:#f3f4f6;padding:4px 10px;border-radius:99px}
+.timeline .hl{background:#fff7ed;color:#ea580c;font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:8px}
+thead tr{background:#111827}
+thead th{color:#fff;padding:8px;font-size:9px;letter-spacing:1.5px;text-align:left}
+.ft{margin-top:20px;font-size:9px;color:#ccc;display:flex;justify-content:space-between}
+@media print{@page{size:A4 landscape;margin:10mm}body{padding:0}.tip{display:none}}
+</style></head><body>
+<div class="tip">💡 按 <strong>Ctrl+P</strong>（Mac: ⌘+P），選擇「另存為 PDF」即可下載。</div>
+<div class="hd">
+  <h1>SPATZ GLOBAL</h1>
+  <div class="sub">PROACTIVE PITCH DECK — LIDL NON-FOOD PROCUREMENT</div>
+  <div class="title">Lidl ${WINDOW.target} · 主動提案書</div>
+</div>
+<div class="section">
+  <h2>§1 季節性洞察 Seasonal Insight</h2>
+  <div class="insight">${WINDOW.desc} 根據 katalozi.net 歷史型錄 OCR 數據分析，此檔期為 Lidl 非食品採購之年度峰值。建議及早鎖定供應鏈，搶佔品類策略制高點。本提案涵蓋 ${products.length} 項精選商品，均基於過往上架節奏之高頻 SKU。</div>
+</div>
+<div class="section">
+  <h2>§2 產品提案 Product Proposals (${products.length} SKUs)</h2>
+  <table><thead><tr><th>BRAND</th><th>PRODUCT</th><th>CATEGORY</th><th>RETAIL €</th><th>MONTHS</th><th>CERT</th><th>INSIGHT</th></tr></thead>
+  <tbody>${rows}</tbody></table>
+</div>
+<div class="section">
+  <h2>§3 供應鏈排程 Supply Chain Timeline</h2>
+  <div class="timeline">
+    <span>4月 Canton Fair 打樣</span><span>→</span>
+    <span>5月底 下單確認</span><span>→</span>
+    <span>8月 量產品檢</span><span>→</span>
+    <span>10月 鹿特丹港清關</span><span>→</span>
+    <span class="hl">11月 Lidl 上架</span>
+  </div>
+</div>
+<div class="ft"><span>SPATZ GLOBAL © 2026 · CONFIDENTIAL</span><span>${products.length} SKUs · ${TODAY_STR}</span></div>
+<script>window.addEventListener('load',()=>setTimeout(()=>window.print(),700))<\/script>
+</body></html>`;
+
+  const w = window.open('','_blank','width=1020,height=760');
+  if(w){w.document.write(html);w.document.close();}
+  else{
+    const b = new Blob([html],{type:'text/html;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(b);
+    a.download = `spatz-pitch-deck-${Date.now()}.html`;
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  §11  AI ASSISTANT
+// ═══════════════════════════════════════════════════════════
+const chatMessages = document.getElementById('chat-messages');
+const chatForm     = document.getElementById('chat-form');
+const chatInput    = document.getElementById('chat-input');
+
+function addBotMsg(html){
+  chatMessages.insertAdjacentHTML('beforeend',`
+    <div class="flex"><div class="bg-white border border-gray-100 rounded-lg px-3 py-2.5 text-[11px] leading-relaxed shadow-sm text-gray-700 max-w-[95%]">${html}</div></div>`);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+function addUserMsg(txt){
+  chatMessages.insertAdjacentHTML('beforeend',`
+    <div class="flex justify-end"><div class="bg-gray-100 rounded-lg px-3 py-2 text-[11px] max-w-[85%]">${txt}</div></div>`);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+function showTyping(){
+  const id='tp-'+Date.now();
+  chatMessages.insertAdjacentHTML('beforeend',`<div id="${id}" class="flex"><div class="bg-white border border-gray-100 rounded-lg px-3 py-2.5 shadow-sm"><svg class="w-8 h-4" viewBox="0 0 32 16"><circle class="typing-dot" cx="6" cy="8" r="3"/><circle class="typing-dot" cx="16" cy="8" r="3"/><circle class="typing-dot" cx="26" cy="8" r="3"/></svg></div></div>`);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return id;
+}
+function removeTyping(id){document.getElementById(id)?.remove();}
+
+// Initial greeting
+addBotMsg(`<p class="font-bold mb-1">早安，王姐。</p>
+<p class="text-gray-500 mb-2">今日 ${TODAY_STR}。距廣交會第一期開幕僅 <strong class="text-red-600">${daysUntil(CANTON_FAIR[0].start)} 天</strong>。</p>
+<p class="text-gray-500 mb-2">📌 當前採購窗口: <strong>${WINDOW.target}</strong><br>→ ${WINDOW.desc}</p>
+<p class="text-gray-500">可輸入品牌名稱、季節、商品關鍵字查詢，或嘗試以下指令：</p>
+<div class="mt-2 space-y-1">
+  <button onclick="aiQuery('聖誕採購建議')" class="block text-left text-[10px] text-gray-500 hover:text-gray-900 hover:bg-gray-50 px-2 py-1 rounded w-full">▸ 聖誕採購建議</button>
+  <button onclick="aiQuery('Phase 1 留意清單')" class="block text-left text-[10px] text-gray-500 hover:text-gray-900 hover:bg-gray-50 px-2 py-1 rounded w-full">▸ Phase 1 留意清單</button>
+  <button onclick="aiQuery('Silvercrest 分析')" class="block text-left text-[10px] text-gray-500 hover:text-gray-900 hover:bg-gray-50 px-2 py-1 rounded w-full">▸ Silvercrest 品牌分析</button>
+  <button onclick="aiQuery('生成Pitch Deck')" class="block text-left text-[10px] text-gray-500 hover:text-gray-900 hover:bg-gray-50 px-2 py-1 rounded w-full">▸ 自動生成 Pitch Deck</button>
+</div>`);
+
+chatForm.addEventListener('submit',e=>{e.preventDefault();const v=chatInput.value.trim();if(!v)return;aiQuery(v);chatInput.value='';});
+
+function aiQuery(msg){
+  addUserMsg(msg);
+  const tid = showTyping();
+  setTimeout(()=>{removeTyping(tid);processAI(msg);},900);
+}
+
+const CJK_STOP = new Set('的了是在和有一這個不也我你他她它子地得著過被把讓給比跟同從對向裡外上下前後左右中很都但就因為以所而那些多少大小啊哦喔嗯吧呢嗎'.split(''));
+
+function processAI(raw){
+  const q = raw.toLowerCase();
+  let reply = '';
+
+  // Brand queries
+  const brandMatch = KATALOG_DB.find(p=>q.includes(p.brand.toLowerCase()));
+  if(brandMatch){
+    const brand = brandMatch.brand;
+    const items = KATALOG_DB.filter(p=>p.brand===brand);
+    const cats  = [...new Set(items.map(p=>p.cat))].join('、');
+    reply = `<p class="font-bold mb-1">${brand} 品牌情報</p>
+      <p class="text-gray-500">資料庫中共 ${items.length} 筆記錄，涵蓋：${cats}。</p>
+      <p class="text-gray-500 mt-1">代表商品：${items.slice(0,3).map(p=>`${p.nameZH}(€${p.price})`).join('、')}。</p>
+      <p class="text-orange-600 text-[10px] mt-1">💡 ${items[0].note}</p>`;
+    addBotMsg(reply);
+    intelFilter = brand; switchTab('intel');
+    return;
+  }
+
+  // Phase queries
+  if(q.includes('phase 1')||q.includes('第一期')){
+    const items = KATALOG_DB.filter(p=>p.fairPhase===1);
+    reply = `<p class="font-bold mb-1">⚡ 廣交會第一期留意清單</p>
+      <p class="text-gray-500">4/15–4/19 · 硬科技、家電、五金。共 ${items.length} 項目標商品。</p>
+      <p class="text-gray-500 mt-1">重點：高性價比氣炸鍋(FOB<$12)、Parkside 一電多機生態、便攜式儲能。</p>`;
+    addBotMsg(reply); switchTab('fair'); return;
+  }
+  if(q.includes('phase 2')||q.includes('第二期')){
+    const items = KATALOG_DB.filter(p=>p.fairPhase===2);
+    reply = `<p class="font-bold mb-1">🏠 廣交會第二期留意清單</p>
+      <p class="text-gray-500">4/23–4/27 · 家居、禮品、園藝。共 ${items.length} 項目標商品。</p>
+      <p class="text-gray-500 mt-1">首要：聖誕LED裝飾(對標€17.99)、環保蠟燭、Flat-pack 戶外傢俱。</p>`;
+    addBotMsg(reply); switchTab('fair'); return;
+  }
+  if(q.includes('phase 3')||q.includes('第三期')){
+    const items = KATALOG_DB.filter(p=>p.fairPhase===3);
+    reply = `<p class="font-bold mb-1">👕 廣交會第三期留意清單</p>
+      <p class="text-gray-500">5/1–5/5 · 紡織、玩具、運動。共 ${items.length} 項目標商品。</p>
+      <p class="text-gray-500 mt-1">重點：蓄熱保暖面料(OEKO-TEX)、EN71益智玩具、Crivit露營裝備。</p>`;
+    addBotMsg(reply); switchTab('fair'); return;
+  }
+
+  // Season / procurement queries
+  if(q.includes('聖誕')||q.includes('christmas')||q.includes('冬季')){
+    const xmasItems = KATALOG_DB.filter(p=>p.shelfSeason.includes('winter'));
+    reply = `<p class="font-bold mb-1">🎄 聖誕/冬季採購情報</p>
+      <p class="text-gray-500">${WINDOW.desc}</p>
+      <p class="text-gray-500 mt-1">共 ${xmasItems.length} 項冬季上架商品。涵蓋 Silvercrest 送禮家電、Livarno Home 聖誕裝飾、Playtive 玩具等。</p>
+      <p class="text-red-600 text-[10px] mt-1 font-bold">⚠️ 黃金窗口期：4月–5月必須完成採購決策!</p>`;
+    addBotMsg(reply); return;
+  }
+
+  if(q.includes('pitch')||q.includes('簡報')||q.includes('deck')){
+    if(selectedPitchProducts.length){
+      reply = `<p class="font-bold mb-1">📑 Pitch Deck 就緒</p>
+        <p class="text-gray-500">目前已選取 ${selectedPitchProducts.length} 項商品。可在 Pitch Deck 頁面預覽並匯出 PDF。</p>`;
+    } else {
+      // Auto-select Christmas items
+      selectedPitchProducts = KATALOG_DB.filter(p=>p.shelfSeason.includes('winter')).slice(0,6).map(p=>p.id);
+      reply = `<p class="font-bold mb-1">📑 已自動選取聖誕檔期商品</p>
+        <p class="text-gray-500">已為您加入 ${selectedPitchProducts.length} 項冬季熱門 SKU。切換至 Pitch Deck 頁面即可預覽與匯出。</p>`;
+    }
+    addBotMsg(reply); switchTab('pitch'); return;
+  }
+
+  if(q.includes('團隊')||q.includes('任務')||q.includes('track')||q.includes('follow')){
+    reply = `<p class="font-bold mb-1">👥 團隊任務概覽</p>
+      <p class="text-gray-500">待啟動: ${TASKS.filter(t=>t.status==='pending').length} · 進行中: ${TASKS.filter(t=>t.status==='in-progress').length} · 完成: ${TASKS.filter(t=>t.status==='done').length}</p>
+      <p class="text-gray-500 mt-1">系統將在 48 小時未跟進時自動催辦。</p>`;
+    addBotMsg(reply); switchTab('track'); return;
+  }
+
+  // Product keyword search
+  const cjk = (raw.match(/[\u4e00-\u9fff]/g)||[]).filter(c=>!CJK_STOP.has(c));
+  const eng = (q.match(/[a-z0-9]{2,}/g)||[]);
+  if(cjk.length||eng.length){
+    const results = KATALOG_DB.filter(p=>{
+      let score=0;
+      cjk.forEach(c=>{if(p.nameZH.includes(c))score+=3;if(p.cat.includes(c))score+=1;});
+      eng.forEach(w=>{if(p.nameEN.toLowerCase().includes(w))score+=3;if(p.brand.toLowerCase().includes(w))score+=2;});
+      return score>0;
+    });
+    if(results.length){
+      reply = `<p class="font-bold mb-1">🔍 搜尋「${raw}」</p>
+        <p class="text-gray-500">找到 ${results.length} 項相關商品：</p>
+        <div class="mt-1 space-y-0.5">${results.slice(0,5).map(p=>`<div class="text-[10px] text-gray-500">· ${p.brand} ${p.nameZH} (€${p.price})</div>`).join('')}</div>`;
+      addBotMsg(reply); return;
+    }
+  }
+
+  // Fallback
+  reply = `<p class="text-gray-500">收到「${raw}」。您可以嘗試輸入：品牌名稱(如 Silvercrest)、季節(如 聖誕)、Phase 1/2/3、或「生成Pitch Deck」。</p>`;
+  addBotMsg(reply);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  §12  INIT
+// ═══════════════════════════════════════════════════════════
+switchTab('intel');
+</script>
+
+
+</body></html>
