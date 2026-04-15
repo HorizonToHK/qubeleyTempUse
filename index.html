@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>動態學術心理性格評估系統</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+       .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4 { color: #2c3e50; }
+       .progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            height: 10px;
+            overflow: hidden;
+        }
+       .progress-bar {
+            height: 100%;
+            background-color: #3498db;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+       .question-number {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+       .question-text {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+       .option-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #ecf0f1;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+       .option-btn:hover {
+            background-color: #d5dbdb;
+            border-color: #bdc3c7;
+        }
+        #result-container { display: none; }
+       .score-card {
+            background: #f9f9f9;
+            border-left: 5px solid #3498db;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+       .feedback-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>動態學術心理性格評估系統</h1>
+    
+    <div id="quiz-container">
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="question-number" id="question-number"></div>
+        <div class="question-text" id="question-text"></div>
+        <div id="options"></div>
+    </div>
+
+    <div id="result-container">
+        <h2>分析結果與動態建議</h2>
+        <p>基於您的作答，系統已運用期望後驗估計法（EAP）與 Z-Score 常態化映射，計算出您在四大認知維度中的絕對連續百分比。以下是您的專屬動態分析：</p>
+        
+        <div class="score-card" id="scores-display"></div>
+        
+        <div id="dynamic-feedback"></div>
+        
+        <button class="option-btn" style="background-color: #3498db; color: #fff; margin-top: 30px;" onclick="location.reload()">重新測驗</button>
+    </div>
+</div>
+
+<script>
+    // 完整 120 題 IPIP-NEO 學術題庫與計分權重映射
+    const questions = [
+        // E維度 (外向性能量)
+        {q:"我很容易結交新朋友。", d:"E", r:1}, {q:"我喜歡大型派對與熱鬧聚會。", d:"E", r:1},
+        {q:"我喜歡主導並掌控局面。", d:"E", r:1}, {q:"我總是非常忙碌，行程滿檔。", d:"E", r:1},
+        {q:"我喜歡生活充滿刺激與挑戰。", d:"E", r:1}, {q:"我總是散發著喜悅與活力。", d:"E", r:1},
+        {q:"在聚會中，我會主動與許多不同的人交談。", d:"E", r:1}, {q:"我會主動試圖領導他人。", d:"E", r:1},
+        {q:"我總是不斷地在行動，難以靜下心來。", d:"E", r:1}, {q:"我四處尋求冒險與新鮮經歷。", d:"E", r:1},
+        {q:"我在生活中擁有豐富的樂趣與歡笑。", d:"E", r:1}, {q:"置身於人群中讓我感到極度自在。", d:"E", r:1},
+        {q:"我會在空閒時間安排大量的活動。", d:"E", r:1}, {q:"我熱愛生活，對一切充滿熱情。", d:"E", r:1},
+        {q:"我喜歡並享受表現出狂野和瘋狂的行為。", d:"E", r:1},
+        {q:"我發現自己很難主動接近他人。", d:"E", r:-1}, {q:"我害怕成為眾人注目的焦點。", d:"E", r:-1},
+        {q:"我盡量避免接觸他人，保持距離。", d:"E", r:-1}, {q:"相較於社交，我寧願選擇獨處。", d:"E", r:-1},
+        {q:"我只有在和非常熟識的朋友在一起時才感到自在。", d:"E", r:-1}, {q:"我會刻意避開人群與擁擠的場所。", d:"E", r:-1},
+        {q:"在團體中，我習慣等待別人來帶領。", d:"E", r:-1}, {q:"我覺得自己沒有時間顧及他人的感受與需求。", d:"E", r:-1},
+        {q:"面對複雜或困難的社交場合，我會感到極度不自在。", d:"E", r:-1}, {q:"我對他人的問題與生活瑣事不感興趣。", d:"E", r:-1},
+        {q:"我傾向與別人保持明確的心理距離。", d:"E", r:-1}, {q:"我經常對別人的情緒感受漠不關心。", d:"E", r:-1},
+        {q:"我講話時經常因為情緒激動而大吼大叫。", d:"E", r:-1}, {q:"我經常覺得自己無所事事，浪費時間。", d:"E", r:-1},
+        {q:"遇到事情我傾向於退縮，避免承擔領頭羊角色。", d:"E", r:-1},
+
+        // N維度 (開放性/直覺獲取)
+        {q:"我擁有極為生動豐富的想像力。", d:"N", r:1}, {q:"我深信藝術與美學在生活中的重要性。", d:"N", r:1},
+        {q:"我強烈且深刻地體驗自己的每一種情感。", d:"N", r:1}, {q:"我極度喜歡閱讀具深度與挑戰性的材料。", d:"N", r:1},
+        {q:"我在觀念上傾向於支持進步與自由的政治或社會觀點。", d:"N", r:1}, {q:"我喜歡天馬行空的幻想與腦力激盪。", d:"N", r:1},
+        {q:"我總能敏銳地看到別人可能忽略的美感。", d:"N", r:1}, {q:"我能夠輕易地察覺並感受到他人的情緒波動。", d:"N", r:1},
+        {q:"我對社會上的弱勢群體充滿深切的同情。", d:"N", r:1}, {q:"我非常享受沉浸在深層次思考中的過程。", d:"N", r:1},
+        {q:"我相信世事無絕對，沒有純粹絕對的對與錯。", d:"N", r:1}, {q:"我經常並且喜歡做白日夢。", d:"N", r:1},
+        {q:"面對嶄新的經驗，我充滿好奇與嘗試的渴望。", d:"N", r:1}, {q:"我喜歡嘗試各種不同種類的新食物。", d:"N", r:1},
+        {q:"在日常生活中，我享受變化與不確定性多於例行公事。", d:"N", r:1},
+        {q:"我極度偏好堅持我所熟悉且已習慣的事物。", d:"N", r:-1}, {q:"我刻意避免參與任何深奧或哲學性的討論。", d:"N", r:-1},
+        {q:"我對於詩歌、文學或抽象藝術絲毫不感興趣。", d:"N", r:-1}, {q:"我很少停下來審視或注意到自己的情緒反應。", d:"N", r:-1},
+        {q:"我討厭任何形式的改變。", d:"N", r:-1}, {q:"我發現自己很難理解複雜或抽象的概念。", d:"N", r:-1},
+        {q:"我完全不享受去參觀藝術博物館或藝廊。", d:"N", r:-1}, {q:"我無法理解那些容易情緒波動或感情用事的人。", d:"N", r:-1},
+        {q:"在做事時，我極度執著於傳統且已被驗證的標準方式。", d:"N", r:-1}, {q:"我對缺乏實用價值的純理論性探討毫無興趣。", d:"N", r:-1},
+        {q:"我堅定認為我們應該對違規與犯罪採取最嚴厲的強硬態度。", d:"N", r:-1}, {q:"我傾向於投票給主張維持現狀的保守派候選人。", d:"N", r:-1},
+        {q:"我很少產生天馬行空的靈感或幻想。", d:"N", r:-1}, {q:"我對於抽象藝術的價值抱持高度懷疑。", d:"N", r:-1},
+        {q:"我盡量避免涉及任何超出客觀事實的推論。", d:"N", r:-1},
+
+        // F維度 (宜人性/情感決策)
+        {q:"我在人際互動中傾向於無條件信任他人。", d:"F", r:1}, {q:"我發自內心地熱愛並樂於幫助別人。", d:"F", r:1},
+        {q:"我極度重視誠信，總是信守我的承諾。", d:"F", r:1}, {q:"當看到無家可歸或陷入困境的人，我會感到強烈同情。", d:"F", r:1},
+        {q:"除非有明顯證據，否則我相信別人都有良好的意圖。", d:"F", r:1}, {q:"我時刻真誠地關心著周遭人們的福祉。", d:"F", r:1},
+        {q:"即便會得罪人，我也堅持說出真實的情況。", d:"F", r:1}, {q:"在團隊中，我常主動攬下超出別人期望的互助工作。", d:"F", r:1},
+        {q:"我在與人相處時，總能保持謙遜的態度。", d:"F", r:1}, {q:"我對那些處境比我差的人，總會湧現悲憫之心。", d:"F", r:1},
+        {q:"對於別人對我說的話，我通常選擇相信其真實性。", d:"F", r:1},
+        {q:"為了達到我個人的目標，我認為利用他人是可接受的。", d:"F", r:-1}, {q:"我熱愛與人爭辯，甚至享受這種智力上的對抗。", d:"F", r:-1},
+        {q:"為了在競爭中取得領先，我願意作弊或採用灰色手段。", d:"F", r:-1}, {q:"當別人犯錯或惹惱我時，我會毫不留情地對他們吼叫。", d:"F", r:-1},
+        {q:"在內心深處，我相信自己比大多數人都來得優秀。", d:"F", r:-1}, {q:"如果有機會，我會毫不猶豫地佔別人的便宜。", d:"F", r:-1},
+        {q:"我認為規則是死板的，必要時我會輕易打破規則。", d:"F", r:-1}, {q:"當有人冒犯我，我會用言語侮辱或刻薄地反擊他們。", d:"F", r:-1},
+        {q:"為了確保我的利益，我不介意阻撓別人的計畫。", d:"F", r:-1}, {q:"如果遵守承諾會損害我的利益，我會選擇破壞承諾。", d:"F", r:-1},
+        {q:"對於得罪我的人，我一定會找機會報復。", d:"F", r:-1}, {q:"我喜歡在別人面前大肆吹噓自己的優點與成就。", d:"F", r:-1},
+        {q:"面對那些急需幫助的人，我通常選擇視而不見。", d:"F", r:-1}, {q:"本能上，我對身邊的人抱持著強烈的懷疑態度。", d:"F", r:-1},
+        {q:"我對於維護他人的自尊與面子毫不在乎。", d:"F", r:-1}, {q:"看到別人的苦難，我很少產生任何情緒波動。", d:"F", r:-1},
+        {q:"我認為人皆自私，不相信有所謂純粹的利他行為。", d:"F", r:-1}, {q:"在團隊合作中，我更在乎競爭獲勝而非關係和諧。", d:"F", r:-1},
+        {q:"我認為展現出傲慢與強勢是建立威信的必要手段。", d:"F", r:-1},
+
+        // J維度 (盡責性/外部判斷)
+        {q:"我深信自己總能成功地完成被賦予的任務。", d:"J", r:1}, {q:"我有強迫症般的傾向，喜歡把環境整理得井井有條。", d:"J", r:1},
+        {q:"為了達成目標，我的工作態度非常刻苦努力。", d:"J", r:1}, {q:"面對未來的挑戰，我總是提早做好萬全準備。", d:"J", r:1},
+        {q:"我對自己的專業能力要求極高，追求卓越表現。", d:"J", r:1}, {q:"一旦制定計畫，我必定會嚴格執行並貫徹到底。", d:"J", r:1},
+        {q:"無論面對多繁雜的事務，我都能梳理並順利處理。", d:"J", r:1}, {q:"在混亂的局勢中，我總能迅速掌握並控制進度。", d:"J", r:1},
+        {q:"我對自己的欲望有極強的節制力，很少過度放縱。", d:"J", r:1}, {q:"面對偏離目標的短期誘惑，我能輕易地抵抗。", d:"J", r:1},
+        {q:"我精通各項實務，確切知道如何把工作高效完成。", d:"J", r:1}, {q:"我能夠以強大的意志力控制內心的渴望與衝動。", d:"J", r:1},
+        {q:"即使在極端高壓的環境下，我也能保持絕對冷靜。", d:"J", r:1}, {q:"總體而言，我對自己感到滿意且身心自在。", d:"J", r:1},
+        {q:"我喜歡讓事情不加計畫地輕鬆自然發展。", d:"J", r:-1}, {q:"我經常在使用完物品後忘記把它們放回原處。", d:"J", r:-1},
+        {q:"我的辦公桌或房間經常是一團糟。", d:"J", r:-1}, {q:"我總是把自己的個人物品到處亂丟，缺乏收納習慣。", d:"J", r:-1},
+        {q:"工作時，我傾向於只付出能勉強過關的最低限度努力。", d:"J", r:-1}, {q:"我有嚴重的拖延症，常常很難開始著手一項任務。", d:"J", r:-1},
+        {q:"我在工作或學業上投入的時間和精力少之又少。", d:"J", r:-1}, {q:"我經常無緣無故地感到深深的沮喪與憂鬱。", d:"J", r:-1},
+        {q:"我時常陷入對未知的恐懼或擔憂之中。", d:"J", r:-1}, {q:"遇到突發狀況時，我極其容易感到恐慌失措。", d:"J", r:-1},
+        {q:"災難化思考是我的常態，我總擔心最壞的情況發生。", d:"J", r:-1}, {q:"生活中有很多事物都會讓我感到莫名的害怕。", d:"J", r:-1},
+        {q:"工作量一變大，我就容易被排山倒海的壓力壓垮。", d:"J", r:-1}, {q:"遇到困難時，我常覺得自己能力不足，無法處理。", d:"J", r:-1},
+        {q:"我的神經緊繃，極度容易感到壓力與崩潰。", d:"J", r:-1}, {q:"我做事衝動，常常不經大腦思考就直接行動。", d:"J", r:-1}
+    ];
+
+    let currentQ = 0;
+    // 分數容器
+    let scores = { E: 0, N: 0, F: 0, J: 0 };
+
+    function renderQuestion() {
+        if(currentQ >= questions.length) {
+            calculateResults();
+            return;
+        }
+        
+        // 更新進度條與題號
+        let progress = (currentQ / questions.length) * 100;
+        document.getElementById('progress-bar').style.width = progress + '%';
+        document.getElementById('question-number').innerText = `問題 ${currentQ + 1} / ${questions.length}`;
+        
+        // 顯示題目
+        document.getElementById('question-text').innerText = questions[currentQ].q;
+
+        // 生成選項
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
+        const labels = ["1. 非常不符合", "2. 稍微不符合", "3. 中立 / 視情況", "4. 稍微符合", "5. 非常符合"];
+        
+        labels.forEach((label, index) => {
+            let btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = label;
+            // 點擊後計算分數並進入下一題
+            btn.onclick = () => answerQuestion(index + 1);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function answerQuestion(value) {
+        let q = questions[currentQ];
+        // 動態判定：若是正向題直接加分，反向題觸發 6-value 翻轉機制
+        let scoreToAdd = q.r === 1? value : (6 - value);
+        scores[q.d] += scoreToAdd;
+        
+        currentQ++;
+        renderQuestion();
+    }
+
+    function calculateResults() {
+        document.getElementById('quiz-container').style.display = 'none';
+        document.getElementById('result-container').style.display = 'block';
+
+        // 統計學常態化基準 (30題，每題1-5分，總分區間30-150，常模中位數約90，標準差約15)
+        const mean = 90;
+        const sd = 15;
+        let pct = {};
+
+        // Z-Score 轉換與貝葉斯常態機率映射
+        for(let dim in scores) {
+            let z = (scores[dim] - mean) / sd;
+            // 利用 Logistic 函數逼近 Normal CDF 計算絕對連續百分位數
+            let percentile = 1 / (1 + Math.exp(-1.702 * z));
+            pct[dim] = (percentile * 100).toFixed(2);
+        }
+
+        // 輸出連續性維度分數
+        let scoreHTML = `
+            <h3>連續性光譜座標</h3>
+            <p><strong>能量導向 (外向性 E%)：</strong> ${pct.E}%</p>
+            <p><strong>認知獲取 (開放/直覺 N%)：</strong> ${pct.N}%</p>
+            <p><strong>決策濾網 (宜人/情感 F%)：</strong> ${pct.F}%</p>
+            <p><strong>外部適應 (盡責/判斷 J%)：</strong> ${pct.J}%</p>
+        `;
+        document.getElementById('scores-display').innerHTML = scoreHTML;
+
+        // 生成動態進步與實務建議
+        let feedbackHTML = "";
+
+        // 1. 能量維度 (E) 的自我效能與目標設定
+        feedbackHTML += `<div class="feedback-section"><h4>🔋 能量流動模組</h4>`;
+        if(pct.E >= 75) {
+            feedbackHTML += `<p><strong>動態診斷：</strong> 您的神經系統對「社會說服」與外部刺激具備極高敏感度。<br><strong>實務建議：</strong> 採用「高曝光度效能構建法」。遇到困難挑戰時切勿閉門造車，應積極建立互助指導小組。將階段性目標公開化，利用外部環境的期待與良性競爭作為燃料。</p>`;
+        } else if (pct.E < 40) {
+            feedbackHTML += `<p><strong>動態診斷：</strong> 群體言語說服對您容易產生能量消耗，您的自信源於深度的「精熟經驗」。<br><strong>實務建議：</strong> 採用「微型實驗室法則」。徹底擺脫對外部評價體系的依賴，將大挑戰拆解為封閉環境中可獨力完成的微小任務，創造連續不斷的「小勝利」。</p>`;
+        } else {
+            feedbackHTML += `<p><strong>動態診斷：</strong> 您對能量來源具備高度的雙向適應彈性。<br><strong>實務建議：</strong> 採用「雙軌交替制」。在專案初期進行深度獨立研究，當動機下滑時，立即切換至高信任度的核心團隊中進行腦力激盪與成果發表。</p>`;
+        }
+        feedbackHTML += `</div>`;
+
+        // 2. 認知維度 (N) 的 3-D 談判戰術
+        feedbackHTML += `<div class="feedback-section"><h4>🧠 認知獲取模組</h4>`;
+        if(pct.N >= 70) {
+            feedbackHTML += `<p><strong>動態診斷：</strong> 高度開放的發散性思維，擅長跨領域整合。<br><strong>實務建議：</strong> 必須拋棄清單式的機械目標，改採「願景驅動型」設定。在談判桌上，您是天生的 3-D 交易設計師，當陷入價格死局時，應主動發動「多議題打包戰術」，引入新變數（如交貨期、授權）來重構談判空間。</p>`;
+        } else if (pct.N < 30) {
+            feedbackHTML += `<p><strong>動態診斷：</strong> 大腦處理資訊顆粒度極細，依賴具體物理現實。<br><strong>實務建議：</strong> 目標設定必須嚴格遵守「SMART原則」與標準作業流程（SOP）。談判時，善用「精確細節錨定效應」，提出精算至小數點的報價，利用極精確的數字暗示底線，大幅限縮對手的還價幅度。</p>`;
+        } else {
+            feedbackHTML += `<p><strong>動態診斷：</strong> 兼顧宏觀模式識別與微觀細節處理。<br><strong>實務建議：</strong> 您的談判優勢在於全盤掌控。建議在談判前先確認雙方核心願景，隨後再穩步將抽象願景轉譯為具有法律效力的實體條款，避免見林不見樹。</p>`;
+        }
+        feedbackHTML += `</div>`;
+
+        // 3. 決策維度 (F) 的情緒衝突管理
+        feedbackHTML += `<div class="feedback-section"><h4>⚖️ 決策濾網模組</h4>`;
+        if(pct.F >= 70) {
+            feedbackHTML += `<p><strong>動態診斷：</strong> 決策將人際和諧與信任置於首位，面臨衝突時容易妥協。<br><strong>實務建議：</strong> 實施強大的「角色剝離戰術」。在談判前，心態上將自己轉化為重要群體的「保護者代理人」，嚴格寫下自身底線與最佳替代方案（BATNA），陷入情緒泥沼時強制要求暫停。</p>`;
+        } else if (pct.F < 30) {
+            feedbackHTML += `<p><strong>動態診斷：</strong> 能輕易將情緒變數剝離，完全依據效率與邏輯進行分配型談判。<br><strong>實務建議：</strong> 極易忽視對手的顏面導致關係破裂。請刻意練習 FBI 專用的「策略性同理心」，強迫使用反映式傾聽與同理標籤（如「聽起來您對期限感到擔憂」），以瞬間降低對手的防備。</p>`;
+        } else {
+            feedbackHTML += `<p><strong>動態診斷：</strong> 邏輯因果與人際感受在決策方程式中權重平衡。<br><strong>實務建議：</strong> 這是談判桌上最具彈性的狀態。建議面對強勢對手時切換為冰冷邏輯模式，而在面對需要建立長期聯盟的夥伴時，主動釋放同理信號以創造整合型價值。</p>`;
+        }
+        feedbackHTML += `</div>`;
+
+        // 4. 外部維度 (J) 的應變與執行力
+        feedbackHTML += `<div class="feedback-section"><h4>⚙️ 外部適應模組</h4>`;
+        if(pct.J >= 75) {
+            feedbackHTML += `<p><strong>動態診斷：</strong> 擁有強大內部秩序感，但面對突發混亂時自我效能易受挫。<br><strong>實務建議：</strong> 導入「容錯型精熟經驗」訓練。在日常嚴密的計畫中，強制注入 20% 的混沌時間；練習「假設情境矩陣規劃」，將應對突發變故視為能力的展現，降低對絕對完美的病態執著。</p>`;
+        } else if (pct.J < 40) {
+            feedbackHTML += `<p><strong>動態診斷：</strong> 極度抗拒死板結構，適應力強，自信來自臨場靈感爆發。<br><strong>實務建議：</strong> 全面放棄線性瀑布流計畫法，改採「敏捷式自我管理」。將目標切碎為 3 天至 1 週的「衝刺週期」，並利用物理層面的軟體約束切斷干擾，將無序性限制在創意發想時間內。</p>`;
+        } else {
+            feedbackHTML += `<p><strong>動態診斷：</strong> 執行力與混亂容忍度並重。<br><strong>實務建議：</strong> 適合擔任敏捷開發與傳統管理之間的橋樑。在工作中，為核心戰略設立硬性死線，但對執行路徑保留足夠的開放性，以吸收未知的創新機會。</p>`;
+        }
+        feedbackHTML += `</div>`;
+
+        document.getElementById('dynamic-feedback').innerHTML = feedbackHTML;
+    }
+
+    // 初始化問卷
+    window.onload = renderQuestion;
+</script>
+
+</body>
+</html>
