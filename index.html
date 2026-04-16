@@ -1,306 +1,413 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>動態學術心理性格評估系統</title>
+    <title>深度認知特質動態測評系統 (Academic MBTI Step II - 120 Items)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        :root {
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent-color: #4f46e5;
+            --color-nt: #9333ea;
+            --color-nf: #16a34a;
+            --color-sj: #0891b2;
+            --color-sp: #ca8a04;
+        }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
         }
-       .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+       .surface { background-color: var(--surface-color); }
+       .likert-btn { transition: all 0.2s ease; }
+       .likert-btn:hover {
+            transform: scale(1.05);
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
         }
-        h1, h2, h3, h4 { color: #2c3e50; }
-       .progress-bar-container {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            height: 10px;
-            overflow: hidden;
-        }
-       .progress-bar {
-            height: 100%;
-            background-color: #3498db;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-       .question-number {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            margin-bottom: 10px;
-        }
-       .question-text {
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-       .option-btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            background-color: #ecf0f1;
-            border: 2px solid transparent;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s;
-        }
-       .option-btn:hover {
-            background-color: #d5dbdb;
-            border-color: #bdc3c7;
-        }
-        #result-container { display: none; }
-       .score-card {
-            background: #f9f9f9;
-            border-left: 5px solid #3498db;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 0 8px 8px 0;
-        }
-       .feedback-section {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
+       .progress-segment { transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+       .fade-enter { opacity: 0; transform: translateY(10px); }
+       .fade-enter-active { opacity: 1; transform: translateY(0); transition: opacity 400ms, transform 400ms; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+       .type-glow { text-shadow: 0 0 20px var(--accent-color); }
+       .card-glow { box-shadow: 0 4px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05); }
     </style>
 </head>
-<body>
+<body class="antialiased min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8">
 
-<div class="container">
-    <h1>動態學術心理性格評估系統</h1>
-    
-    <div id="quiz-container">
-        <div class="progress-bar-container">
-            <div class="progress-bar" id="progress-bar"></div>
+    <div id="app-container" class="w-full max-w-4xl">
+        <div id="view-intro" class="surface rounded-2xl p-8 md:p-12 card-glow">
+            <div class="mb-4 text-sm font-semibold tracking-wider text-gray-400 uppercase">Phase I / 方法論建立</div>
+            <h1 class="text-3xl md:text-5xl font-bold mb-6 leading-tight">高階心理認知動態分析系統<br><span class="text-indigo-400 text-2xl md:text-3xl font-medium">基於擴展版 120 題與 20 子維度模型</span></h1>
+            
+            <div class="prose prose-invert max-w-none text-gray-300 space-y-4 mb-10">
+                <p>歡迎進入。本系統摒棄傳統通俗心理學的二元分類標籤，採用學術級連續型李克特量表（Likert Scale）進行測量。本系統包含完整的 120 道學術情境題，將深入解構您的認知行為模式。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="border border-gray-700 rounded-lg p-5 bg-black/20">
+                        <h3 class="text-lg font-bold text-white mb-2">✦ 測量維度</h3>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li><strong>E/I</strong> (能量流動向度)</li>
+                            <li><strong>S/N</strong> (資訊感知向度)</li>
+                            <li><strong>T/F</strong> (決策判斷向度)</li>
+                            <li><strong>J/P</strong> (外部生活風格)</li>
+                            <li><strong>A/T</strong> (動態情緒穩定性)</li>
+                        </ul>
+                    </div>
+                    <div class="border border-gray-700 rounded-lg p-5 bg-black/20">
+                        <h3 class="text-lg font-bold text-white mb-2">✦ 系統交互規範</h3>
+                        <p class="text-sm">題目設計聚焦於<strong class="text-white">高壓環境、專業決策與複雜情境</strong>。請依據您的「下意識直覺」而非「社會期望」作答。測驗約需 10-15 分鐘。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="app.startTest()" class="w-full md:w-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg transition-colors duration-200 shadow-lg shadow-indigo-500/30">
+                啟動 120 題完整測評
+            </button>
         </div>
-        <div class="question-number" id="question-number"></div>
-        <div class="question-text" id="question-text"></div>
-        <div id="options"></div>
+
+        <div id="view-test" class="hidden surface rounded-2xl p-8 md:p-12 card-glow min-h-[500px] flex flex-col">
+            <div class="flex justify-between items-center mb-8">
+                <span id="question-counter" class="text-sm font-mono text-gray-400">001 / 120</span>
+                <div class="w-1/2 bg-gray-800 rounded-full h-1.5">
+                    <div id="overall-progress" class="bg-indigo-500 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="flex-grow flex flex-col justify-center mb-10">
+                <h2 id="question-text" class="text-2xl md:text-3xl font-medium leading-relaxed text-center mb-12">加載題目中...</h2>
+                
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 max-w-3xl mx-auto w-full">
+                    <span class="text-sm text-gray-500 hidden sm:block w-20 text-right">強烈反對</span>
+                    
+                    <button onclick="app.recordAnswer(1)" class="likert-btn w-full sm:w-16 h-14 sm:h-16 rounded-lg border-2 border-gray-600 flex items-center justify-center text-xl font-bold bg-gray-800/50 hover:border-red-500/50">1</button>
+                    <button onclick="app.recordAnswer(2)" class="likert-btn w-full sm:w-16 h-14 sm:h-16 rounded-lg border-2 border-gray-600 flex items-center justify-center text-xl font-bold bg-gray-800/50">2</button>
+                    <button onclick="app.recordAnswer(3)" class="likert-btn w-full sm:w-16 h-14 sm:h-16 rounded-lg border-2 border-gray-600 flex items-center justify-center text-xl font-bold bg-gray-800/50">3</button>
+                    <button onclick="app.recordAnswer(4)" class="likert-btn w-full sm:w-16 h-14 sm:h-16 rounded-lg border-2 border-gray-600 flex items-center justify-center text-xl font-bold bg-gray-800/50">4</button>
+                    <button onclick="app.recordAnswer(5)" class="likert-btn w-full sm:w-16 h-14 sm:h-16 rounded-lg border-2 border-gray-600 flex items-center justify-center text-xl font-bold bg-gray-800/50 hover:border-green-500/50">5</button>
+                    
+                    <span class="text-sm text-gray-500 hidden sm:block w-20 text-left">強烈同意</span>
+                </div>
+                <div class="flex justify-between sm:hidden mt-4 text-xs text-gray-500">
+                    <span>反對 (1)</span><span>同意 (5)</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-loading" class="hidden surface rounded-2xl p-16 card-glow flex flex-col items-center justify-center text-center h-[60vh]">
+            <div class="w-16 h-16 border-4 border-gray-700 border-t-indigo-500 rounded-full animate-spin mb-6"></div>
+            <h2 class="text-2xl font-bold mb-2">編譯心理數據模型</h2>
+            <p id="loading-text" class="text-gray-400 font-mono text-sm">正在計算多維度百分比分佈...</p>
+        </div>
+
+        <div id="view-results" class="hidden w-full space-y-6">
+            <div class="surface rounded-2xl p-8 card-glow border-t-4" id="result-header-border">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-gray-800 pb-6 mb-6">
+                    <div>
+                        <div class="text-sm font-semibold tracking-widest text-gray-400 uppercase mb-2">動態分析報告生成完畢</div>
+                        <h1 class="text-6xl md:text-7xl font-extrabold tracking-tighter mb-2 type-glow" id="result-type-code">XXXX-X</h1>
+                        <h2 class="text-xl md:text-2xl font-light text-gray-300" id="result-type-name">加載中...</h2>
+                    </div>
+                    <div class="mt-4 md:mt-0 text-right">
+                        <span class="inline-block px-3 py-1 rounded bg-black/30 text-xs font-mono text-gray-400 border border-gray-700" id="archetype-group">Group</span>
+                    </div>
+                </div>
+                <p id="core-trait-desc" class="text-lg leading-relaxed text-gray-300 max-w-3xl"></p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-5 surface rounded-2xl p-6 card-glow">
+                    <h3 class="text-lg font-bold mb-6 flex items-center"><span class="mr-2">📊</span> 維度能量分佈 (Continuous Data)</h3>
+                    <div id="bars-container" class="space-y-6"></div>
+                </div>
+
+                <div class="lg:col-span-7 surface rounded-2xl p-6 card-glow">
+                    <h3 class="text-lg font-bold mb-6 flex items-center border-b border-gray-800 pb-4"><span class="mr-2">🧠</span> 深度行為與決策分析</h3>
+                    <div class="space-y-8">
+                        <section>
+                            <h4 class="text-sm font-mono text-indigo-400 mb-2 uppercase">[ 核心工作風格 & 團隊協作 ]</h4>
+                            <p id="report-workstyle" class="text-gray-300 text-sm leading-relaxed"></p>
+                        </section>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <section class="bg-black/20 rounded-lg p-4 border border-gray-800/50">
+                                <h4 class="text-sm font-mono text-green-400 mb-2 uppercase">[ 高壓優勢 ]</h4>
+                                <ul id="report-strengths" class="list-disc pl-4 text-sm text-gray-300 space-y-1"></ul>
+                            </section>
+                            <section class="bg-black/20 rounded-lg p-4 border border-gray-800/50">
+                                <h4 class="text-sm font-mono text-red-400 mb-2 uppercase">[ 認知盲區與弱點 ]</h4>
+                                <ul id="report-weaknesses" class="list-disc pl-4 text-sm text-gray-300 space-y-1"></ul>
+                            </section>
+                        </div>
+                        <section class="bg-gray-800/30 rounded-lg p-5 border-l-4 border-yellow-500">
+                            <h4 class="text-sm font-bold text-white mb-2">應當改善：具體心理建設與溝通策略</h4>
+                            <p id="report-improve" class="text-gray-300 text-sm leading-relaxed"></p>
+                        </section>
+                        <section>
+                            <h4 class="text-sm font-mono text-blue-400 mb-2 uppercase">[ 學術定義下之最佳職位適配 ]</h4>
+                            <div id="report-careers" class="flex flex-wrap gap-2"></div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center pt-8 pb-12">
+                <button onclick="location.reload()" class="text-sm text-gray-500 hover:text-white transition-colors">重新校準系統 (Reset)</button>
+            </div>
+        </div>
     </div>
 
-    <div id="result-container">
-        <h2>分析結果與動態建議</h2>
-        <p>基於您的作答，系統已運用期望後驗估計法（EAP）與 Z-Score 常態化映射，計算出您在四大認知維度中的絕對連續百分比。以下是您的專屬動態分析：</p>
-        
-        <div class="score-card" id="scores-display"></div>
-        
-        <div id="dynamic-feedback"></div>
-        
-        <button class="option-btn" style="background-color: #3498db; color: #fff; margin-top: 30px;" onclick="location.reload()">重新測驗</button>
-    </div>
-</div>
+    <script>
+        // --------------------------------------------------------------------------------
+        // 120 題學術題庫 (Dimensions: 0: E/I, 1: S/N, 2: T/F, 3: J/P, 4: A/T)
+        // Left Traits: E, S, T, J, A (Invert=true means agreeing -> Left trait)
+        // Right Traits: I, N, F, P, T (Invert=false means agreeing -> Right trait)
+        // --------------------------------------------------------------------------------
+        const questions =;
 
-<script>
-    // 完整 120 題 IPIP-NEO 學術題庫與計分權重映射
-    const questions = [
-        // E維度 (外向性能量)
-        {q:"我很容易結交新朋友。", d:"E", r:1}, {q:"我喜歡大型派對與熱鬧聚會。", d:"E", r:1},
-        {q:"我喜歡主導並掌控局面。", d:"E", r:1}, {q:"我總是非常忙碌，行程滿檔。", d:"E", r:1},
-        {q:"我喜歡生活充滿刺激與挑戰。", d:"E", r:1}, {q:"我總是散發著喜悅與活力。", d:"E", r:1},
-        {q:"在聚會中，我會主動與許多不同的人交談。", d:"E", r:1}, {q:"我會主動試圖領導他人。", d:"E", r:1},
-        {q:"我總是不斷地在行動，難以靜下心來。", d:"E", r:1}, {q:"我四處尋求冒險與新鮮經歷。", d:"E", r:1},
-        {q:"我在生活中擁有豐富的樂趣與歡笑。", d:"E", r:1}, {q:"置身於人群中讓我感到極度自在。", d:"E", r:1},
-        {q:"我會在空閒時間安排大量的活動。", d:"E", r:1}, {q:"我熱愛生活，對一切充滿熱情。", d:"E", r:1},
-        {q:"我喜歡並享受表現出狂野和瘋狂的行為。", d:"E", r:1},
-        {q:"我發現自己很難主動接近他人。", d:"E", r:-1}, {q:"我害怕成為眾人注目的焦點。", d:"E", r:-1},
-        {q:"我盡量避免接觸他人，保持距離。", d:"E", r:-1}, {q:"相較於社交，我寧願選擇獨處。", d:"E", r:-1},
-        {q:"我只有在和非常熟識的朋友在一起時才感到自在。", d:"E", r:-1}, {q:"我會刻意避開人群與擁擠的場所。", d:"E", r:-1},
-        {q:"在團體中，我習慣等待別人來帶領。", d:"E", r:-1}, {q:"我覺得自己沒有時間顧及他人的感受與需求。", d:"E", r:-1},
-        {q:"面對複雜或困難的社交場合，我會感到極度不自在。", d:"E", r:-1}, {q:"我對他人的問題與生活瑣事不感興趣。", d:"E", r:-1},
-        {q:"我傾向與別人保持明確的心理距離。", d:"E", r:-1}, {q:"我經常對別人的情緒感受漠不關心。", d:"E", r:-1},
-        {q:"我講話時經常因為情緒激動而大吼大叫。", d:"E", r:-1}, {q:"我經常覺得自己無所事事，浪費時間。", d:"E", r:-1},
-        {q:"遇到事情我傾向於退縮，避免承擔領頭羊角色。", d:"E", r:-1},
+        // --------------------------------------------------------------------------------
+        // 狀態管理與邏輯
+        // --------------------------------------------------------------------------------
+        const app = {
+            currentIndex: 0,
+            answers:, 
+            
+            startTest() {
+                document.getElementById('view-intro').classList.add('hidden');
+                document.getElementById('view-test').classList.remove('hidden');
+                document.getElementById('view-test').classList.add('fade-enter-active');
+                this.renderQuestion();
+            },
 
-        // N維度 (開放性/直覺獲取)
-        {q:"我擁有極為生動豐富的想像力。", d:"N", r:1}, {q:"我深信藝術與美學在生活中的重要性。", d:"N", r:1},
-        {q:"我強烈且深刻地體驗自己的每一種情感。", d:"N", r:1}, {q:"我極度喜歡閱讀具深度與挑戰性的材料。", d:"N", r:1},
-        {q:"我在觀念上傾向於支持進步與自由的政治或社會觀點。", d:"N", r:1}, {q:"我喜歡天馬行空的幻想與腦力激盪。", d:"N", r:1},
-        {q:"我總能敏銳地看到別人可能忽略的美感。", d:"N", r:1}, {q:"我能夠輕易地察覺並感受到他人的情緒波動。", d:"N", r:1},
-        {q:"我對社會上的弱勢群體充滿深切的同情。", d:"N", r:1}, {q:"我非常享受沉浸在深層次思考中的過程。", d:"N", r:1},
-        {q:"我相信世事無絕對，沒有純粹絕對的對與錯。", d:"N", r:1}, {q:"我經常並且喜歡做白日夢。", d:"N", r:1},
-        {q:"面對嶄新的經驗，我充滿好奇與嘗試的渴望。", d:"N", r:1}, {q:"我喜歡嘗試各種不同種類的新食物。", d:"N", r:1},
-        {q:"在日常生活中，我享受變化與不確定性多於例行公事。", d:"N", r:1},
-        {q:"我極度偏好堅持我所熟悉且已習慣的事物。", d:"N", r:-1}, {q:"我刻意避免參與任何深奧或哲學性的討論。", d:"N", r:-1},
-        {q:"我對於詩歌、文學或抽象藝術絲毫不感興趣。", d:"N", r:-1}, {q:"我很少停下來審視或注意到自己的情緒反應。", d:"N", r:-1},
-        {q:"我討厭任何形式的改變。", d:"N", r:-1}, {q:"我發現自己很難理解複雜或抽象的概念。", d:"N", r:-1},
-        {q:"我完全不享受去參觀藝術博物館或藝廊。", d:"N", r:-1}, {q:"我無法理解那些容易情緒波動或感情用事的人。", d:"N", r:-1},
-        {q:"在做事時，我極度執著於傳統且已被驗證的標準方式。", d:"N", r:-1}, {q:"我對缺乏實用價值的純理論性探討毫無興趣。", d:"N", r:-1},
-        {q:"我堅定認為我們應該對違規與犯罪採取最嚴厲的強硬態度。", d:"N", r:-1}, {q:"我傾向於投票給主張維持現狀的保守派候選人。", d:"N", r:-1},
-        {q:"我很少產生天馬行空的靈感或幻想。", d:"N", r:-1}, {q:"我對於抽象藝術的價值抱持高度懷疑。", d:"N", r:-1},
-        {q:"我盡量避免涉及任何超出客觀事實的推論。", d:"N", r:-1},
+            renderQuestion() {
+                const q = questions[this.currentIndex];
+                document.getElementById('question-text').innerText = q.text;
+                document.getElementById('question-counter').innerText = 
+                    `${String(this.currentIndex + 1).padStart(3, '0')} / ${questions.length}`;
+                
+                const progress = ((this.currentIndex) / questions.length) * 100;
+                document.getElementById('overall-progress').style.width = `${progress}%`;
+            },
 
-        // F維度 (宜人性/情感決策)
-        {q:"我在人際互動中傾向於無條件信任他人。", d:"F", r:1}, {q:"我發自內心地熱愛並樂於幫助別人。", d:"F", r:1},
-        {q:"我極度重視誠信，總是信守我的承諾。", d:"F", r:1}, {q:"當看到無家可歸或陷入困境的人，我會感到強烈同情。", d:"F", r:1},
-        {q:"除非有明顯證據，否則我相信別人都有良好的意圖。", d:"F", r:1}, {q:"我時刻真誠地關心著周遭人們的福祉。", d:"F", r:1},
-        {q:"即便會得罪人，我也堅持說出真實的情況。", d:"F", r:1}, {q:"在團隊中，我常主動攬下超出別人期望的互助工作。", d:"F", r:1},
-        {q:"我在與人相處時，總能保持謙遜的態度。", d:"F", r:1}, {q:"我對那些處境比我差的人，總會湧現悲憫之心。", d:"F", r:1},
-        {q:"對於別人對我說的話，我通常選擇相信其真實性。", d:"F", r:1},
-        {q:"為了達到我個人的目標，我認為利用他人是可接受的。", d:"F", r:-1}, {q:"我熱愛與人爭辯，甚至享受這種智力上的對抗。", d:"F", r:-1},
-        {q:"為了在競爭中取得領先，我願意作弊或採用灰色手段。", d:"F", r:-1}, {q:"當別人犯錯或惹惱我時，我會毫不留情地對他們吼叫。", d:"F", r:-1},
-        {q:"在內心深處，我相信自己比大多數人都來得優秀。", d:"F", r:-1}, {q:"如果有機會，我會毫不猶豫地佔別人的便宜。", d:"F", r:-1},
-        {q:"我認為規則是死板的，必要時我會輕易打破規則。", d:"F", r:-1}, {q:"當有人冒犯我，我會用言語侮辱或刻薄地反擊他們。", d:"F", r:-1},
-        {q:"為了確保我的利益，我不介意阻撓別人的計畫。", d:"F", r:-1}, {q:"如果遵守承諾會損害我的利益，我會選擇破壞承諾。", d:"F", r:-1},
-        {q:"對於得罪我的人，我一定會找機會報復。", d:"F", r:-1}, {q:"我喜歡在別人面前大肆吹噓自己的優點與成就。", d:"F", r:-1},
-        {q:"面對那些急需幫助的人，我通常選擇視而不見。", d:"F", r:-1}, {q:"本能上，我對身邊的人抱持著強烈的懷疑態度。", d:"F", r:-1},
-        {q:"我對於維護他人的自尊與面子毫不在乎。", d:"F", r:-1}, {q:"看到別人的苦難，我很少產生任何情緒波動。", d:"F", r:-1},
-        {q:"我認為人皆自私，不相信有所謂純粹的利他行為。", d:"F", r:-1}, {q:"在團隊合作中，我更在乎競爭獲勝而非關係和諧。", d:"F", r:-1},
-        {q:"我認為展現出傲慢與強勢是建立威信的必要手段。", d:"F", r:-1},
+            recordAnswer(value) {
+                const q = questions[this.currentIndex];
+                let processedValue = value;
+                if (q.invert) {
+                    processedValue = 6 - value; 
+                }
+                
+                this.answers.push({ dim: q.dim, val: processedValue });
 
-        // J維度 (盡責性/外部判斷)
-        {q:"我深信自己總能成功地完成被賦予的任務。", d:"J", r:1}, {q:"我有強迫症般的傾向，喜歡把環境整理得井井有條。", d:"J", r:1},
-        {q:"為了達成目標，我的工作態度非常刻苦努力。", d:"J", r:1}, {q:"面對未來的挑戰，我總是提早做好萬全準備。", d:"J", r:1},
-        {q:"我對自己的專業能力要求極高，追求卓越表現。", d:"J", r:1}, {q:"一旦制定計畫，我必定會嚴格執行並貫徹到底。", d:"J", r:1},
-        {q:"無論面對多繁雜的事務，我都能梳理並順利處理。", d:"J", r:1}, {q:"在混亂的局勢中，我總能迅速掌握並控制進度。", d:"J", r:1},
-        {q:"我對自己的欲望有極強的節制力，很少過度放縱。", d:"J", r:1}, {q:"面對偏離目標的短期誘惑，我能輕易地抵抗。", d:"J", r:1},
-        {q:"我精通各項實務，確切知道如何把工作高效完成。", d:"J", r:1}, {q:"我能夠以強大的意志力控制內心的渴望與衝動。", d:"J", r:1},
-        {q:"即使在極端高壓的環境下，我也能保持絕對冷靜。", d:"J", r:1}, {q:"總體而言，我對自己感到滿意且身心自在。", d:"J", r:1},
-        {q:"我喜歡讓事情不加計畫地輕鬆自然發展。", d:"J", r:-1}, {q:"我經常在使用完物品後忘記把它們放回原處。", d:"J", r:-1},
-        {q:"我的辦公桌或房間經常是一團糟。", d:"J", r:-1}, {q:"我總是把自己的個人物品到處亂丟，缺乏收納習慣。", d:"J", r:-1},
-        {q:"工作時，我傾向於只付出能勉強過關的最低限度努力。", d:"J", r:-1}, {q:"我有嚴重的拖延症，常常很難開始著手一項任務。", d:"J", r:-1},
-        {q:"我在工作或學業上投入的時間和精力少之又少。", d:"J", r:-1}, {q:"我經常無緣無故地感到深深的沮喪與憂鬱。", d:"J", r:-1},
-        {q:"我時常陷入對未知的恐懼或擔憂之中。", d:"J", r:-1}, {q:"遇到突發狀況時，我極其容易感到恐慌失措。", d:"J", r:-1},
-        {q:"災難化思考是我的常態，我總擔心最壞的情況發生。", d:"J", r:-1}, {q:"生活中有很多事物都會讓我感到莫名的害怕。", d:"J", r:-1},
-        {q:"工作量一變大，我就容易被排山倒海的壓力壓垮。", d:"J", r:-1}, {q:"遇到困難時，我常覺得自己能力不足，無法處理。", d:"J", r:-1},
-        {q:"我的神經緊繃，極度容易感到壓力與崩潰。", d:"J", r:-1}, {q:"我做事衝動，常常不經大腦思考就直接行動。", d:"J", r:-1}
-    ];
+                const testView = document.getElementById('view-test');
+                testView.style.opacity = 0;
+                
+                setTimeout(() => {
+                    this.currentIndex++;
+                    if (this.currentIndex < questions.length) {
+                        this.renderQuestion();
+                        testView.style.opacity = 1;
+                    } else {
+                        this.processResults();
+                    }
+                }, 150); // 加快切換速度以減輕 120 題的疲勞感
+            },
 
-    let currentQ = 0;
-    // 分數容器
-    let scores = { E: 0, N: 0, F: 0, J: 0 };
+            processResults() {
+                document.getElementById('view-test').classList.add('hidden');
+                document.getElementById('view-loading').classList.remove('hidden');
+                
+                // 連續數值聚合：計算每個維度的總分 (24題 * 每題1~5分 = 24~120分)
+                let dimScores = ;
+                this.answers.forEach(ans => {
+                    dimScores[ans.dim] += ans.val; 
+                });
 
-    function renderQuestion() {
-        if(currentQ >= questions.length) {
-            calculateResults();
-            return;
-        }
-        
-        // 更新進度條與題號
-        let progress = (currentQ / questions.length) * 100;
-        document.getElementById('progress-bar').style.width = progress + '%';
-        document.getElementById('question-number').innerText = `問題 ${currentQ + 1} / ${questions.length}`;
-        
-        // 顯示題目
-        document.getElementById('question-text').innerText = questions[currentQ].q;
+                // 連續百分比轉換 (Classical Test Theory)
+                const pct = dimScores.map(score => {
+                    const rightPct = Math.round(((score - 24) / 96) * 100);
+                    const leftPct = 100 - rightPct;
+                    return { leftPct, rightPct };
+                });
 
-        // 生成選項
-        const optionsDiv = document.getElementById('options');
-        optionsDiv.innerHTML = '';
-        const labels = ["1. 非常不符合", "2. 稍微不符合", "3. 中立 / 視情況", "4. 稍微符合", "5. 非常符合"];
-        
-        labels.forEach((label, index) => {
-            let btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.innerText = label;
-            // 點擊後計算分數並進入下一題
-            btn.onclick = () => answerQuestion(index + 1);
-            optionsDiv.appendChild(btn);
-        });
-    }
+                const typeCode = 
+                    (pct.leftPct > pct.rightPct? 'E' : 'I') +
+                    (pct.[1]leftPct > pct.[1]rightPct? 'S' : 'N') +
+                    (pct.[2]leftPct > pct.[2]rightPct? 'T' : 'F') +
+                    (pct.[3]leftPct > pct.[3]rightPct? 'J' : 'P') +
+                    '-' +
+                    (pct.[4]leftPct > pct.[4]rightPct? 'A' : 'T');
 
-    function answerQuestion(value) {
-        let q = questions[currentQ];
-        // 動態判定：若是正向題直接加分，反向題觸發 6-value 翻轉機制
-        let scoreToAdd = q.r === 1? value : (6 - value);
-        scores[q.d] += scoreToAdd;
-        
-        currentQ++;
-        renderQuestion();
-    }
+                let dotCount = 0;
+                const loadingInterval = setInterval(() => {
+                    dotCount = (dotCount + 1) % 4;
+                    document.getElementById('loading-text').innerText = "正在進行 120 題向量特徵解析" + ".".repeat(dotCount);
+                }, 500);
 
-    function calculateResults() {
-        document.getElementById('quiz-container').style.display = 'none';
-        document.getElementById('result-container').style.display = 'block';
+                setTimeout(() => {
+                    clearInterval(loadingInterval);
+                    this.renderDashboard(typeCode, pct);
+                }, 2500);
+            },
 
-        // 統計學常態化基準 (30題，每題1-5分，總分區間30-150，常模中位數約90，標準差約15)
-        const mean = 90;
-        const sd = 15;
-        let pct = {};
+            renderDashboard(typeCode, percentages) {
+                document.getElementById('view-loading').classList.add('hidden');
+                document.getElementById('view-results').classList.remove('hidden');
+                document.getElementById('view-results').classList.add('fade-enter-active');
 
-        // Z-Score 轉換與貝葉斯常態機率映射
-        for(let dim in scores) {
-            let z = (scores[dim] - mean) / sd;
-            // 利用 Logistic 函數逼近 Normal CDF 計算絕對連續百分位數
-            let percentile = 1 / (1 + Math.exp(-1.702 * z));
-            pct[dim] = (percentile * 100).toFixed(2);
-        }
+                const meta = this.getTypeMetadata(typeCode);
+                document.documentElement.style.setProperty('--accent-color', meta.color);
+                document.getElementById('result-header-border').style.borderTopColor = meta.color;
+                
+                document.getElementById('result-type-code').innerText = typeCode;
+                document.getElementById('result-type-code').style.color = meta.color;
+                document.getElementById('result-type-name').innerText = meta.title;
+                document.getElementById('archetype-group').innerText = meta.group;
+                
+                const dimLabels = ['外向 (Extraversion)', '內向 (Introversion)'],
+                   ,
+                   ,
+                    ['判斷 (Judging)', '感知 (Perceiving)'],
+                   ;
+                
+                const barsContainer = document.getElementById('bars-container');
+                barsContainer.innerHTML = '';
+                
+                percentages.forEach((p, index) => {
+                    const html = `
+                        <div class="mb-5">
+                            <div class="flex justify-between text-xs font-mono mb-1 text-gray-400">
+                                <span class="${p.leftPct > p.rightPct? 'text-white font-bold' : ''}">${dimLabels[index]} ${p.leftPct}%</span>
+                                <span class="${p.rightPct > p.leftPct? 'text-white font-bold' : ''}">${p.rightPct}% ${dimLabels[index][1]}</span>
+                            </div>
+                            <div class="flex h-3 w-full bg-gray-800 rounded-full overflow-hidden border border-gray-700">
+                                <div class="progress-segment flex justify-center items-center text-[8px]" style="width: ${p.leftPct}%; background-color: ${p.leftPct > p.rightPct? meta.color : '#4b5563'}; opacity: ${p.leftPct > p.rightPct? 1 : 0.6}"></div>
+                                <div class="w-1 bg-black z-10"></div>
+                                <div class="progress-segment flex justify-center items-center text-[8px]" style="width: ${p.rightPct}%; background-color: ${p.rightPct > p.leftPct? meta.color : '#4b5563'}; opacity: ${p.rightPct > p.leftPct? 1 : 0.6}"></div>
+                            </div>
+                        </div>
+                    `;
+                    barsContainer.innerHTML += html;
+                });
 
-        // 輸出連續性維度分數
-        let scoreHTML = `
-            <h3>連續性光譜座標</h3>
-            <p><strong>能量導向 (外向性 E%)：</strong> ${pct.E}%</p>
-            <p><strong>認知獲取 (開放/直覺 N%)：</strong> ${pct.N}%</p>
-            <p><strong>決策濾網 (宜人/情感 F%)：</strong> ${pct.F}%</p>
-            <p><strong>外部適應 (盡責/判斷 J%)：</strong> ${pct.J}%</p>
-        `;
-        document.getElementById('scores-display').innerHTML = scoreHTML;
+                this.generateReportContent(typeCode, percentages, meta);
+            },
 
-        // 生成動態進步與實務建議
-        let feedbackHTML = "";
+            getTypeMetadata(code) {
+                const base = code.substring(0,4);
+                let group = '', color = '', title = '';
 
-        // 1. 能量維度 (E) 的自我效能與目標設定
-        feedbackHTML += `<div class="feedback-section"><h4>🔋 能量流動模組</h4>`;
-        if(pct.E >= 75) {
-            feedbackHTML += `<p><strong>動態診斷：</strong> 您的神經系統對「社會說服」與外部刺激具備極高敏感度。<br><strong>實務建議：</strong> 採用「高曝光度效能構建法」。遇到困難挑戰時切勿閉門造車，應積極建立互助指導小組。將階段性目標公開化，利用外部環境的期待與良性競爭作為燃料。</p>`;
-        } else if (pct.E < 40) {
-            feedbackHTML += `<p><strong>動態診斷：</strong> 群體言語說服對您容易產生能量消耗，您的自信源於深度的「精熟經驗」。<br><strong>實務建議：</strong> 採用「微型實驗室法則」。徹底擺脫對外部評價體系的依賴，將大挑戰拆解為封閉環境中可獨力完成的微小任務，創造連續不斷的「小勝利」。</p>`;
-        } else {
-            feedbackHTML += `<p><strong>動態診斷：</strong> 您對能量來源具備高度的雙向適應彈性。<br><strong>實務建議：</strong> 採用「雙軌交替制」。在專案初期進行深度獨立研究，當動機下滑時，立即切換至高信任度的核心團隊中進行腦力激盪與成果發表。</p>`;
-        }
-        feedbackHTML += `</div>`;
+                if (base.includes('N') && base.includes('T')) {
+                    group = "Analysts (分析師族群)"; color = 'var(--color-nt)';
+                    if(base==='INTJ') title = "架構師 (The Architect)";
+                    else if(base==='INTP') title = "邏輯學家 (The Logician)";
+                    else if(base==='ENTJ') title = "指揮官 (The Commander)";
+                    else if(base==='ENTP') title = "辯論家 (The Debater)";
+                } 
+                else if (base.includes('N') && base.includes('F')) {
+                    group = "Diplomats (外交官族群)"; color = 'var(--color-nf)';
+                    if(base==='INFJ') title = "提倡者 (The Advocate)";
+                    else if(base==='INFP') title = "調停者 (The Mediator)";
+                    else if(base==='ENFJ') title = "主人公 (The Protagonist)";
+                    else if(base==='ENFP') title = "競選者 (The Campaigner)";
+                }
+                else if (base.includes('S') && base.includes('J')) {
+                    group = "Sentinels (守護者族群)"; color = 'var(--color-sj)';
+                    if(base==='ISTJ') title = "物流師 (The Logistician)";
+                    else if(base==='ISFJ') title = "守衛者 (The Defender)";
+                    else if(base==='ESTJ') title = "總經理 (The Executive)";
+                    else if(base==='ESFJ') title = "執政官 (The Consul)";
+                }
+                else if (base.includes('S') && base.includes('P')) {
+                    group = "Explorers (探險家族群)"; color = 'var(--color-sp)';
+                    if(base==='ISTP') title = "鑑賞家 (The Virtuoso)";
+                    else if(base==='ISFP') title = "探險家 (The Adventurer)";
+                    else if(base==='ESTP') title = "企業家 (The Entrepreneur)";
+                    else if(base==='ESFP') title = "表演者 (The Entertainer)";
+                }
 
-        // 2. 認知維度 (N) 的 3-D 談判戰術
-        feedbackHTML += `<div class="feedback-section"><h4>🧠 認知獲取模組</h4>`;
-        if(pct.N >= 70) {
-            feedbackHTML += `<p><strong>動態診斷：</strong> 高度開放的發散性思維，擅長跨領域整合。<br><strong>實務建議：</strong> 必須拋棄清單式的機械目標，改採「願景驅動型」設定。在談判桌上，您是天生的 3-D 交易設計師，當陷入價格死局時，應主動發動「多議題打包戰術」，引入新變數（如交貨期、授權）來重構談判空間。</p>`;
-        } else if (pct.N < 30) {
-            feedbackHTML += `<p><strong>動態診斷：</strong> 大腦處理資訊顆粒度極細，依賴具體物理現實。<br><strong>實務建議：</strong> 目標設定必須嚴格遵守「SMART原則」與標準作業流程（SOP）。談判時，善用「精確細節錨定效應」，提出精算至小數點的報價，利用極精確的數字暗示底線，大幅限縮對手的還價幅度。</p>`;
-        } else {
-            feedbackHTML += `<p><strong>動態診斷：</strong> 兼顧宏觀模式識別與微觀細節處理。<br><strong>實務建議：</strong> 您的談判優勢在於全盤掌控。建議在談判前先確認雙方核心願景，隨後再穩步將抽象願景轉譯為具有法律效力的實體條款，避免見林不見樹。</p>`;
-        }
-        feedbackHTML += `</div>`;
+                return { group, color, title, base };
+            },
 
-        // 3. 決策維度 (F) 的情緒衝突管理
-        feedbackHTML += `<div class="feedback-section"><h4>⚖️ 決策濾網模組</h4>`;
-        if(pct.F >= 70) {
-            feedbackHTML += `<p><strong>動態診斷：</strong> 決策將人際和諧與信任置於首位，面臨衝突時容易妥協。<br><strong>實務建議：</strong> 實施強大的「角色剝離戰術」。在談判前，心態上將自己轉化為重要群體的「保護者代理人」，嚴格寫下自身底線與最佳替代方案（BATNA），陷入情緒泥沼時強制要求暫停。</p>`;
-        } else if (pct.F < 30) {
-            feedbackHTML += `<p><strong>動態診斷：</strong> 能輕易將情緒變數剝離，完全依據效率與邏輯進行分配型談判。<br><strong>實務建議：</strong> 極易忽視對手的顏面導致關係破裂。請刻意練習 FBI 專用的「策略性同理心」，強迫使用反映式傾聽與同理標籤（如「聽起來您對期限感到擔憂」），以瞬間降低對手的防備。</p>`;
-        } else {
-            feedbackHTML += `<p><strong>動態診斷：</strong> 邏輯因果與人際感受在決策方程式中權重平衡。<br><strong>實務建議：</strong> 這是談判桌上最具彈性的狀態。建議面對強勢對手時切換為冰冷邏輯模式，而在面對需要建立長期聯盟的夥伴時，主動釋放同理信號以創造整合型價值。</p>`;
-        }
-        feedbackHTML += `</div>`;
+            generateReportContent(typeCode, pct, meta) {
+                const isINTJA = typeCode === 'INTJ-A';
+                
+                let coreText = "";
+                if(isINTJA) {
+                    coreText = "在學術定義下，INTJ-A 表現出極端獨立的系統性思維。您的大腦猶如一台預測引擎，不斷掃描環境中的模式，並將其抽象化為長期的戰略模型。附帶的 '-A' (Assertive) 維度賦予您強大的情緒防禦力，使您在面對阻力或懷疑時，依然能堅定地執行冷酷的邏輯決策，不受同儕壓力干擾。您追求的不是知識的積累，而是『系統的最優解』。";
+                } else {
+                    coreText = `作為 ${meta.base}，您展現出 ${meta.group} 獨有的認知處理模式。系統判定您的主要驅動力在於 ${pct.leftPct > 50? '從外部環境獲取刺激與共鳴' : '構建深度的內部心理表徵'}。在信息處理上，您傾向於 ${pct.[1]leftPct > 50? '依賴具象與可驗證的經驗數據' : '尋找抽象概念背後的隱含模式'}。搭配 ${pct.[4]leftPct > 50? '高度穩定的情緒抗壓性 (-A)' : '對環境變數高度敏感的反思性 (-T)'}，構成您獨特的世界觀。`;
+                }
+                document.getElementById('core-trait-desc').innerText = coreText;
 
-        // 4. 外部維度 (J) 的應變與執行力
-        feedbackHTML += `<div class="feedback-section"><h4>⚙️ 外部適應模組</h4>`;
-        if(pct.J >= 75) {
-            feedbackHTML += `<p><strong>動態診斷：</strong> 擁有強大內部秩序感，但面對突發混亂時自我效能易受挫。<br><strong>實務建議：</strong> 導入「容錯型精熟經驗」訓練。在日常嚴密的計畫中，強制注入 20% 的混沌時間；練習「假設情境矩陣規劃」，將應對突發變故視為能力的展現，降低對絕對完美的病態執著。</p>`;
-        } else if (pct.J < 40) {
-            feedbackHTML += `<p><strong>動態診斷：</strong> 極度抗拒死板結構，適應力強，自信來自臨場靈感爆發。<br><strong>實務建議：</strong> 全面放棄線性瀑布流計畫法，改採「敏捷式自我管理」。將目標切碎為 3 天至 1 週的「衝刺週期」，並利用物理層面的軟體約束切斷干擾，將無序性限制在創意發想時間內。</p>`;
-        } else {
-            feedbackHTML += `<p><strong>動態診斷：</strong> 執行力與混亂容忍度並重。<br><strong>實務建議：</strong> 適合擔任敏捷開發與傳統管理之間的橋樑。在工作中，為核心戰略設立硬性死線，但對執行路徑保留足夠的開放性，以吸收未知的創新機會。</p>`;
-        }
-        feedbackHTML += `</div>`;
+                let workstyleText = "";
+                if (pct.[3]leftPct > 65) { 
+                    workstyleText = "在團隊協作中，您是絕對的『秩序輸出者』。您厭惡模稜兩可的進度與沒有明確 Action Items 的會議。您傾向於將宏大目標拆解為線性的階段，並期望成員嚴格遵守。";
+                } else if (pct.[3]rightPct > 65) { 
+                    workstyleText = "您在團隊中扮演『動態適應者』。您認為過早鎖定計畫會喪失捕捉新機遇的彈性。您的決策模式是迭代式的，喜歡在推進過程中不斷整合新資訊來修正方向。";
+                } else {
+                    workstyleText = "在結構化與靈活性之間，您具備良好的切換能力。能建立基本框架，但亦容許專案在執行過程中根據邏輯反饋進行適度偏轉。";
+                }
+                if (isINTJA) workstyleText += " 具體而言，您傾向實行『智力精英主義』，若團隊成員無法跟上您的抽象邏輯推演，您可能會選擇收回授權，轉為獨立作業以確保質量。";
+                document.getElementById('report-workstyle').innerText = workstyleText;
 
-        document.getElementById('dynamic-feedback').innerHTML = feedbackHTML;
-    }
+                const strengthsUl = document.getElementById('report-strengths');
+                strengthsUl.innerHTML = '';
+                const strengths = isINTJA? [
+                    "宏觀戰略推演：能在複雜變量中預見三步之後的結果。",
+                    "抗壓決策力：在危機中能完全剝離恐慌情緒，執行止損。",
+                    "系統重構力：能迅速發現現有流程的底層邏輯缺陷並予以摧毀重建。"
+                ] : [
+                    `具備卓越的${pct.leftPct>50? '環境調研與人際動員' : '深度專注與獨立分析'}能力。`,
+                    `在高壓下能夠維持${pct.[2]leftPct>50? '客觀冷靜的因果邏輯推理' : '對群體士氣與價值觀的敏銳洞察'}。`,
+                    `依靠 ${pct.[4]leftPct>50? '內在信念驅動，抗干擾能力極強' : '危機意識驅動，對潛在風險具備前瞻性防禦'}。`
+                ];
+                strengths.forEach(s => strengthsUl.innerHTML += `<li>${s}</li>`);
 
-    // 初始化問卷
-    window.onload = renderQuestion;
-</script>
+                const weakUl = document.getElementById('report-weaknesses');
+                weakUl.innerHTML = '';
+                const weaknesses = isINTJA? [
+                    "傲慢盲區：常低估『情感與政治因素』在組織推動中的實際阻力。",
+                    "完美主義癱瘓：對『次優解』的極度不耐煩，可能導致項目延宕。",
+                    "溝通降維困難：難以將高階抽象概念轉譯為前線執行者的具體操作語言。"
+                ] : [
+                    `可能因為過度依賴${pct.[1]leftPct>50? '既有經驗而錯失破壞性創新機會' : '抽象理論而忽視落地的物理限制'}。`,
+                    `在衝突中容易${pct.[2]leftPct>50? '因追求效率而給人冷酷無情的壓迫感' : '因顧慮關係而妥協了本應堅持的原則'}。`,
+                    `${pct.[4]leftPct>50? '有時過於自信而忽略環境發出的微弱警告信號' : '容易陷入過度反芻（Rumination），耗損決策能量'}。`
+                ];
+                weaknesses.forEach(w => weakUl.innerHTML += `<li>${w}</li>`);
 
+                let improveText = "";
+                if(pct.[2]leftPct > 60) { 
+                    improveText = "【談判與溝通建議】：您的思維極度依賴邏輯方程式，這在資源分配型談判中是優勢。但實務上，『人類的非理性情緒也是一種客觀變量』。請刻意練習哈佛談判專案的『原則性談判』。在指出對方邏輯漏洞前，強迫自己先使用標籤技術來解除對方的大腦杏仁核警報。這不是妥協，而是為了降低溝通成本的戰術手段。";
+                } else { 
+                    improveText = "【談判與溝通建議】：您強大的共情能力有助於建立信任與整合型雙贏談判。然而，在面對掠奪型對手時，您的底線極易被情緒勒索所突破。請建立物理性的『決策緩衝帶』。當感受到壓力時，強制使用戰術暫停。此外，請在談判前將您的最佳替代方案（BATNA）寫在紙上，將評估標準『具象化』與『外部化』，避免在現場因同情心而做出不理性的讓步。";
+                }
+                document.getElementById('report-improve').innerText = improveText;
+
+                const careersDiv = document.getElementById('report-careers');
+                careersDiv.innerHTML = '';
+                let careers =;
+                if (meta.base.includes('NT')) careers = ['系統架構工程師', '量化分析師', '戰略併購顧問', '高等學術研究員'];
+                else if (meta.base.includes('NF')) careers =;
+                else if (meta.base.includes('SJ')) careers = ['供應鏈管理總監', '法遵與合規主管', '財務審計師', '大型專案經理'];
+                else if (meta.base.includes('SP')) careers = ['風險投資(VC)經理', '緊急醫療急救員', '特種戰術教官', '一線銷售總監'];
+                
+                careers.forEach(c => {
+                    careersDiv.innerHTML += `<span class="px-3 py-1 bg-gray-800 text-gray-300 rounded border border-gray-600 text-sm">${c}</span>`;
+                });
+            }
+        };
+
+        // 防止反白干擾測驗體驗
+        document.getElementById('view-test').addEventListener('selectstart', (e) => e.preventDefault());
+    </script>
 </body>
 </html>
