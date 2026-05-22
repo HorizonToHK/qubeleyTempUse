@@ -1,428 +1,1657 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="dark">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>深度認知特質動態測評系統 (Academic MBTI Step II - 120 Items)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root {
-            --bg-color: #121212;
-            --surface-color: #1e1e1e;
-            --text-primary: #e0e0e0;
-            --text-secondary: #a0a0a0;
-            --accent-color: #4f46e5;
-            --color-nt: #9333ea;
-            --color-nf: #16a34a;
-            --color-sj: #0891b2;
-            --color-sp: #ca8a04;
-        }
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            overflow-x: hidden;
-            transition: background-color 0.5s ease;
-        }
-     .surface { background-color: var(--surface-color); }
-     .likert-btn { transition: all 0.2s ease; }
-     .likert-btn:hover {
-            transform: scale(1.05);
-            background-color: var(--accent-color);
-            color: white;
-            border-color: var(--accent-color);
-        }
-     .progress-segment { transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-     .fade-enter { opacity: 0; transform: translateY(10px); }
-     .fade-enter-active { opacity: 1; transform: translateY(0); transition: opacity 400ms, transform 400ms; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-color); }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
-     .type-glow { text-shadow: 0 0 20px var(--accent-color); }
-     .card-glow { box-shadow: 0 4px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05); }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spatz Global Limited | Global Sourcing & Supply Chain Solutions</title>
+  <meta name="description" content="Spatz Global Limited — premier supply chain management, EU-compliant sourcing and export specialist since 2002. Offices in Shanghai, Hong Kong, Germany." />
+  <meta name="keywords" content="Spatz Global, supply chain China, EU compliance, home textile, domestic appliances, sourcing, international trade" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES — DARK (EN) / LIGHT (ZH)
+    ============================================================ */
+    :root {
+      --primary:        #1E3A8A;
+      --primary-light:  #2563EB;
+      --accent:         #0EA5E9;
+      --gold:           #D97706;
+      --teal:           #0D9488;
+      --white:          #FFFFFF;
+      --border:         #1E293B;
+      --radius:         10px;
+      --transition:     0.35s ease;
+    }
+
+    /* DARK THEME (English default) */
+    [data-theme="dark"] {
+      --bg:           #0F172A;
+      --bg-2:         #1E293B;
+      --bg-card:      #1E293B;
+      --bg-hero:      linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%);
+      --text:         #F1F5F9;
+      --text-muted:   #94A3B8;
+      --border-color: #334155;
+      --nav-bg:       rgba(15, 23, 42, 0.95);
+      --input-bg:     #0F172A;
+      --badge-bg:     rgba(14, 165, 233, 0.15);
+      --table-head:   #1E3A8A;
+      --table-even:   #1a2744;
+      --highlight:    #0EA5E9;
+      --tag:          #0F172A;
+    }
+
+    /* LIGHT THEME (Chinese) */
+    [data-theme="light"] {
+      --bg:           #F8FAFC;
+      --bg-2:         #FFFFFF;
+      --bg-card:      #FFFFFF;
+      --bg-hero:      linear-gradient(135deg, #1E3A8A 0%, #0369A1 100%);
+      --text:         #0F172A;
+      --text-muted:   #475569;
+      --border-color: #E2E8F0;
+      --nav-bg:       rgba(255, 255, 255, 0.95);
+      --input-bg:     #FFFFFF;
+      --badge-bg:     #DBEAFE;
+      --table-head:   #1E3A8A;
+      --table-even:   #F1F5F9;
+      --highlight:    #1E3A8A;
+      --tag:          #E0F2FE;
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      transition: background-color var(--transition), color var(--transition);
+    }
+
+    [data-theme="light"] body,
+    [data-theme="light"] { font-family: 'Noto Sans TC', 'Inter', sans-serif; }
+
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border-color);
+      backdrop-filter: blur(10px);
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .logo-dot {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .logo-text-main { color: var(--accent); }
+    .logo-text-sub  { color: var(--text); }
+
+    nav { display: flex; align-items: center; gap: 0.25rem; }
+
+    nav a {
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color var(--transition), background var(--transition);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--accent);
+      background: var(--badge-bg);
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    /* Language / Theme Toggle */
+    .lang-toggle {
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .lang-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Mobile menu button */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 0.4rem;
+      background: none;
+      border: none;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all var(--transition);
+    }
+
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background: var(--nav-bg);
+      border-top: 1px solid var(--border-color);
+      padding: 0.5rem 1.5rem 1rem;
+    }
+
+    .mobile-nav.open { display: flex; }
+
+    .mobile-nav a {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .mobile-nav a:last-child { border-bottom: none; }
+    .mobile-nav a.active, .mobile-nav a:hover { color: var(--accent); }
+
+    /* ============================================================
+       PAGE PANELS (SPA tabs)
+    ============================================================ */
+    main { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+    .panel {
+      display: none;
+      animation: fadeUp 0.4s ease forwards;
+    }
+
+    .panel.active { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================================
+       SHARED COMPONENTS
+    ============================================================ */
+    .hero {
+      background: var(--bg-hero);
+      border-radius: var(--radius);
+      padding: 4rem 3rem;
+      margin-bottom: 3rem;
+      color: var(--white);
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
+    }
+
+    .hero h1 {
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .hero h1 .accent { color: #93C5FD; }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: #93C5FD;
+      max-width: 680px;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-block;
+      padding: 0.7rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      border: 2px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0F172A;
+    }
+
+    .btn-primary:hover { background: #38BDF8; }
+
+    .btn-outline {
+      background: transparent;
+      border-color: rgba(255,255,255,0.4);
+      color: white;
+    }
+
+    .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
+
+    /* Section title */
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .section-sub {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      max-width: 640px;
+      font-size: 0.95rem;
+    }
+
+    /* Grid */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Card */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px -8px rgba(0,0,0,0.2);
+      border-color: var(--accent);
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .card p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+
+    /* Stat bar */
+    .stat-row {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-box {
+      flex: 1;
+      min-width: 140px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+    }
+
+    .stat-box .num {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-box .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--border-color); margin: 2.5rem 0; }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; margin-bottom: 2rem; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      font-size: 0.875rem;
+    }
+
+    th {
+      background: var(--table-head);
+      color: white;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text);
+      vertical-align: top;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: var(--table-even); }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-gold   { background: #FEF3C7; color: #92400E; }
+    .badge-silver { background: #E2E8F0; color: #334155; }
+    .badge-bronze { background: #FEE2E2; color: #991B1B; }
+    .badge-blue   { background: #DBEAFE; color: #1E40AF; }
+    .badge-teal   { background: #CCFBF1; color: #0F766E; }
+
+    /* Timeline */
+    .timeline { border-left: 2px solid var(--border-color); margin-left: 8px; }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 2rem 1.5rem;
+    }
+
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    .timeline-dot {
+      position: absolute;
+      left: -9px;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: 3px solid var(--bg);
+    }
+
+    .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 0.2rem; }
+    .timeline-title { font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+    .timeline-desc { font-size: 0.875rem; color: var(--text-muted); }
+
+    /* Process tabs */
+    .tab-bar {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 0.65rem 1.1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      border: none;
+      background: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all var(--transition);
+    }
+
+    .tab-btn:hover { color: var(--accent); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; animation: fadeUp 0.3s ease forwards; }
+
+    .process-box {
+      background: var(--bg-2);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .process-box h4 { font-size: 1rem; font-weight: 600; color: var(--accent); margin-bottom: 0.6rem; }
+    .process-box p  { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* Category grid */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.1rem 0.75rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .cat-card:hover, .cat-card.active {
+      border-color: var(--accent);
+      background: var(--badge-bg);
+      transform: translateY(-2px);
+    }
+
+    .cat-card .cat-icon { font-size: 2rem; margin-bottom: 0.4rem; }
+    .cat-card .cat-name { font-size: 0.78rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .cat-card .cat-sub  { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+    .cat-detail {
+      background: var(--bg-card);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      min-height: 100px;
+      transition: opacity 0.2s ease;
+    }
+
+    .cat-detail h3 { font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.6rem; }
+    .cat-detail p  { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* Chart */
+    .chart-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      height: 340px;
+      position: relative;
+    }
+
+    /* Address cards */
+    .address-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: var(--badge-bg);
+      color: var(--accent);
+      border-radius: 4px;
+      padding: 0.15rem 0.5rem;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .address-name { font-weight: 600; font-size: 0.95rem; color: var(--text); margin-bottom: 0.3rem; }
+    .address-text { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* Contact form */
+    .form-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .form-group { margin-bottom: 1.25rem; }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+      color: var(--text);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.65rem 1rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: border-color var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .form-control::placeholder { color: var(--text-muted); opacity: 0.7; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition);
+      margin-top: 0.5rem;
+    }
+
+    .btn-submit:hover { background: var(--primary-light); }
+
+    .form-success {
+      display: none;
+      background: #D1FAE5;
+      color: #065F46;
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      text-align: center;
+      font-weight: 500;
+      margin-top: 1rem;
+    }
+
+    /* Info box */
+    .info-box {
+      background: var(--bg-2);
+      border-left: 4px solid var(--teal);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .info-box strong { color: var(--text); }
+
+    /* Distributor list */
+    .dist-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .dist-item:last-child { border-bottom: none; }
+    .dist-flag { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .dist-name { font-weight: 600; color: var(--text); font-size: 0.9rem; }
+    .dist-desc { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.15rem; }
+
+    /* Tip hint */
+    .hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      background: var(--bg-2);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      display: inline-block;
+      padding: 0.25rem 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: #0B1120;
+      color: #64748B;
+      padding: 3rem 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .footer-col h4 { color: white; font-size: 0.9rem; margin-bottom: 0.75rem; }
+    .footer-col p, .footer-col a { font-size: 0.82rem; line-height: 1.9; color: #64748B; }
+    .footer-col a:hover { color: var(--accent); }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.25rem;
+      border-top: 1px solid #1E293B;
+      font-size: 0.78rem;
+      text-align: center;
+      color: #475569;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 900px) {
+      nav { display: none; }
+      .hamburger { display: flex; }
+      .hero { padding: 2.5rem 1.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      main { padding: 1.25rem 1rem 3rem; }
+      .stat-row { gap: 0.75rem; }
+      .stat-box { min-width: 100px; padding: 1rem; }
+    }
+  </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8">
+<body>
 
-    <div id="app-container" class="w-full max-w-4xl">
-        <div id="view-intro" class="surface rounded-2xl p-8 md:p-12 card-glow">
-            <div class="mb-4 text-sm font-semibold tracking-wider text-gray-400 uppercase">Phase I / 方法論建立</div>
-            <h1 class="text-3xl md:text-5xl font-bold mb-6 leading-tight">高階心理認知動態分析系統<br><span class="text-indigo-400 text-2xl md:text-3xl font-medium">基於擴展版 120 題與 20 子維度模型</span></h1>
-            
-            <div class="prose prose-invert max-w-none text-gray-300 space-y-4 mb-10">
-                <p>歡迎進入。本系統摒棄傳統通俗心理學的二元分類標籤，採用學術級連續型李克特量表（Likert Scale）進行測量。本系統包含完整的 120 道學術情境題，將深入解構您的認知行為模式。</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                    <div class="border border-gray-700 rounded-lg p-5 bg-black/20">
-                        <h3 class="text-lg font-bold text-white mb-2">✦ 測量維度</h3>
-                        <ul class="list-disc pl-5 space-y-1 text-sm">
-                            <li><strong>E/I</strong> (能量流動向度)</li>
-                            <li><strong>S/N</strong> (資訊感知向度)</li>
-                            <li><strong>T/F</strong> (決策判斷向度)</li>
-                            <li><strong>J/P</strong> (外部生活風格)</li>
-                            <li><strong>A/T</strong> (動態情緒穩定性)</li>
-                        </ul>
-                    </div>
-                    <div class="border border-gray-700 rounded-lg p-5 bg-black/20">
-                        <h3 class="text-lg font-bold text-white mb-2">✦ 系統交互規範</h3>
-                        <p class="text-sm">題目設計聚焦於<strong class="text-white">高壓環境、專業決策與複雜情境</strong>。請依據您的「下意識直覺」而非「社會期望」作答。測驗約需 10-15 分鐘。</p>
-                    </div>
-                </div>
-            </div>
-            
-            <button onclick="app.startTest()" class="w-full md:w-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg transition-colors duration-200 shadow-lg shadow-indigo-500/30">
-                啟動 120 題完整測評
-            </button>
-        </div>
-
-        <div id="view-test" class="hidden surface rounded-2xl p-8 md:p-12 card-glow min-h-[500px] flex flex-col">
-            <div class="flex justify-between items-center mb-8">
-                <span id="question-counter" class="text-sm font-mono text-gray-400">001 / 120</span>
-                <div class="w-1/2 bg-gray-800 rounded-full h-1.5">
-                    <div id="overall-progress" class="bg-indigo-500 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
-                </div>
-            </div>
-
-            <div class="flex-grow flex flex-col justify-center mb-10">
-                <h2 id="question-text" class="text-2xl md:text-3xl font-medium leading-relaxed text-center mb-12">加載題目中...</h2>
-                
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 max-w-3xl mx-auto w-full">
-                    <span class="text-sm text-gray-500 hidden sm:block w-20 text-right">強烈反對</span>
-                    
-                    <button onclick="app.recordAnswer(1)" class="likert-btn w-full sm:w-16 h-14 sm:h-16 rounded-lg border-2 border-gray-600 flex items-center justify-center text-xl font-bold bg-gray-800/50 hover:border-red-500/50">1</button>
-                    <button onclick="app.recordAnswer(2)" class="likert-btn w-full sm:w-16 h-14 sm:h-16 rounded-lg border-2 border-gray-600 flex items-center justify-center text-xl font-bold bg-gray-800/50">2</button>
-                    <button onclick="app.recordAnswer(3)" class="likert-btn w-full sm:w-16 h-14 sm:h-16 rounded-lg border-2 border-gray-600 flex items-center justify-center text-xl font-bold bg-gray-800/50">3</button>
-                    <button onclick="app.recordAnswer(4)" class="likert-btn w-full sm:w-16 h-14 sm:h-16 rounded-lg border-2 border-gray-600 flex items-center justify-center text-xl font-bold bg-gray-800/50">4</button>
-                    <button onclick="app.recordAnswer(5)" class="likert-btn w-full sm:w-16 h-14 sm:h-16 rounded-lg border-2 border-gray-600 flex items-center justify-center text-xl font-bold bg-gray-800/50 hover:border-green-500/50">5</button>
-                    
-                    <span class="text-sm text-gray-500 hidden sm:block w-20 text-left">強烈同意</span>
-                </div>
-                <div class="flex justify-between sm:hidden mt-4 text-xs text-gray-500">
-                    <span>反對 (1)</span><span>同意 (5)</span>
-                </div>
-            </div>
-        </div>
-
-        <div id="view-loading" class="hidden surface rounded-2xl p-16 card-glow flex flex-col items-center justify-center text-center h-[60vh]">
-            <div class="w-16 h-16 border-4 border-gray-700 border-t-indigo-500 rounded-full animate-spin mb-6"></div>
-            <h2 class="text-2xl font-bold mb-2">編譯心理數據模型</h2>
-            <p id="loading-text" class="text-gray-400 font-mono text-sm">正在計算多維度百分比分佈...</p>
-        </div>
-
-        <div id="view-results" class="hidden w-full space-y-6">
-            <div class="surface rounded-2xl p-8 card-glow border-t-4" id="result-header-border">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-gray-800 pb-6 mb-6">
-                    <div>
-                        <div class="text-sm font-semibold tracking-widest text-gray-400 uppercase mb-2">動態分析報告生成完畢</div>
-                        <h1 class="text-6xl md:text-7xl font-extrabold tracking-tighter mb-2 type-glow" id="result-type-code">XXXX-X</h1>
-                        <h2 class="text-xl md:text-2xl font-light text-gray-300" id="result-type-name">加載中...</h2>
-                    </div>
-                    <div class="mt-4 md:mt-0 text-right">
-                        <span class="inline-block px-3 py-1 rounded bg-black/30 text-xs font-mono text-gray-400 border border-gray-700" id="archetype-group">Group</span>
-                    </div>
-                </div>
-                <p id="core-trait-desc" class="text-lg leading-relaxed text-gray-300 max-w-3xl"></p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div class="lg:col-span-5 surface rounded-2xl p-6 card-glow">
-                    <h3 class="text-lg font-bold mb-6 flex items-center"><span class="mr-2">📊</span> 維度能量分佈 (Continuous Data)</h3>
-                    <div id="bars-container" class="space-y-6"></div>
-                </div>
-
-                <div class="lg:col-span-7 surface rounded-2xl p-6 card-glow">
-                    <h3 class="text-lg font-bold mb-6 flex items-center border-b border-gray-800 pb-4"><span class="mr-2">🧠</span> 深度行為與決策分析</h3>
-                    <div class="space-y-8">
-                        <section>
-                            <h4 class="text-sm font-mono text-indigo-400 mb-2 uppercase">[ 核心工作風格 & 團隊協作 ]</h4>
-                            <p id="report-workstyle" class="text-gray-300 text-sm leading-relaxed"></p>
-                        </section>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <section class="bg-black/20 rounded-lg p-4 border border-gray-800/50">
-                                <h4 class="text-sm font-mono text-green-400 mb-2 uppercase">[ 高壓優勢 ]</h4>
-                                <ul id="report-strengths" class="list-disc pl-4 text-sm text-gray-300 space-y-1"></ul>
-                            </section>
-                            <section class="bg-black/20 rounded-lg p-4 border border-gray-800/50">
-                                <h4 class="text-sm font-mono text-red-400 mb-2 uppercase">[ 認知盲區與弱點 ]</h4>
-                                <ul id="report-weaknesses" class="list-disc pl-4 text-sm text-gray-300 space-y-1"></ul>
-                            </section>
-                        </div>
-                        <section class="bg-gray-800/30 rounded-lg p-5 border-l-4 border-yellow-500">
-                            <h4 class="text-sm font-bold text-white mb-2">應當改善：具體心理建設與溝通策略</h4>
-                            <p id="report-improve" class="text-gray-300 text-sm leading-relaxed"></p>
-                        </section>
-                        <section>
-                            <h4 class="text-sm font-mono text-blue-400 mb-2 uppercase">[ 學術定義下之最佳職位適配 ]</h4>
-                            <div id="report-careers" class="flex flex-wrap gap-2"></div>
-                        </section>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center pt-8 pb-12">
-                <button onclick="location.reload()" class="text-sm text-gray-500 hover:text-white transition-colors">重新校準系統 (Reset)</button>
-            </div>
-        </div>
+<!-- ============================================================
+     HEADER / NAV
+============================================================ -->
+<header>
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      <span class="logo-text-main">SPATZ</span><span class="logo-text-sub">GLOBAL</span>
     </div>
 
-    <script>
-        // 格式: [ "題目", 維度(0-4), 反向計分(1=左傾/0=右傾) ]
-        const rawQuestions =;
+    <nav id="desktop-nav">
+      <a class="active" onclick="goTab('home')"       id="nav-home"       data-en="Home"            data-zh="首頁">Home</a>
+      <a onclick="goTab('about')"      id="nav-about"      data-en="About"           data-zh="企業概況">About</a>
+      <a onclick="goTab('services')"   id="nav-services"   data-en="Services"        data-zh="服務與品控">Services</a>
+      <a onclick="goTab('products')"   id="nav-products"   data-en="Products"        data-zh="產品領域">Products</a>
+      <a onclick="goTab('compliance')" id="nav-compliance" data-en="Compliance & CSR" data-zh="合規與社責">Compliance & CSR</a>
+      <a onclick="goTab('contact')"    id="nav-contact"    data-en="Contact"         data-zh="商務聯絡">Contact</a>
+    </nav>
 
-        // 轉換字串資料為應用程式所需格式
-        const questions = rawQuestions.map(line => {
-            const parts = line.split('|');
-            return {
-                text: parts,
-                dim: parseInt(parts[1]),
-                invert: parts[2] === '1'
-            };
-        });
+    <div class="nav-controls">
+      <button class="lang-toggle" onclick="toggleLang()" id="lang-btn">中文</button>
+      <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
 
-        // 狀態管理物件
-        const app = {
-            currentIndex: 0,
-            answers:, 
-            
-            startTest() {
-                document.getElementById('view-intro').classList.add('hidden');
-                document.getElementById('view-test').classList.remove('hidden');
-                document.getElementById('view-test').classList.add('fade-enter-active');
-                this.renderQuestion();
-            },
+  <div class="mobile-nav" id="mobile-nav">
+    <a onclick="goTab('home');closeMobile()"       id="mnav-home"       data-en="Home"            data-zh="首頁">Home</a>
+    <a onclick="goTab('about');closeMobile()"      id="mnav-about"      data-en="About"           data-zh="企業概況">About</a>
+    <a onclick="goTab('services');closeMobile()"   id="mnav-services"   data-en="Services"        data-zh="服務與品控">Services</a>
+    <a onclick="goTab('products');closeMobile()"   id="mnav-products"   data-en="Products"        data-zh="產品領域">Products</a>
+    <a onclick="goTab('compliance');closeMobile()" id="mnav-compliance" data-en="Compliance & CSR" data-zh="合規與社責">Compliance & CSR</a>
+    <a onclick="goTab('contact');closeMobile()"    id="mnav-contact"    data-en="Contact"         data-zh="商務聯絡">Contact</a>
+  </div>
+</header>
 
-            renderQuestion() {
-                const q = questions[this.currentIndex];
-                document.getElementById('question-text').innerText = q.text;
-                document.getElementById('question-counter').innerText = 
-                    `${String(this.currentIndex + 1).padStart(3, '0')} / ${questions.length}`;
-                
-                const progress = ((this.currentIndex) / questions.length) * 100;
-                document.getElementById('overall-progress').style.width = `${progress}%`;
-            },
+<!-- ============================================================
+     MAIN CONTENT
+============================================================ -->
+<main>
 
-            recordAnswer(value) {
-                const q = questions[this.currentIndex];
-                let processedValue = value;
-                
-                // 反向計分處理：若 invert 為 true，則 5 變 1，4 變 2... 等
-                if (q.invert) {
-                    processedValue = 6 - value; 
-                }
-                
-                this.answers.push({ dim: q.dim, val: processedValue });
+  <!-- ══════════════════ HOME ══════════════════ -->
+  <section id="panel-home" class="panel active">
 
-                const testView = document.getElementById('view-test');
-                testView.style.opacity = 0;
-                
-                setTimeout(() => {
-                    this.currentIndex++;
-                    if (this.currentIndex < questions.length) {
-                        this.renderQuestion();
-                        testView.style.opacity = 1;
-                    } else {
-                        this.processResults();
-                    }
-                }, 150); 
-            },
+    <div class="hero">
+      <h1 data-en="Create Solution in a<br><span class='accent'>Demanding Market</span>" data-zh="在嚴苛市場中<br><span class='accent'>創造卓越解決方案</span>">
+        Create Solution in a<br><span class="accent">Demanding Market</span>
+      </h1>
+      <p data-en="Since 2002, Spatz Global has delivered end-to-end supply chain management and EU-compliant export solutions — connecting world-class Chinese manufacturers with global retail leaders."
+         data-zh="自2002年起，Spatz Global 提供全面的供應鏈管理與符合歐盟標準的出口解決方案，連結中國一流製造商與全球零售龍頭。">
+        Since 2002, Spatz Global has delivered end-to-end supply chain management and EU-compliant export solutions — connecting world-class Chinese manufacturers with global retail leaders.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" onclick="goTab('services')" data-en="Our Services" data-zh="了解服務">Our Services</a>
+        <a class="btn btn-outline" onclick="goTab('contact')"  data-en="Get in Touch"  data-zh="與我們洽談">Get in Touch</a>
+      </div>
+    </div>
 
-            processResults() {
-                document.getElementById('view-test').classList.add('hidden');
-                document.getElementById('view-loading').classList.remove('hidden');
-                
-                // 5 個維度的總分統計矩陣
-                let dimScores = ;
-                
-                this.answers.forEach(ans => {
-                    dimScores[ans.dim] += ans.val; 
-                });
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="num">$70M</div>
+        <div class="label" data-en="Total Business Value 2025" data-zh="2025年業務總額">Total Business Value 2025</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">24+</div>
+        <div class="label" data-en="Years in Operation" data-zh="運營年資">Years in Operation</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">35+</div>
+        <div class="label" data-en="Full-time Professionals" data-zh="全職專業人員">Full-time Professionals</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">3</div>
+        <div class="label" data-en="Global Offices" data-zh="全球辦公室">Global Offices</div>
+      </div>
+    </div>
 
-                // 連續百分比轉換 (將總分區間 24~120 映射為 0%~100%)
-                const pct = dimScores.map(score => {
-                    const rightPct = Math.round(((score - 24) / 96) * 100);
-                    const leftPct = 100 - rightPct;
-                    return { leftPct, rightPct };
-                });
+    <h2 class="section-title" data-en="Three Core Business Areas" data-zh="三大核心業務範疇">Three Core Business Areas</h2>
+    <p class="section-sub" data-en="From product development to last-mile delivery — we own every step." data-zh="從產品開發到最終交付，我們掌握每一個環節。">From product development to last-mile delivery — we own every step.</p>
 
-                // 產生四個核心 MBTI 字母與第五個 A/T 尾綴
-                const typeCode = 
-                    (pct.leftPct > pct.rightPct? 'E' : 'I') +
-                    (pct.[1]leftPct > pct.[1]rightPct? 'S' : 'N') +
-                    (pct.[2]leftPct > pct.[2]rightPct? 'T' : 'F') +
-                    (pct.[3]leftPct > pct.[3]rightPct? 'J' : 'P') + '-' +
-                    (pct.[4]leftPct > pct.[4]rightPct? 'A' : 'T');
+    <div class="grid-3">
+      <div class="card">
+        <h3 data-en="Domestic Appliances" data-zh="生活電器">Domestic Appliances</h3>
+        <p data-en="Kitchen appliances, home cleaning, personal care and smart security systems. Deep partnerships with Canton Fair tier-1 manufacturers, with rigorous factory electrical testing."
+           data-zh="廚房小家電、環境清潔、個人護理與智能安防系統。深度合作廣交會一線製造商，嚴格執行出廠電檢測試。">
+          Kitchen appliances, home cleaning, personal care and smart security systems. Deep partnerships with Canton Fair tier-1 manufacturers, with rigorous factory electrical testing.
+        </p>
+      </div>
+      <div class="card">
+        <h3 data-en="Home Textile" data-zh="家居紡織">Home Textile</h3>
+        <p data-en="Custom design and sourcing of memory foam, functional pillows, bath linens, and complete sleep systems — all materials passing EU safety analysis."
+           data-zh="定製設計與採購記憶棉、功能性枕頭、衛浴巾毯及全套睡眠系統，所有材料通過歐盟安全分析。">
+          Custom design and sourcing of memory foam, functional pillows, bath linens, and complete sleep systems — all materials passing EU safety analysis.
+        </p>
+      </div>
+      <div class="card">
+        <h3 data-en="Kids & Novelties" data-zh="玩具文創">Kids & Novelties</h3>
+        <p data-en="Children's light-up toys, multi-functional capes, and mother-infant textiles. All products strictly aligned with EU Toy Safety Directive 2009/48/EC."
+           data-zh="兒童發光玩具、多功能斗篷及母嬰護理紡織品，所有產品嚴格對標歐盟玩具安全指令2009/48/EC。">
+          Children's light-up toys, multi-functional capes, and mother-infant textiles. All products strictly aligned with EU Toy Safety Directive 2009/48/EC.
+        </p>
+      </div>
+    </div>
 
-                let dotCount = 0;
-                const loadingInterval = setInterval(() => {
-                    dotCount = (dotCount + 1) % 4;
-                    document.getElementById('loading-text').innerText = "正在進行 120 題向量特徵解析" + ".".repeat(dotCount);
-                }, 500);
+    <div class="card">
+      <h3 data-en="Global Distribution Network" data-zh="流變分銷網路">Global Distribution Network</h3>
+      <p data-en="Our trade and QC network spans Asia's core manufacturing belt, with long-established distribution partners in Slovenia, Croatia, Germany and beyond — providing full-spectrum support for cross-border retail supply chains."
+         data-zh="我們的貿易與品控網絡跨越亞洲核心製造地帶，並在斯洛維尼亞、克羅埃西亞、德國等歐盟戰略門戶設有長期穩固的分銷合作網絡，全方位支援跨國零售供應鏈的需求。">
+        Our trade and QC network spans Asia's core manufacturing belt, with long-established distribution partners in Slovenia, Croatia, Germany and beyond — providing full-spectrum support for cross-border retail supply chains.
+      </p>
+    </div>
 
-                setTimeout(() => {
-                    clearInterval(loadingInterval);
-                    this.renderDashboard(typeCode, pct);
-                }, 2500);
-            },
+  </section>
 
-            renderDashboard(typeCode, percentages) {
-                document.getElementById('view-loading').classList.add('hidden');
-                document.getElementById('view-results').classList.remove('hidden');
-                document.getElementById('view-results').classList.add('fade-enter-active');
+  <!-- ══════════════════ ABOUT ══════════════════ -->
+  <section id="panel-about" class="panel">
 
-                const meta = this.getTypeMetadata(typeCode);
-                document.documentElement.style.setProperty('--accent-color', meta.color);
-                document.getElementById('result-header-border').style.borderTopColor = meta.color;
-                
-                document.getElementById('result-type-code').innerText = typeCode;
-                document.getElementById('result-type-code').style.color = meta.color;
-                document.getElementById('result-type-name').innerText = meta.title;
-                document.getElementById('archetype-group').innerText = meta.group;
-                
-                // 各維度兩端標籤定義
-                const dimLabels = ['外向 (Extraversion)', '內向 (Introversion)'],
-                   ,
-                   ,
-                    ['判斷 (Judging)', '感知 (Perceiving)'],
-                   ;
-                
-                const barsContainer = document.getElementById('bars-container');
-                barsContainer.innerHTML = '';
-                
-                // 渲染連續性數值圖表
-                percentages.forEach((p, index) => {
-                    const html = `
-                        <div class="mb-5">
-                            <div class="flex justify-between text-xs font-mono mb-1 text-gray-400">
-                                <span class="${p.leftPct > p.rightPct? 'text-white font-bold' : ''}">${dimLabels[index]} ${p.leftPct}%</span>
-                                <span class="${p.rightPct > p.leftPct? 'text-white font-bold' : ''}">${p.rightPct}% ${dimLabels[index][1]}</span>
-                            </div>
-                            <div class="flex h-3 w-full bg-gray-800 rounded-full overflow-hidden border border-gray-700">
-                                <div class="progress-segment flex justify-center items-center text-[8px]" style="width: ${p.leftPct}%; background-color: ${p.leftPct > p.rightPct? meta.color : '#4b5563'}; opacity: ${p.leftPct > p.rightPct? 1 : 0.6}"></div>
-                                <div class="w-1 bg-black z-10"></div>
-                                <div class="progress-segment flex justify-center items-center text-[8px]" style="width: ${p.rightPct}%; background-color: ${p.rightPct > p.leftPct? meta.color : '#4b5563'}; opacity: ${p.rightPct > p.leftPct? 1 : 0.6}"></div>
-                            </div>
-                        </div>
-                    `;
-                    barsContainer.innerHTML += html;
-                });
+    <div class="hero" style="background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);">
+      <h1 data-en="Corporate Transparency &amp; Legal Standing" data-zh="企業透明度與法人資格">Corporate Transparency &amp; Legal Standing</h1>
+      <p data-en="We publish our legal registration data and global office locations openly — inviting scrutiny from regulators, premium factories and major importers worldwide."
+         data-zh="我們公開法定商業登記資料與全球辦公室地址，透明接受各地監管部門、優質工廠及大型進口商的合規審查。">
+        We publish our legal registration data and global office locations openly — inviting scrutiny from regulators, premium factories and major importers worldwide.
+      </p>
+    </div>
 
-                this.generateReportContent(typeCode, percentages, meta);
-            },
+    <h2 class="section-title" data-en="Legal Entity" data-zh="法定法律主體">Legal Entity</h2>
 
-            getTypeMetadata(code) {
-                const base = code.substring(0,4);
-                let group = '', color = '', title = '';
+    <div class="table-wrap" style="margin-bottom:2.5rem;">
+      <table>
+        <thead>
+          <tr>
+            <th data-en="Legal Name" data-zh="法定名稱">Legal Name</th>
+            <th data-en="HK Registration No." data-zh="香港註冊編號">HK Registration No.</th>
+            <th data-en="Incorporated" data-zh="成立日期">Incorporated</th>
+            <th data-en="Primary Function" data-zh="主要職能">Primary Function</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Spatz Global Limited</strong></td>
+            <td>2012778</td>
+            <td>16 Dec 2013</td>
+            <td data-en="Global trade settlement entity, compliance documentation, overseas buyer interface" data-zh="全球貿易結算主體、合規文件簽發、海外買家對接窗口">Global trade settlement entity, compliance documentation, overseas buyer interface</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-                if (base.includes('N') && base.includes('T')) {
-                    group = "Analysts (分析師族群)"; color = 'var(--color-nt)';
-                    if(base==='INTJ') title = "架構師 (The Architect)";
-                    else if(base==='INTP') title = "邏輯學家 (The Logician)";
-                    else if(base==='ENTJ') title = "指揮官 (The Commander)";
-                    else if(base==='ENTP') title = "辯論家 (The Debater)";
-                } 
-                else if (base.includes('N') && base.includes('F')) {
-                    group = "Diplomats (外交官族群)"; color = 'var(--color-nf)';
-                    if(base==='INFJ') title = "提倡者 (The Advocate)";
-                    else if(base==='INFP') title = "調停者 (The Mediator)";
-                    else if(base==='ENFJ') title = "主人公 (The Protagonist)";
-                    else if(base==='ENFP') title = "競選者 (The Campaigner)";
-                }
-                else if (base.includes('S') && base.includes('J')) {
-                    group = "Sentinels (守護者族群)"; color = 'var(--color-sj)';
-                    if(base==='ISTJ') title = "物流師 (The Logistician)";
-                    else if(base==='ISFJ') title = "守衛者 (The Defender)";
-                    else if(base==='ESTJ') title = "總經理 (The Executive)";
-                    else if(base==='ESFJ') title = "執政官 (The Consul)";
-                }
-                else if (base.includes('S') && base.includes('P')) {
-                    group = "Explorers (探險家族群)"; color = 'var(--color-sp)';
-                    if(base==='ISTP') title = "鑑賞家 (The Virtuoso)";
-                    else if(base==='ISFP') title = "探險家 (The Adventurer)";
-                    else if(base==='ESTP') title = "企業家 (The Entrepreneur)";
-                    else if(base==='ESFP') title = "表演者 (The Entertainer)";
-                }
+    <h2 class="section-title" data-en="Development Milestones" data-zh="發展里程碑">Development Milestones</h2>
+    <p class="section-sub" data-en="Over two decades of continuous expansion across Asia and Europe." data-zh="跨越亞洲與歐洲，超過二十年的持續擴展。">Over two decades of continuous expansion across Asia and Europe.</p>
 
-                return { group, color, title, base };
-            },
+    <div class="grid-2">
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2002</div>
+          <div class="timeline-title" data-en="Greencompass Founded" data-zh="Greencompass 成立">Greencompass Founded</div>
+          <div class="timeline-desc" data-en="Established trading company in mainland China, building foundational supply chain infrastructure." data-zh="於中國大陸成立貿易公司，建立在地供應鏈基礎架構。">Established trading company in mainland China, building foundational supply chain infrastructure.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2013</div>
+          <div class="timeline-title" data-en="Spatz Global Limited Incorporated" data-zh="Spatz Global Limited 成立">Spatz Global Limited Incorporated</div>
+          <div class="timeline-desc" data-en="Hong Kong office established as the international trade settlement and compliance hub." data-zh="設立香港辦公室，作為國際貿易結算與合規中心。">Hong Kong office established as the international trade settlement and compliance hub.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2016</div>
+          <div class="timeline-title" data-en="Robotron GmbH — Germany" data-zh="德國 Robotron GmbH 成立">Robotron GmbH — Germany</div>
+          <div class="timeline-desc" data-en="German entity established to strengthen in-market service and project support for European clients." data-zh="於德國成立公司，強化對歐洲客戶的在地服務與專案支援。">German entity established to strengthen in-market service and project support for European clients.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year" data-en="Today" data-zh="至今">Today</div>
+          <div class="timeline-title" data-en="Full-spectrum Supply Chain Structure" data-zh="全方位供應鏈結構">Full-spectrum Supply Chain Structure</div>
+          <div class="timeline-desc" data-en="35+ professionals spanning management, design, product development, merchandising, QC and patent solutions." data-zh="35名以上專業人員，涵蓋管理、設計、產品開發、跟單、品管及專利解決方案。">35+ professionals spanning management, design, product development, merchandising, QC and patent solutions.</div>
+        </div>
+      </div>
 
-            generateReportContent(typeCode, pct, meta) {
-                const isINTJA = typeCode === 'INTJ-A';
-                
-                let coreText = "";
-                if(isINTJA) {
-                    coreText = "在學術定義下，INTJ-A 表現出極端獨立的系統性思維。您的大腦猶如一台預測引擎，不斷掃描環境中的模式，並將其抽象化為長期的戰略模型。附帶的 '-A' (Assertive) 維度賦予您強大的情緒防禦力，使您在面對阻力或懷疑時，依然能堅定地執行冷酷的邏輯決策，不受同儕壓力干擾。您追求的不是知識的積累，而是『系統的最優解』。";
-                } else {
-                    coreText = `作為 ${meta.base}，您展現出 ${meta.group} 獨有的認知處理模式。系統判定您的主要驅動力在於 ${pct.leftPct > 50? '從外部環境獲取刺激與共鳴' : '構建深度的內部心理表徵'}。在信息處理上，您傾向於 ${pct.[1]leftPct > 50? '依賴具象與可驗證的經驗數據' : '尋找抽象概念背後的隱含模式'}。搭配 ${pct.[4]leftPct > 50? '高度穩定的情緒抗壓性 (-A)' : '對環境變數高度敏感的反思性 (-T)'}，構成您獨特的世界觀。`;
-                }
-                document.getElementById('core-trait-desc').innerText = coreText;
+      <div>
+        <h3 style="font-size:1rem;font-weight:600;color:var(--text);margin-bottom:1rem;" data-en="Global Offices" data-zh="全球辦公據點">Global Offices</h3>
 
-                let workstyleText = "";
-                if (pct.[3]leftPct > 65) { 
-                    workstyleText = "在團隊協作中，您是絕對的『秩序輸出者』。您厭惡模稜兩可的進度與沒有明確 Action Items 的會議。您傾向於將宏大目標拆解為線性的階段，並期望成員嚴格遵守。";
-                } else if (pct.[3]rightPct > 65) { 
-                    workstyleText = "您在團隊中扮演『動態適應者』。您認為過早鎖定計畫會喪失捕捉新機遇的彈性。您的決策模式是迭代式的，喜歡在推進過程中不斷整合新資訊來修正方向。";
-                } else {
-                    workstyleText = "在結構化與靈活性之間，您具備良好的切換能力。能建立基本框架，但亦容許專案在執行過程中根據邏輯反饋進行適度偏轉。";
-                }
-                if (isINTJA) workstyleText += " 具體而言，您傾向實行『智力精英主義』，若團隊成員無法跟上您的抽象邏輯推演，您可能會選擇收回授權，轉為獨立作業以確保質量。";
-                document.getElementById('report-workstyle').innerText = workstyleText;
+        <div class="card" style="margin-bottom:1rem;">
+          <div class="address-tag" data-en="HK · Head Office" data-zh="香港 · 總部">HK · Head Office</div>
+          <div class="address-name">Spatz Global Limited</div>
+          <div class="address-text" data-en="Rm 3A-8, 12/F, Kingsford Centre, 18 High Street, Sai Ying Pun, Hong Kong" data-zh="香港西營盤正街18號啟正中心12樓3A-8室">Rm 3A-8, 12/F, Kingsford Centre, 18 High Street, Sai Ying Pun, Hong Kong</div>
+        </div>
 
-                const strengthsUl = document.getElementById('report-strengths');
-                strengthsUl.innerHTML = '';
-                const strengths = isINTJA? [
-                    "宏觀戰略推演：能在複雜變量中預見三步之後的結果。",
-                    "抗壓決策力：在危機中能完全剝離恐慌情緒，執行止損。",
-                    "系統重構力：能迅速發現現有流程的底層邏輯缺陷並予以摧毀重建。"
-                ] : [
-                    `具備卓越的${pct.leftPct > 50? '環境調研與人際動員' : '深度專注與獨立分析'}能力。`,
-                    `在高壓下能夠維持${pct.[2]leftPct > 50? '客觀冷靜的因果邏輯推理' : '對群體士氣與價值觀的敏銳洞察'}。`,
-                    `依靠 ${pct.[4]leftPct > 50? '內在信念驅動，抗干擾能力極強' : '危機意識驅動，對潛在風險具備前瞻性防禦'}。`
-                ];
-                strengths.forEach(s => strengthsUl.innerHTML += `<li>${s}</li>`);
+        <div class="card" style="margin-bottom:1rem;">
+          <div class="address-tag" data-en="KLN · Business Centre" data-zh="九龍 · 商務中心">KLN · Business Centre</div>
+          <div class="address-name">Spatz Global — Kowloon</div>
+          <div class="address-text" data-en="Rm 05A, 17/F, Billion Plaza 2, 10 Cheung Yue St, Cheung Sha Wan, Kowloon" data-zh="香港九龍長沙灣長裕街10號億京廣場2期17樓05A室">Rm 05A, 17/F, Billion Plaza 2, 10 Cheung Yue St, Cheung Sha Wan, Kowloon</div>
+        </div>
 
-                const weakUl = document.getElementById('report-weaknesses');
-                weakUl.innerHTML = '';
-                const weaknesses = isINTJA? [
-                    "傲慢盲區：常低估『情感與政治因素』在組織推動中的實際阻力。",
-                    "完美主義癱瘓：對『次優解』的極度不耐煩，可能導致項目延宕。",
-                    "溝通降維困難：難以將高階抽象概念轉譯為前線執行者的具體操作語言。"
-                ] : [
-                    `可能因為過度依賴${pct.[1]leftPct > 50? '既有經驗而錯失破壞性創新機會' : '抽象理論而忽視落地的物理限制'}。`,
-                    `在衝突中容易${pct.[2]leftPct > 50? '因追求效率而給人冷酷無情的壓迫感' : '因顧慮關係而妥協了本應堅持的原則'}。`,
-                    `${pct.[4]leftPct > 50? '有時過於自信而忽略環境發出的微弱警告信號' : '容易陷入過度反芻（Rumination），耗損決策能量'}。`
-                ];
-                weaknesses.forEach(w => weakUl.innerHTML += `<li>${w}</li>`);
+        <div class="card" style="margin-bottom:1rem;">
+          <div class="address-tag" data-en="Shanghai · QC Centre" data-zh="上海 · 品控中心">Shanghai · QC Centre</div>
+          <div class="address-name">Greencompass (Shanghai)</div>
+          <div class="address-text" data-en="Rm 703, Block D, New Century Plaza, 48 Xinyi Rd, Changning District, Shanghai" data-zh="中國上海市長寧區興義路48號新世紀廣場D棟703室">Rm 703, Block D, New Century Plaza, 48 Xinyi Rd, Changning District, Shanghai</div>
+        </div>
 
-                let improveText = "";
-                if(pct.[2]leftPct > 60) { 
-                    improveText = "【談判與溝通建議】：您的思維極度依賴邏輯方程式，這在資源分配型談判中是優勢。但實務上，『人類的非理性情緒也是一種客觀變量』。請刻意練習哈佛談判專案的『原則性談判』。在指出對方邏輯漏洞前，強迫自己先使用標籤技術來解除對方的大腦杏仁核警報。這不是妥協，而是為了降低溝通成本的戰術手段。";
-                } else { 
-                    improveText = "【談判與溝通建議】：您強大的共情能力有助於建立信任與整合型雙贏談判。然而，在面對掠奪型對手時，您的底線極易被情緒勒索所突破。請建立物理性的『決策緩衝帶』。當感受到壓力時，強制使用戰術暫停。此外，請在談判前將您的最佳替代方案（BATNA）寫在紙上，將評估標準『具象化』與『外部化』，避免在現場因同情心而做出不理性的讓步。";
-                }
-                document.getElementById('report-improve').innerText = improveText;
+        <div class="card">
+          <div class="address-tag" data-en="Germany · Europe" data-zh="德國 · 歐洲">Germany · Europe</div>
+          <div class="address-name">Robotron GmbH</div>
+          <div class="address-text" data-en="European project support and in-market liaison for DACH region." data-zh="負責歐洲在地專案支援及DACH地區市場聯絡。">European project support and in-market liaison for DACH region.</div>
+        </div>
+      </div>
+    </div>
 
-                const careersDiv = document.getElementById('report-careers');
-                careersDiv.innerHTML = '';
-                let careers =;
-                
-                if (meta.base.includes('NT')) {
-                    careers = ['系統架構工程師', '量化分析師', '戰略併購顧問', '高等學術研究員'];
-                } else if (meta.base.includes('NF')) {
-                    careers =;
-                } else if (meta.base.includes('SJ')) {
-                    careers = ['供應鏈管理總監', '法遵與合規主管', '財務審計師', '大型專案經理'];
-                } else if (meta.base.includes('SP')) {
-                    careers = ['風險投資(VC)經理', '緊急醫療急救員', '特種戰術教官', '一線銷售總監'];
-                }
-                
-                careers.forEach(c => {
-                    careersDiv.innerHTML += `<span class="px-3 py-1 bg-gray-800 text-gray-300 rounded border border-gray-600 text-sm">${c}</span>`;
-                });
+    <div class="divider"></div>
+
+    <h2 class="section-title" data-en="European Distribution Partners" data-zh="歐洲分銷合作夥伴">European Distribution Partners</h2>
+    <p class="section-sub" data-en="Our long-term product delivery network is deeply integrated into EU retail channels." data-zh="我們的長期產品交付體系深度融入歐盟零售網路。">Our long-term product delivery network is deeply integrated into EU retail channels.</p>
+
+    <div class="card">
+      <div class="dist-item">
+        <div class="dist-flag">🇸🇮</div>
+        <div>
+          <div class="dist-name">HS PLUS d.o.o. — Slovenia</div>
+          <div class="dist-desc" data-en="Central & Eastern Europe consumer electronics and garden machinery distribution." data-zh="覆蓋中歐及東歐主流消費電子與園林機械通路。">Central & Eastern Europe consumer electronics and garden machinery distribution.</div>
+        </div>
+      </div>
+      <div class="dist-item">
+        <div class="dist-flag">🇭🇷</div>
+        <div>
+          <div class="dist-name">Kenty Adria d.o.o. — Croatia</div>
+          <div class="dist-desc" data-en="Adriatic region core distributor for home goods and kitchenware." data-zh="亞德里亞海地區核心家居與廚房用品分銷商。">Adriatic region core distributor for home goods and kitchenware.</div>
+        </div>
+      </div>
+      <div class="dist-item">
+        <div class="dist-flag">🇩🇪</div>
+        <div>
+          <div class="dist-name">Lucky Chef GmbH — Germany</div>
+          <div class="dist-desc" data-en="DACH region strategic partner for premium food-contact grade cookware." data-zh="德語區高端食品接觸級廚具策略夥伴。">DACH region strategic partner for premium food-contact grade cookware.</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════ SERVICES ══════════════════ -->
+  <section id="panel-services" class="panel">
+
+    <div class="hero">
+      <h1 data-en="Rigorous Standards,<br><span class='accent'>End-to-End Service</span>" data-zh="嚴格標準，<br><span class='accent'>端到端全程服務</span>">
+        Rigorous Standards,<br><span class="accent">End-to-End Service</span>
+      </h1>
+      <p data-en="From the first factory audit to the final delivery inspection — every step is owned, controlled and guaranteed by Spatz Global."
+         data-zh="從首次工廠審計到最終驗貨出口，每一個步驟均由Spatz Global全程負責、管控與保障。">
+        From the first factory audit to the final delivery inspection — every step is owned, controlled and guaranteed by Spatz Global.
+      </p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3 data-en="⚙ Product Development & IP" data-zh="⚙ 產品開發與專利">⚙ Product Development & IP</h3>
+        <p data-en="Product design, development support, and patent solutions ensuring market competitiveness and regulatory compliance."
+           data-zh="提供產品設計、開發支援及專利解決方案，確保產品市場競爭力與合規性。">
+          Product design, development support, and patent solutions ensuring market competitiveness and regulatory compliance.
+        </p>
+      </div>
+      <div class="card" style="border-color:var(--accent);">
+        <h3 data-en="🔍 Supplier Auditing — Core Advantage" data-zh="🔍 供應商審核 — 核心優勢">🔍 Supplier Auditing — Core Advantage</h3>
+        <p data-en="Internal audit team rigorously evaluates all new suppliers. Partners are major manufacturers exporting to the EU — passing capacity tests, QC criteria, and providing full EU market certification."
+           data-zh="內部審計團隊嚴格評估所有新供應商。合作夥伴均為主要對歐出口製造商，須通過產能測試、品管標準，並提供完整歐盟市場認證。">
+          Internal audit team rigorously evaluates all new suppliers. Partners are major manufacturers exporting to the EU — passing capacity tests, QC criteria, and providing full EU market certification.
+        </p>
+      </div>
+      <div class="card">
+        <h3 data-en="🚢 Logistics & Quality Control" data-zh="🚢 物流與品質管理">🚢 Logistics & Quality Control</h3>
+        <p data-en="Covering procurement planning, quality inspection and global logistics. Long-term bulk order cooperation builds deep supplier trust and continuously raises QC standards."
+           data-zh="涵蓋採購規劃、品質檢驗至全球物流安排。長期大宗訂單合作與供應商建立深度信任，持續提升品管標準。">
+          Covering procurement planning, quality inspection and global logistics. Long-term bulk order cooperation builds deep supplier trust and continuously raises QC standards.
+        </p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2 class="section-title" data-en="Sourcing Process" data-zh="採購流程">Sourcing Process</h2>
+    <span class="hint" data-en="Click a step to explore" data-zh="點擊步驟了解詳情">Click a step to explore</span>
+
+    <div class="tab-bar" id="proc-tab-bar">
+      <button class="tab-btn active" onclick="switchProcTab('p1')" data-en="1 · Needs Analysis" data-zh="1 · 需求分析">1 · Needs Analysis</button>
+      <button class="tab-btn"        onclick="switchProcTab('p2')" data-en="2 · Supplier Matching" data-zh="2 · 供應商配對">2 · Supplier Matching</button>
+      <button class="tab-btn"        onclick="switchProcTab('p3')" data-en="3 · Inspection & Delivery" data-zh="3 · 驗貨與出貨">3 · Inspection & Delivery</button>
+    </div>
+
+    <div id="p1" class="tab-pane active">
+      <div class="process-box">
+        <h4 data-en="Precision Targeting — Eliminating Waste" data-zh="精準定位，拒絕低效">Precision Targeting — Eliminating Waste</h4>
+        <p data-en="We operate an extensive internal product database and digital management system. When a client request arrives, we rapidly filter out substandard or low-margin sources — no time wasted on unscreened wholesale platforms. We lock directly onto compliant suppliers with proven mass-production capability and quality assurance."
+           data-zh="我們擁有龐大的內部產品資料庫與數位化管理系統。客戶需求一到，我們迅速排查低質或利潤過低的來源，不在未篩選的批發平台上浪費時間，直接鎖定具備量產實力與品質保障的合規供應商。">
+          We operate an extensive internal product database and digital management system. When a client request arrives, we rapidly filter out substandard or low-margin sources — no time wasted on unscreened wholesale platforms. We lock directly onto compliant suppliers with proven mass-production capability and quality assurance.
+        </p>
+      </div>
+    </div>
+
+    <div id="p2" class="tab-pane">
+      <div class="process-box">
+        <h4 data-en="Leverage Negotiation & Deep Partnership" data-zh="優勢談判與深度合作">Leverage Negotiation & Deep Partnership</h4>
+        <p data-en="Bulk purchasing volume grants us deep factory trust. We don't just compare prices — we evaluate product detail differences, delivery reliability and after-sales protection. Low-tier suppliers unable to provide adequate margin or post-sale guarantees are filtered out, ensuring clients receive genuine value."
+           data-zh="憑藉大宗採購量，我們與工廠建立深度信任。不僅比對價格，更評估產品細節差異、交期穩定性及售後保障。利潤空間不足或無法提供售後保障的低階供應商均被淘汰，確保客戶獲得真正性價比。">
+          Bulk purchasing volume grants us deep factory trust. We don't just compare prices — we evaluate product detail differences, delivery reliability and after-sales protection. Low-tier suppliers unable to provide adequate margin or post-sale guarantees are filtered out, ensuring clients receive genuine value.
+        </p>
+      </div>
+    </div>
+
+    <div id="p3" class="tab-pane">
+      <div class="process-box">
+        <h4 data-en="Rigorous Inspection — We Accept Responsibility" data-zh="嚴格驗貨，承擔責任">Rigorous Inspection — We Accept Responsibility</h4>
+        <p data-en="Pre-shipment inspection is non-negotiable. By sourcing through us, quality oversight responsibility is transferred to Spatz Global — eliminating the post-sale risk most feared in cross-border procurement. Clients receive EU-standard goods with full confidence."
+           data-zh="出貨前嚴格驗貨是我們的堅持。透過我們採購，品質監督責任由Spatz Global承擔，解除跨國採購最擔憂的售後風險，讓客戶安心接收符合歐盟標準的高品質貨物。">
+          Pre-shipment inspection is non-negotiable. By sourcing through us, quality oversight responsibility is transferred to Spatz Global — eliminating the post-sale risk most feared in cross-border procurement. Clients receive EU-standard goods with full confidence.
+        </p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2 class="section-title" data-en="Supplier Tiering System" data-zh="供應商信用分級制度">Supplier Tiering System</h2>
+    <p class="section-sub" data-en="Dynamic factory grading — priority orders flow to Gold tier long-term partners, ensuring supply chain capacity and regulatory compliance from the source."
+       data-zh="動態工廠分級制度，優先向金級長期合作工廠下達訂單，從源頭確保供應鏈產能與法規合規度。">
+      Dynamic factory grading — priority orders flow to Gold tier long-term partners, ensuring supply chain capacity and regulatory compliance from the source.
+    </p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3><span class="badge badge-gold" data-en="Gold Tier" data-zh="金級">Gold Tier</span></h3>
+        <p data-en="Canton Fair core exhibitors. Proven export track record, complete EU certificates, high production capacity, and in-house R&D teams capable of design-around IP protection."
+           data-zh="廣交會及核心實力參展商。具備成熟外貿出口經驗、完整歐盟證書、高產能及具備防侵權設計規避能力的研發團隊。">
+          Canton Fair core exhibitors. Proven export track record, complete EU certificates, high production capacity, and in-house R&D teams capable of design-around IP protection.
+        </p>
+      </div>
+      <div class="card">
+        <h3><span class="badge badge-silver" data-en="Silver Tier" data-zh="銀級">Silver Tier</span></h3>
+        <p data-en="Manufacturers with solid QMS (ISO 9001), able to accommodate custom packaging and third-party notified body sampling for EU compliance."
+           data-zh="具備良好質量管理體系（ISO9001），能配合定製包裝及第三方公告機構抽檢的成熟製造廠。">
+          Manufacturers with solid QMS (ISO 9001), able to accommodate custom packaging and third-party notified body sampling for EU compliance.
+        </p>
+      </div>
+      <div class="card">
+        <h3><span class="badge badge-bronze" data-en="Bronze Tier" data-zh="銅級">Bronze Tier</span></h3>
+        <p data-en="Standard component suppliers. Require 100% pre-shipment inspection by our QC team before release — ensuring zero-defect delivery."
+           data-zh="一般常規配套組件工廠，須由我方品控團隊實施出廠前100%全檢方能放行，確保交付零缺陷。">
+          Standard component suppliers. Require 100% pre-shipment inspection by our QC team before release — ensuring zero-defect delivery.
+        </p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong data-en="Profit & Risk Assessment Model:" data-zh="採購利潤與風險評估模型：">Profit & Risk Assessment Model:</strong>
+      <span data-en=" Every new order is evaluated against a strict internal model: Net Profit = Target Price − (Wholesale Cost + Packaging + Logistics + Inspection). Only orders exceeding our safety margin threshold are accepted — protecting clients from margin erosion and suppliers from under-specification risk."
+            data-zh=" 每個新訂單均通過嚴格內部模型評估：淨利潤 = 目標採購價 − （批發底價 + 包裝成本 + 物流費 + 驗貨費）。只有超過安全邊際閾值的訂單方被接受，保護客戶免受利潤侵蝕，供應商免受規格不達標風險。">
+        Every new order is evaluated against a strict internal model: Net Profit = Target Price − (Wholesale Cost + Packaging + Logistics + Inspection). Only orders exceeding our safety margin threshold are accepted — protecting clients from margin erosion and suppliers from under-specification risk.
+      </span>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════ PRODUCTS ══════════════════ -->
+  <section id="panel-products" class="panel">
+
+    <div class="hero">
+      <h1 data-en="Category Focus —<br><span class='accent'>8 Core Domains</span>" data-zh="專注產品領域 —<br><span class='accent'>八大核心品類</span>">
+        Category Focus —<br><span class="accent">8 Core Domains</span>
+      </h1>
+      <p data-en="A curated portfolio of product categories, each backed by dedicated sourcing specialists, vetted supplier networks, and full EU compliance infrastructure."
+         data-zh="精選產品品類組合，每個品類均配備專職採購專家、經審核供應商網絡及完整歐盟合規架構。">
+        A curated portfolio of product categories, each backed by dedicated sourcing specialists, vetted supplier networks, and full EU compliance infrastructure.
+      </p>
+    </div>
+
+    <div class="stat-row" style="margin-bottom:1rem;">
+      <div class="stat-box">
+        <div class="num">$40M</div>
+        <div class="label" data-en="Goods Trading Value" data-zh="商品貿易採購額">Goods Trading Value</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">$30M</div>
+        <div class="label" data-en="Project Service Value" data-zh="專案服務價值">Project Service Value</div>
+      </div>
+      <div class="stat-box" style="flex:2;min-width:200px;">
+        <div class="chart-wrap" style="height:180px;padding:0.75rem;">
+          <canvas id="miniChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <span class="hint" data-en="Click a category card to explore" data-zh="點擊品類卡片查看詳情">Click a category card to explore</span>
+
+    <div class="cat-grid" id="cat-grid">
+      <div class="cat-card" data-cat="life">
+        <div class="cat-icon">🏠</div>
+        <div class="cat-name" data-en="Life Quality" data-zh="居家品質">Life Quality</div>
+        <div class="cat-sub" data-en="Home Textile" data-zh="家紡">Home Textile</div>
+      </div>
+      <div class="cat-card" data-cat="kids">
+        <div class="cat-icon">🧸</div>
+        <div class="cat-name" data-en="FOR Kids" data-zh="兒童專區">FOR Kids</div>
+        <div class="cat-sub" data-en="Toys & Novelties" data-zh="玩具文創">Toys & Novelties</div>
+      </div>
+      <div class="cat-card" data-cat="cooking">
+        <div class="cat-icon">🍳</div>
+        <div class="cat-name" data-en="Cooking with Joy" data-zh="烹飪樂趣">Cooking with Joy</div>
+        <div class="cat-sub" data-en="Kitchen & Dining" data-zh="廚房餐飲">Kitchen & Dining</div>
+      </div>
+      <div class="cat-card" data-cat="appliances">
+        <div class="cat-icon">🔌</div>
+        <div class="cat-name" data-en="Small Appliances" data-zh="小型家電">Small Appliances</div>
+        <div class="cat-sub" data-en="Domestic Electrical" data-zh="家用電器">Domestic Electrical</div>
+      </div>
+      <div class="cat-card" data-cat="household">
+        <div class="cat-icon">🧹</div>
+        <div class="cat-name" data-en="Household" data-zh="家居清潔">Household</div>
+        <div class="cat-sub" data-en="Cleaning & Garden" data-zh="清潔與園藝">Cleaning & Garden</div>
+      </div>
+      <div class="cat-card" data-cat="travel">
+        <div class="cat-icon">🧳</div>
+        <div class="cat-name" data-en="Travel & Outdoor" data-zh="旅行與戶外">Travel & Outdoor</div>
+        <div class="cat-sub" data-en="Luggage & Bags" data-zh="行李箱與袋">Luggage & Bags</div>
+      </div>
+      <div class="cat-card" data-cat="security">
+        <div class="cat-icon">🔒</div>
+        <div class="cat-name" data-en="Home Security" data-zh="家居安防">Home Security</div>
+        <div class="cat-sub" data-en="Indoor & Outdoor" data-zh="室內外安防">Indoor & Outdoor</div>
+      </div>
+      <div class="cat-card" data-cat="wellbeing">
+        <div class="cat-icon">💆</div>
+        <div class="cat-name" data-en="Well-being" data-zh="健康養護">Well-being</div>
+        <div class="cat-sub" data-en="Personal Care" data-zh="個人護理">Personal Care</div>
+      </div>
+    </div>
+
+    <div class="cat-detail" id="cat-detail">
+      <h3 id="cat-detail-title" data-en="Select a category above" data-zh="請選擇上方品類">Select a category above</h3>
+      <p id="cat-detail-desc" data-en="Click any product card to explore the detailed range, sourcing capabilities, and EU compliance profile for that category."
+         data-zh="點擊任意產品卡片，了解該品類的詳細產品線、採購能力及歐盟合規概況。">
+        Click any product card to explore the detailed range, sourcing capabilities, and EU compliance profile for that category.
+      </p>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════ COMPLIANCE & CSR ══════════════════ -->
+  <section id="panel-compliance" class="panel">
+
+    <div class="hero" style="background:linear-gradient(135deg,#0F172A 0%,#0D9488 100%);">
+      <h1 data-en="Compliance, Trust &amp;<br><span class='accent'>Social Responsibility</span>" data-zh="合規、誠信與<br><span class='accent'>企業社會責任</span>">
+        Compliance, Trust &amp;<br><span class="accent">Social Responsibility</span>
+      </h1>
+      <p data-en="Technical compliance is the lifeline of cross-border trade. We maintain a dedicated legal and compliance review team — and actively give back to the communities where we operate."
+         data-zh="技術合規是跨境貿易的生命線。我們設有專職法務與合規審查團隊，並積極回饋我們所在的社區。">
+        Technical compliance is the lifeline of cross-border trade. We maintain a dedicated legal and compliance review team — and actively give back to the communities where we operate.
+      </p>
+    </div>
+
+    <h2 class="section-title" data-en="EU Technical Compliance Portfolio" data-zh="歐盟技術合規資產檔案">EU Technical Compliance Portfolio</h2>
+    <p class="section-sub" data-en="A non-exhaustive snapshot of successfully issued EU Declarations of Conformity (DoC) held by Spatz Global Limited." data-zh="Spatz Global Limited 持有的部分歐盟符合性聲明（DoC）技術合規資產快照（非完整列表）。">A non-exhaustive snapshot of successfully issued EU Declarations of Conformity (DoC) held by Spatz Global Limited.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-en="Product Code" data-zh="產品代號">Product Code</th>
+            <th data-en="Category" data-zh="產品分類">Category</th>
+            <th data-en="EU Directives & Standards" data-zh="適用歐盟指令與標準">EU Directives & Standards</th>
+            <th data-en="Issuing Authority" data-zh="認證簽署人">Issuing Authority</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>LUMSTAR</strong> (FG001)</td>
+            <td data-en="Children's Toys / Light-up Series" data-zh="兒童玩具 / 發光系列">Children's Toys / Light-up Series</td>
+            <td>2009/48/EC · 2014/30/EU · RoHS<br><small>EN 71-1, -2, -3</small></td>
+            <td data-en="Issued HK · Yanan Wang (GM)" data-zh="香港簽發 · 王雅楠（總經理）">Issued HK · Yanan Wang (GM)</td>
+          </tr>
+          <tr>
+            <td><strong>BRENCHIE</strong> (LTCS-2102)</td>
+            <td data-en="Power Tools / Electric Chainsaw" data-zh="動力工具 / 電鏈鋸">Power Tools / Electric Chainsaw</td>
+            <td>2006/42/EC · 2014/35/EU · 2000/14/EC</td>
+            <td data-en="Ente Certificazione Macchine Srl (Italy, NB 1282) · Rok Slapar" data-zh="義大利公告機構 ECM Srl (NB 1282) · Rok Slapar">Ente Certificazione Macchine Srl (Italy, NB 1282) · Rok Slapar</td>
+          </tr>
+          <tr>
+            <td><strong>DIGICAM</strong> (P05)</td>
+            <td data-en="Consumer Digital Camera" data-zh="消費類數位相機">Consumer Digital Camera</td>
+            <td>2014/30/EU · LVD · RoHS</td>
+            <td data-en="Yanan Wang (General Manager)" data-zh="王雅楠（總經理）">Yanan Wang (General Manager)</td>
+          </tr>
+          <tr>
+            <td><strong>FOLDSIP</strong></td>
+            <td data-en="Food-contact Foldable Cup" data-zh="食品接觸級折疊杯">Food-contact Foldable Cup</td>
+            <td>(EC) No 1935/2004 · (EU) No 10/2011<br><small data-en="PP 15% + Silicone 85% — non-toxic release" data-zh="聚丙烯 15% + 矽膠 85% — 無毒釋放">PP 15% + Silicone 85% — non-toxic release</small></td>
+            <td data-en="Issued 2025.02.12 · Yanan Wang (GM)" data-zh="2025.02.12簽發 · 王雅楠（總經理）">Issued 2025.02.12 · Yanan Wang (GM)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box">
+      <strong data-en="IP & Legal Wall Notice:" data-zh="智慧財產權與法律牆公告：">IP & Legal Wall Notice:</strong>
+      <span data-en=" Spatz Global maintains a dedicated legal and IP review team. All listed products undergo rigorous patent clearance and design comparison analysis — ensuring zero counterfeit or third-party IP infringing products enter the EU market."
+            data-zh=" Spatz Global 設有專職法務與智慧財產權審查團隊。所有上架項目均須通過嚴格的專利排查與外觀對比分析，全面杜絕任何抄襲或侵害第三方智慧財產權的產品流入歐盟市場。">
+        Spatz Global maintains a dedicated legal and IP review team. All listed products undergo rigorous patent clearance and design comparison analysis — ensuring zero counterfeit or third-party IP infringing products enter the EU market.
+      </span>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2 class="section-title" data-en="Corporate Social Responsibility" data-zh="企業社會責任">Corporate Social Responsibility</h2>
+    <p class="section-sub" data-en="Rooted in Hong Kong, reaching the world — we convert commercial success into positive social impact." data-zh="根植香港，放眼全球，我們將商業成功轉化為對社會的正面影響。">Rooted in Hong Kong, reaching the world — we convert commercial success into positive social impact.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3 data-en="🤝 Charitable Support" data-zh="🤝 慈善公益定向支持">🤝 Charitable Support</h3>
+        <p data-en="Regular targeted donations to leading Hong Kong charities including Po Leung Kuk, the Red Cross, Lions Club, and Rotary International — translating non-commercial social trust into tangible community support."
+           data-zh="定期向香港知名慈善機構（包括保良局、紅十字會、獅子會及扶輪社）進行定向資金與物資捐贈，以實際行動支持弱勢社群。">
+          Regular targeted donations to leading Hong Kong charities including Po Leung Kuk, the Red Cross, Lions Club, and Rotary International — translating non-commercial social trust into tangible community support.
+        </p>
+      </div>
+      <div class="card">
+        <h3 data-en="🌿 Green Supply Chain" data-zh="🌿 綠色可持續供應鏈">🌿 Green Supply Chain</h3>
+        <p data-en="Full implementation of RoHS compliance across all supplier lines. Prioritising fully recyclable paper packaging to reduce single-use plastics in cross-border logistics — contributing to global carbon reduction goals."
+           data-zh="全面推動供應商實施RoHS有害物質限制指令，優選全紙質可回收彩盒包裝，減少跨境物流中的一次性塑料浪費，為全球減碳目標貢獻力量。">
+          Full implementation of RoHS compliance across all supplier lines. Prioritising fully recyclable paper packaging to reduce single-use plastics in cross-border logistics — contributing to global carbon reduction goals.
+        </p>
+      </div>
+      <div class="card">
+        <h3 data-en="🌐 Trade Shows & Government Liaison" data-zh="🌐 展覽參與與政府聯動">🌐 Trade Shows & Government Liaison</h3>
+        <p data-en="Regular participation in Canton Fair, Frankfurt Ambiente, and other tier-1 global trade events. Active compliance collaboration with customs and local commerce departments across multiple jurisdictions."
+           data-zh="常年深度參與廣交會、德國法蘭克福消費品展（Ambiente）等全球一線展會，積極推進與多地海關及地方政府商務部門的合規聯動。">
+          Regular participation in Canton Fair, Frankfurt Ambiente, and other tier-1 global trade events. Active compliance collaboration with customs and local commerce departments across multiple jurisdictions.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════ CONTACT ══════════════════ -->
+  <section id="panel-contact" class="panel">
+
+    <div class="hero">
+      <h1 data-en="Let's Build Something<br><span class='accent'>Together</span>" data-zh="讓我們共同<br><span class='accent'>開展合作</span>">
+        Let's Build Something<br><span class="accent">Together</span>
+      </h1>
+      <p data-en="Whether you are an international buyer seeking quality-assured products, or a qualified manufacturer looking to reach EU markets — we want to hear from you."
+         data-zh="無論您是尋求品質保障產品的國際買家，還是希望進入歐盟市場的優質製造商，我們期待與您對話。">
+        Whether you are an international buyer seeking quality-assured products, or a qualified manufacturer looking to reach EU markets — we want to hear from you.
+      </p>
+    </div>
+
+    <div class="form-wrap">
+      <h2 class="section-title" style="margin-bottom:0.3rem;" data-en="Business Enquiry" data-zh="商務詢價">Business Enquiry</h2>
+      <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:1.75rem;" data-en="Our compliance and sourcing team will respond within 24 hours." data-zh="我們的合規與採購負責人將於24小時內與您聯繫。">Our compliance and sourcing team will respond within 24 hours.</p>
+
+      <form id="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label data-en="Company Name *" data-zh="企業名稱 *">Company Name *</label>
+            <input type="text" class="form-control" required placeholder="e.g. Lucky Chef GmbH" />
+          </div>
+          <div class="form-group">
+            <label data-en="Contact Person *" data-zh="聯絡人 *">Contact Person *</label>
+            <input type="text" class="form-control" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label data-en="Email *" data-zh="電子郵件 *">Email *</label>
+            <input type="email" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label data-en="WhatsApp / WeChat / Phone" data-zh="WhatsApp / 微信 / 電話">WhatsApp / WeChat / Phone</label>
+            <input type="text" class="form-control" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label data-en="I am a… *" data-zh="我的身分 *">I am a… *</label>
+          <select class="form-control" required>
+            <option value="" data-en="Please select…" data-zh="請選擇…">Please select…</option>
+            <option value="buyer"    data-en="International Buyer / Retailer" data-zh="國際買家 / 零售商">International Buyer / Retailer</option>
+            <option value="supplier" data-en="Manufacturer / Supplier" data-zh="製造商 / 供應商">Manufacturer / Supplier</option>
+            <option value="gov"      data-en="Government / Regulatory Body" data-zh="政府 / 監管機構">Government / Regulatory Body</option>
+            <option value="other"    data-en="Other Partnership" data-zh="其他合作">Other Partnership</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label data-en="Sourcing Category" data-zh="目標採購類別">Sourcing Category</label>
+          <select class="form-control">
+            <option value="" data-en="Select category…" data-zh="選擇品類…">Select category…</option>
+            <option data-en="Domestic Appliances" data-zh="生活電器">Domestic Appliances</option>
+            <option data-en="Home Textile" data-zh="家居紡織">Home Textile</option>
+            <option data-en="Kids & Novelties" data-zh="玩具文創">Kids & Novelties</option>
+            <option data-en="Kitchenware" data-zh="廚具組">Kitchenware</option>
+            <option data-en="Household / Garden" data-zh="家居與園藝">Household / Garden</option>
+            <option data-en="Travel & Outdoor" data-zh="旅行與戶外">Travel & Outdoor</option>
+            <option data-en="Home Security" data-zh="家居安防">Home Security</option>
+            <option data-en="Well-being" data-zh="健康養護">Well-being</option>
+            <option data-en="Other / Multiple" data-zh="其他 / 多品類">Other / Multiple</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label data-en="Target Budget / Unit Price" data-zh="目標預算 / 目標單價">Target Budget / Unit Price</label>
+            <input type="text" class="form-control" placeholder="e.g. USD 5.00/pc, MOQ 10,000" />
+          </div>
+          <div class="form-group">
+            <label data-en="Destination Country" data-zh="目的地國家">Destination Country</label>
+            <input type="text" class="form-control" placeholder="e.g. Germany, Slovenia" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label data-en="Your Message / Requirements *" data-zh="訊息內容 / 需求說明 *">Your Message / Requirements *</label>
+          <textarea class="form-control" rows="4" required placeholder="Please describe your needs, packaging requirements, or product specifications…"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" data-en="Submit Enquiry" data-zh="提交詢價單">Submit Enquiry</button>
+      </form>
+
+      <div class="form-success" id="form-success"
+           data-en="Thank you! Your enquiry has been received. Our team will contact you within 24 hours."
+           data-zh="感謝您的聯繫！我們已收到您的詢價，合規與採購負責人將於24小時內與您聯繫。">
+        Thank you! Your enquiry has been received. Our team will contact you within 24 hours.
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-top:2.5rem;">
+      <div class="card">
+        <h3 data-en="📧 Email" data-zh="📧 電子郵件">📧 Email</h3>
+        <p>
+          <a href="mailto:yanan.wang@spatz-global.com" style="color:var(--accent);">yanan.wang@spatz-global.com</a><br>
+          <a href="mailto:emmy@keepselected.cn" style="color:var(--accent);">emmy@keepselected.cn</a>
+        </p>
+      </div>
+      <div class="card">
+        <h3 data-en="📞 Phone" data-zh="📞 電話">📞 Phone</h3>
+        <p>+86 185 0581 5587</p>
+      </div>
+      <div class="card">
+        <h3 data-en="🌐 Website" data-zh="🌐 官網">🌐 Website</h3>
+        <p>www.spatz-global.com</p>
+        <p style="margin-top:0.4rem;" data-en="Shanghai · Hong Kong · Germany" data-zh="上海 · 香港 · 德國">Shanghai · Hong Kong · Germany</p>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h4>SPATZ GLOBAL LIMITED</h4>
+      <p data-en="Create solution in a demanding market.<br>International trade & supply chain management since 2002."
+         data-zh="在嚴苛市場中創造解決方案。<br>自2002年提供國際貿易與供應鏈管理服務。">
+        Create solution in a demanding market.<br>International trade & supply chain management since 2002.
+      </p>
+    </div>
+    <div class="footer-col">
+      <h4 data-en="Legal" data-zh="法律資訊">Legal</h4>
+      <p data-en="Hong Kong Companies Registry<br>Registration No: 2012778<br>Incorporated: 16 Dec 2013"
+         data-zh="香港公司註冊處<br>公司註冊編號：2012778<br>成立日期：2013年12月16日">
+        Hong Kong Companies Registry<br>Registration No: 2012778<br>Incorporated: 16 Dec 2013
+      </p>
+    </div>
+    <div class="footer-col">
+      <h4 data-en="Navigation" data-zh="網站導覽">Navigation</h4>
+      <p>
+        <a onclick="goTab('home')"       data-en="Home"            data-zh="首頁">Home</a><br>
+        <a onclick="goTab('about')"      data-en="About"           data-zh="企業概況">About</a><br>
+        <a onclick="goTab('services')"   data-en="Services"        data-zh="服務與品控">Services</a><br>
+        <a onclick="goTab('products')"   data-en="Products"        data-zh="產品領域">Products</a><br>
+        <a onclick="goTab('compliance')" data-en="Compliance & CSR" data-zh="合規與社責">Compliance & CSR</a><br>
+        <a onclick="goTab('contact')"    data-en="Contact"         data-zh="商務聯絡">Contact</a>
+      </p>
+    </div>
+    <div class="footer-col">
+      <h4 data-en="Contact" data-zh="聯絡資訊">Contact</h4>
+      <p>
+        <a href="mailto:yanan.wang@spatz-global.com">yanan.wang@spatz-global.com</a><br>
+        <a href="mailto:emmy@keepselected.cn">emmy@keepselected.cn</a><br>
+        +86 185 0581 5587
+      </p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p data-en="© 2013–2026 Spatz Global Limited. All rights reserved. Content is a non-real-time corporate overview. Product catalogues not publicly displayed to protect intellectual property."
+       data-zh="© 2013–2026 Spatz Global Limited. 版權所有。本網站內容為非實時更新之企業公示，不對外公開展示動態商品畫冊，以確保智慧財產權之絕對安全性。">
+      © 2013–2026 Spatz Global Limited. All rights reserved. Content is a non-real-time corporate overview. Product catalogues not publicly displayed to protect intellectual property.
+    </p>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  /* ─── State ─── */
+  let lang = 'en'; // 'en' | 'zh'
+  let activeTab = 'home';
+  let chartInstance = null;
+
+  /* ─── Tab routing ─── */
+  function goTab(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('#desktop-nav a, .mobile-nav a').forEach(a => a.classList.remove('active'));
+
+    const panel = document.getElementById('panel-' + id);
+    if (panel) panel.classList.add('active');
+
+    const navEl = document.getElementById('nav-' + id);
+    if (navEl) navEl.classList.add('active');
+    const mnavEl = document.getElementById('mnav-' + id);
+    if (mnavEl) mnavEl.classList.add('active');
+
+    activeTab = id;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (id === 'products') {
+      setTimeout(buildMiniChart, 100);
+    }
+  }
+
+  /* ─── Mobile menu ─── */
+  function toggleMobileMenu() {
+    document.getElementById('mobile-nav').classList.toggle('open');
+  }
+  function closeMobile() {
+    document.getElementById('mobile-nav').classList.remove('open');
+  }
+
+  /* ─── Language / Theme toggle ─── */
+  function toggleLang() {
+    lang = lang === 'en' ? 'zh' : 'en';
+    const html = document.documentElement;
+    html.setAttribute('data-theme', lang === 'en' ? 'dark' : 'light');
+    html.setAttribute('lang', lang === 'en' ? 'en' : 'zh-HK');
+
+    document.getElementById('lang-btn').textContent = lang === 'en' ? '中文' : 'EN';
+
+    applyLang();
+    if (chartInstance) {
+      chartInstance.destroy();
+      chartInstance = null;
+      buildMiniChart();
+    }
+  }
+
+  function applyLang() {
+    document.querySelectorAll('[data-en][data-zh]').forEach(el => {
+      const val = el.getAttribute('data-' + lang);
+      if (val !== null) el.innerHTML = val;
+    });
+  }
+
+  /* ─── Process tabs ─── */
+  function switchProcTab(id) {
+    document.querySelectorAll('#proc-tab-bar .tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', b.getAttribute('onclick').includes(id));
+    });
+    document.querySelectorAll('#panel-services .tab-pane').forEach(p => {
+      p.classList.toggle('active', p.id === id);
+    });
+  }
+
+  /* ─── Category explorer ─── */
+  const catData = {
+    life: {
+      en: {
+        title: 'Life Quality — Home Textile',
+        desc: 'Bathroom accessories, decorative items, and a comprehensive sleep solution range: mattresses, foam products, pillows, duvets, blankets, towels and bathmats. Sourced from manufacturers with full EU material safety certification.'
+      },
+      zh: {
+        title: 'Life Quality 居家品質 — 家紡',
+        desc: '衛浴配件、裝飾品及全方位睡眠解決方案：床墊、泡棉產品、枕頭、羽絨被、毛毯、毛巾至地墊，來自具備完整歐盟材料安全認證的製造商。'
+      }
+    },
+    kids: {
+      en: {
+        title: 'FOR Kids — Toys & Novelties',
+        desc: 'Children\'s light-up toys, multi-functional capes, and mother-infant textiles. All products strictly compliant with EU Toy Safety Directive 2009/48/EC, EMC Directive 2014/30/EU, and RoHS. Safety first, always.'
+      },
+      zh: {
+        title: 'FOR Kids 兒童專區 — 玩具文創',
+        desc: '兒童發光玩具、多功能斗篷及母嬰護理紡織品。所有產品嚴格符合歐盟玩具安全指令2009/48/EC、電磁相容指令2014/30/EU及RoHS，安全第一。'
+      }
+    },
+    cooking: {
+      en: {
+        title: 'Cooking with Joy — Kitchen & Dining',
+        desc: 'Baking tools, kitchen accessories, dining equipment, tabletop décor and kitchen cleaning supplies. Functional meets beautiful — all food-contact items certified under (EC) No 1935/2004.'
+      },
+      zh: {
+        title: 'Cooking with Joy 烹飪樂趣 — 廚房餐飲',
+        desc: '烘焙工具、廚房配件、餐飲設備、桌面擺設及廚房清潔用品。功能與美感兼具，所有食品接觸類產品均依(EC) No 1935/2004認證。'
+      }
+    },
+    appliances: {
+      en: {
+        title: 'Small Domestic Appliances',
+        desc: 'A wide variety of modern small home appliances — from kitchen electrics to personal care devices. All selected factories hold EU LVD and EMC certificates, ensuring product performance and longevity.'
+      },
+      zh: {
+        title: '小型家電 Small Domestic Appliances',
+        desc: '種類繁多的現代小型家用電器，從廚房小家電到個人護理電器。所選工廠均持有歐盟低電壓指令（LVD）及電磁相容（EMC）認證，確保產品效能與壽命。'
+      }
+    },
+    household: {
+      en: {
+        title: 'Household — Cleaning & Garden',
+        desc: 'Advanced electric vacuum cleaners, smart mops and comprehensive cleaning solutions. Plus professional-grade electric garden tools for effortless indoor and outdoor maintenance.'
+      },
+      zh: {
+        title: 'Household 家居清潔與園藝',
+        desc: '先進電動吸塵器、智能拖把及全面清潔解決方案，以及專業級電動園藝工具，輕鬆打理室內外環境。'
+      }
+    },
+    travel: {
+      en: {
+        title: 'Travel & Outdoor — Luggage & Bags',
+        desc: 'Trolley luggage in both soft and hard shell, a wide range of travel bags, backpacks and accessories. Designed for durability and compliance with international airline carry-on standards.'
+      },
+      zh: {
+        title: '旅行與戶外 Travel & Outdoor — 行李箱與袋',
+        desc: '軟殼與硬殼拉桿行李箱、各類旅行包、背包及配件，注重耐用性並符合國際航空手提行李標準。'
+      }
+    },
+    security: {
+      en: {
+        title: 'Home Security — Indoor & Outdoor',
+        desc: 'Smart indoor and outdoor security systems, cameras, sensors and monitoring solutions. All devices compliant with relevant EU Radio Equipment Directive (RED) and LVD requirements.'
+      },
+      zh: {
+        title: '家居安防 Home Security — 室內外',
+        desc: '智能室內外安防系統、攝像頭、感應器及監控解決方案，所有設備符合歐盟無線電設備指令（RED）及低電壓指令（LVD）要求。'
+      }
+    },
+    wellbeing: {
+      en: {
+        title: 'Well-being — Personal Care',
+        desc: 'Health and personal care products spanning massagers, fitness accessories, wellness devices and grooming appliances. Curated for quality, safety and lifestyle relevance.'
+      },
+      zh: {
+        title: '健康養護 Well-being — 個人護理',
+        desc: '健康與個人護理產品，涵蓋按摩器、健身配件、健康設備及美容電器，精選品質、安全與生活適用性兼備的產品。'
+      }
+    }
+  };
+
+  document.querySelectorAll('.cat-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+
+      const key = card.getAttribute('data-cat');
+      const data = catData[key][lang];
+      const detail = document.getElementById('cat-detail');
+
+      detail.style.opacity = '0';
+      setTimeout(() => {
+        document.getElementById('cat-detail-title').textContent = data.title;
+        document.getElementById('cat-detail-desc').textContent  = data.desc;
+        detail.style.opacity = '1';
+      }, 180);
+    });
+  });
+
+  /* ─── Mini doughnut chart ─── */
+  function buildMiniChart() {
+    const canvas = document.getElementById('miniChart');
+    if (!canvas) return;
+    if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#94A3B8' : '#475569';
+    const gridColor = isDark ? '#1E293B' : '#E2E8F0';
+
+    chartInstance = new Chart(canvas.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: [
+          lang === 'en' ? 'Goods Trading (EU)' : '商品貿易採購額',
+          lang === 'en' ? 'Project Services (EU)' : '專案服務價值'
+        ],
+        datasets: [{
+          data: [40, 30],
+          backgroundColor: ['#0EA5E9', '#0D9488'],
+          borderColor: isDark ? '#0F172A' : '#ffffff',
+          borderWidth: 2,
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '62%',
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              color: textColor,
+              font: { size: 11, family: "'Inter', 'Noto Sans TC', sans-serif" },
+              padding: 10
             }
-        };
+          },
+          tooltip: {
+            callbacks: {
+              label: ctx => ` ${ctx.parsed}M USD`
+            },
+            backgroundColor: isDark ? '#1E293B' : '#0F172A',
+            titleColor: '#fff',
+            bodyColor: '#94A3B8',
+            padding: 10
+          }
+        }
+      }
+    });
+  }
 
-        // 防止反白干擾測驗體驗
-        document.getElementById('view-test').addEventListener('selectstart', (e) => e.preventDefault());
-    </script>
+  /* ─── Contact form ─── */
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    this.style.display = 'none';
+    const success = document.getElementById('form-success');
+    success.textContent = lang === 'en'
+      ? 'Thank you! Your enquiry has been received. Our team will contact you within 24 hours.'
+      : '感謝您的聯繫！我們已收到您的詢價，合規與採購負責人將於24小時內與您聯繫。';
+    success.style.display = 'block';
+  });
+
+  /* ─── Init ─── */
+  applyLang();
+</script>
 </body>
 </html>
