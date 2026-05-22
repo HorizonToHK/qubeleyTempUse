@@ -622,6 +622,23 @@
       margin-top: 1rem;
     }
 
+    .form-error {
+      display: none;
+      background: #FEE2E2;
+      color: #991B1B;
+      border-radius: 6px;
+      padding: 0.85rem 1.25rem;
+      text-align: center;
+      font-weight: 500;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     /* Info box */
     .info-box {
       background: var(--bg-2);
@@ -1268,78 +1285,89 @@
       <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:1.75rem;" data-en="Our compliance and sourcing team will respond within 24 hours." data-zh="我們的合規與採購負責人將於24小時內與您聯繫。">Our compliance and sourcing team will respond within 24 hours.</p>
 
       <form id="contact-form">
+        <input type="hidden" name="_subject" value="New enquiry from Spatz Global website">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
         <div class="form-row">
           <div class="form-group">
             <label data-en="Company Name *" data-zh="企業名稱 *">Company Name *</label>
-            <input type="text" class="form-control" required placeholder="e.g. Lucky Chef GmbH" />
+            <input type="text" name="Company Name" class="form-control" required placeholder="e.g. Lucky Chef GmbH" />
           </div>
           <div class="form-group">
             <label data-en="Contact Person *" data-zh="聯絡人 *">Contact Person *</label>
-            <input type="text" class="form-control" required />
+            <input type="text" name="Contact Person" class="form-control" required />
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label data-en="Email *" data-zh="電子郵件 *">Email *</label>
-            <input type="email" class="form-control" required />
+            <input type="email" name="Email" class="form-control" required />
           </div>
           <div class="form-group">
             <label data-en="WhatsApp / WeChat / Phone" data-zh="WhatsApp / 微信 / 電話">WhatsApp / WeChat / Phone</label>
-            <input type="text" class="form-control" />
+            <input type="text" name="WhatsApp / WeChat / Phone" class="form-control" />
           </div>
         </div>
 
         <div class="form-group">
           <label data-en="I am a… *" data-zh="我的身分 *">I am a… *</label>
-          <select class="form-control" required>
+          <select name="Visitor Type" class="form-control" required>
             <option value="" data-en="Please select…" data-zh="請選擇…">Please select…</option>
-            <option value="buyer"    data-en="International Buyer / Retailer" data-zh="國際買家 / 零售商">International Buyer / Retailer</option>
-            <option value="supplier" data-en="Manufacturer / Supplier" data-zh="製造商 / 供應商">Manufacturer / Supplier</option>
-            <option value="gov"      data-en="Government / Regulatory Body" data-zh="政府 / 監管機構">Government / Regulatory Body</option>
-            <option value="other"    data-en="Other Partnership" data-zh="其他合作">Other Partnership</option>
+            <option value="International Buyer / Retailer"    data-en="International Buyer / Retailer" data-zh="國際買家 / 零售商">International Buyer / Retailer</option>
+            <option value="Manufacturer / Supplier" data-en="Manufacturer / Supplier" data-zh="製造商 / 供應商">Manufacturer / Supplier</option>
+            <option value="Government / Regulatory Body"      data-en="Government / Regulatory Body" data-zh="政府 / 監管機構">Government / Regulatory Body</option>
+            <option value="Other Partnership"    data-en="Other Partnership" data-zh="其他合作">Other Partnership</option>
           </select>
         </div>
 
         <div class="form-group">
           <label data-en="Sourcing Category" data-zh="目標採購類別">Sourcing Category</label>
-          <select class="form-control">
+          <select name="Sourcing Category" class="form-control">
             <option value="" data-en="Select category…" data-zh="選擇品類…">Select category…</option>
-            <option data-en="Domestic Appliances" data-zh="生活電器">Domestic Appliances</option>
-            <option data-en="Home Textile" data-zh="家居紡織">Home Textile</option>
-            <option data-en="Kids & Novelties" data-zh="Toys &amp; Novelties">Kids & Novelties</option>
-            <option data-en="Kitchenware" data-zh="廚具組">Kitchenware</option>
-            <option data-en="Household / Garden" data-zh="家居與園藝">Household / Garden</option>
-            <option data-en="Travel & Outdoor" data-zh="Travel &amp; Outdoor">Travel & Outdoor</option>
-            <option data-en="Home Security" data-zh="Home Security">Home Security</option>
-            <option data-en="Well-being" data-zh="Well-being">Well-being</option>
-            <option data-en="Other / Multiple" data-zh="其他 / 多品類">Other / Multiple</option>
+            <option value="Domestic Appliances" data-en="Domestic Appliances" data-zh="生活電器">Domestic Appliances</option>
+            <option value="Home Textile" data-en="Home Textile" data-zh="家居紡織">Home Textile</option>
+            <option value="Kids & Novelties" data-en="Kids & Novelties" data-zh="Toys &amp; Novelties">Kids & Novelties</option>
+            <option value="Kitchenware" data-en="Kitchenware" data-zh="廚具組">Kitchenware</option>
+            <option value="Household / Garden" data-en="Household / Garden" data-zh="家居與園藝">Household / Garden</option>
+            <option value="Travel & Outdoor" data-en="Travel & Outdoor" data-zh="Travel &amp; Outdoor">Travel & Outdoor</option>
+            <option value="Home Security" data-en="Home Security" data-zh="Home Security">Home Security</option>
+            <option value="Well-being" data-en="Well-being" data-zh="Well-being">Well-being</option>
+            <option value="Other / Multiple" data-en="Other / Multiple" data-zh="其他 / 多品類">Other / Multiple</option>
           </select>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label data-en="Target Budget / Unit Price" data-zh="目標預算 / 目標單價">Target Budget / Unit Price</label>
-            <input type="text" class="form-control" placeholder="e.g. USD 5.00/pc, MOQ 10,000" />
+            <input type="text" name="Target Budget / Unit Price" class="form-control" placeholder="e.g. USD 5.00/pc, MOQ 10,000" />
           </div>
           <div class="form-group">
             <label data-en="Destination Country" data-zh="目的地國家">Destination Country</label>
-            <input type="text" class="form-control" placeholder="e.g. Germany, Slovenia" />
+            <input type="text" name="Destination Country" class="form-control" placeholder="e.g. Germany, Slovenia" />
           </div>
         </div>
 
         <div class="form-group">
           <label data-en="Your Message / Requirements *" data-zh="訊息內容 / 需求說明 *">Your Message / Requirements *</label>
-          <textarea class="form-control" rows="4" required placeholder="Please describe your needs, packaging requirements, or product specifications…"></textarea>
+          <textarea name="Message" class="form-control" rows="4" required placeholder="Please describe your needs, packaging requirements, or product specifications…"></textarea>
         </div>
 
-        <button type="submit" class="btn-submit" data-en="Submit Enquiry" data-zh="提交詢價單">Submit Enquiry</button>
+        <button type="submit" class="btn-submit" id="submit-btn" data-en="Submit Enquiry" data-zh="提交詢價單">Submit Enquiry</button>
       </form>
 
       <div class="form-success" id="form-success"
            data-en="Thank you! Your enquiry has been received. Our team will contact you within 24 hours."
            data-zh="感謝您的聯繫！我們已收到您的詢價，合規與採購負責人將於24小時內與您聯繫。">
         Thank you! Your enquiry has been received. Our team will contact you within 24 hours.
+      </div>
+
+      <div class="form-error" id="form-error"
+           data-en="Something went wrong. Please email us directly at horizonto.strategy@gmail.com or yanan.wang@spatz-global.com."
+           data-zh="提交失敗，請直接寄信至 horizonto.strategy@gmail.com 或 yanan.wang@spatz-global.com。">
+        Something went wrong. Please email us directly at horizonto.strategy@gmail.com or yanan.wang@spatz-global.com.
       </div>
     </div>
 
@@ -1639,15 +1667,57 @@
     });
   }
 
-  /* ─── Contact form ─── */
-  document.getElementById('contact-form').addEventListener('submit', function(e) {
+  /* ─── Contact form: FormSubmit.co AJAX ─── */
+  const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/horizonto.strategy@gmail.com';
+
+  document.getElementById('contact-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-    this.style.display = 'none';
-    const success = document.getElementById('form-success');
-    success.textContent = lang === 'en'
-      ? 'Thank you! Your enquiry has been received. Our team will contact you within 24 hours.'
-      : '感謝您的聯繫！我們已收到您的詢價，合規與採購負責人將於24小時內與您聯繫。';
-    success.style.display = 'block';
+
+    const form = this;
+    const submitBtn = document.getElementById('submit-btn');
+    const successBox = document.getElementById('form-success');
+    const errorBox = document.getElementById('form-error');
+
+    successBox.style.display = 'none';
+    errorBox.style.display = 'none';
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = lang === 'en' ? 'Sending…' : '傳送中…';
+
+    const data = {};
+    new FormData(form).forEach((value, key) => { data[key] = value; });
+    data['Submitted At'] = new Date().toISOString();
+    data['Page Language'] = lang === 'en' ? 'English' : 'Chinese';
+
+    try {
+      const res = await fetch(FORMSUBMIT_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      const json = await res.json().catch(() => ({}));
+
+      if (res.ok && (json.success === 'true' || json.success === true)) {
+        form.style.display = 'none';
+        successBox.textContent = lang === 'en'
+          ? 'Thank you! Your enquiry has been received. Our team will contact you within 24 hours.'
+          : '感謝您的聯繫！我們已收到您的詢價，合規與採購負責人將於24小時內與您聯繫。';
+        successBox.style.display = 'block';
+      } else {
+        throw new Error(json.message || 'Submission failed');
+      }
+    } catch (err) {
+      errorBox.textContent = lang === 'en'
+        ? 'Something went wrong. Please email us directly at horizonto.strategy@gmail.com or yanan.wang@spatz-global.com.'
+        : '提交失敗，請直接寄信至 horizonto.strategy@gmail.com 或 yanan.wang@spatz-global.com。';
+      errorBox.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = lang === 'en' ? 'Submit Enquiry' : '提交詢價單';
+    }
   });
 
   /* ─── Init ─── */
