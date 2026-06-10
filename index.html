@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spatz Global Limited | Global Sourcing & Supply Chain Solutions</title>
-  <meta name="description" content="Spatz Global Limited — premier supply chain management, EU-compliant sourcing and export specialist since 2002. Offices in Shanghai, Hong Kong, Germany." />
+  <title>Spatz Global Limited | Sourcing Agent & Full-Solution Provider</title>
+  <meta name="description" content="Spatz Global Limited — your sourcing agent handling all procurement hassles from factory audit to delivery. EU-compliant solutions since 2002. Shanghai, Hong Kong, Germany." />
   <meta name="keywords" content="Spatz Global, supply chain China, EU compliance, home textile, domestic appliances, sourcing, international trade" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -16,8 +16,6 @@
       --primary:        #1E3A8A;
       --primary-light:  #2563EB;
       --accent:         #0EA5E9;
-      --gold:           #D97706;
-      --teal:           #0D9488;
       --white:          #FFFFFF;
       --border:         #1E293B;
       --radius:         10px;
@@ -417,11 +415,11 @@
       letter-spacing: 0.5px;
     }
 
-    .badge-gold   { background: #FEF3C7; color: #92400E; }
-    .badge-silver { background: #E2E8F0; color: #334155; }
-    .badge-bronze { background: #FEE2E2; color: #991B1B; }
+    .badge-gold   { background: #DBEAFE; color: #1E40AF; }
+    .badge-silver { background: #E2E8F0; color: #475569; }
+    .badge-bronze { background: #BFDBFE; color: #1E3A8A; }
     .badge-blue   { background: #DBEAFE; color: #1E40AF; }
-    .badge-teal   { background: #CCFBF1; color: #0F766E; }
+    .badge-teal   { background: #DBEAFE; color: #1E40AF; }
 
     /* Timeline */
     .timeline { border-left: 2px solid var(--border-color); margin-left: 8px; }
@@ -487,45 +485,62 @@
     .process-box h4 { font-size: 1rem; font-weight: 600; color: var(--accent); margin-bottom: 0.6rem; }
     .process-box p  { color: var(--text-muted); font-size: 0.9rem; }
 
-    /* Category grid */
-    .cat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
+    /* Process step cards with numbered badges */
+    .process-step {
+      position: relative;
+      padding-top: 2.5rem;
     }
 
-    .cat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 1.1rem 0.75rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all var(--transition);
+    .step-badge {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
     }
 
-    .cat-card:hover, .cat-card.active {
-      border-color: var(--accent);
-      background: var(--badge-bg);
-      transform: translateY(-2px);
+    /* Product family cards with image placeholders */
+    .product-family-card {
+      overflow: hidden;
+      padding: 0;
     }
 
-    .cat-card .cat-icon { font-size: 2rem; margin-bottom: 0.4rem; }
-    .cat-card .cat-name { font-size: 0.78rem; font-weight: 600; color: var(--text); line-height: 1.3; }
-    .cat-card .cat-sub  { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; }
-
-    .cat-detail {
-      background: var(--bg-card);
-      border: 1px solid var(--accent);
-      border-radius: var(--radius);
-      padding: 1.75rem;
-      min-height: 100px;
-      transition: opacity 0.2s ease;
+    .product-family-img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border-color);
+      background: linear-gradient(135deg, var(--bg-2), var(--border-color));
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-style: italic;
     }
 
-    .cat-detail h3 { font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.6rem; }
-    .cat-detail p  { color: var(--text-muted); font-size: 0.9rem; }
+    .product-family-card h3,
+    .product-family-card p {
+      padding: 0 1.75rem;
+    }
+
+    .product-family-card h3 {
+      margin-top: 1.25rem;
+      font-size: 1.1rem;
+    }
+
+    .product-family-card p {
+      padding-bottom: 1.75rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
 
     /* Chart */
     .chart-wrap {
@@ -642,7 +657,7 @@
     /* Info box */
     .info-box {
       background: var(--bg-2);
-      border-left: 4px solid var(--teal);
+      border-left: 4px solid var(--accent);
       border-radius: 0 var(--radius) var(--radius) 0;
       padding: 1.25rem 1.5rem;
       margin-bottom: 1.5rem;
@@ -665,6 +680,30 @@
     .dist-flag { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
     .dist-name { font-weight: 600; color: var(--text); font-size: 0.9rem; }
     .dist-desc { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.15rem; }
+
+    /* Distribution partner cards (grid layout) */
+    .dist-card {
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    .dist-card .dist-flag {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .dist-card .dist-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .dist-card .dist-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
 
     /* Tip hint */
     .hint {
@@ -775,12 +814,12 @@
   <section id="panel-home" class="panel active">
 
     <div class="hero">
-      <h1 data-en="Create Solution in a<br><span class='accent'>Demanding Market</span>" data-zh="在嚴苛市場中<br><span class='accent'>創造卓越解決方案</span>">
-        Create Solution in a<br><span class="accent">Demanding Market</span>
+      <h1 data-en="Your Sourcing Agent &<br><span class='accent'>Full-Solution Provider</span>" data-zh="您的採購代理與<br><span class='accent'>全方位解決方案供應商</span>">
+        Your Sourcing Agent &<br><span class="accent">Full-Solution Provider</span>
       </h1>
-      <p data-en="Since 2002, Spatz Global has delivered end-to-end supply chain management and EU-compliant export solutions — connecting world-class Chinese manufacturers with global retail leaders."
-         data-zh="自2002年起，Spatz Global 提供全面的供應鏈管理與符合歐盟標準的出口解決方案，連結中國一流製造商與全球零售龍頭。">
-        Since 2002, Spatz Global has delivered end-to-end supply chain management and EU-compliant export solutions — connecting world-class Chinese manufacturers with global retail leaders.
+      <p data-en="Since 2002, Spatz Global has handled all the hassles of international sourcing — from factory audits to final delivery. We're not a middleman: we're your comprehensive sourcing partner delivering complete, EU-compliant solutions."
+         data-zh="自2002年起，Spatz Global 承擔國際採購的所有繁雜事務 — 從工廠審計到最終交付。我們不是中間商：我們是您的全方位採購夥伴，提供完整的歐盟合規解決方案。">
+        Since 2002, Spatz Global has handled all the hassles of international sourcing — from factory audits to final delivery. We're not a middleman: we're your comprehensive sourcing partner delivering complete, EU-compliant solutions.
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" onclick="goTab('services')" data-en="Our Services" data-zh="了解服務">Our Services</a>
@@ -943,27 +982,94 @@
     <h2 class="section-title" data-en="European Distribution Partners" data-zh="歐洲分銷合作夥伴">European Distribution Partners</h2>
     <p class="section-sub" data-en="Our long-term product delivery network is deeply integrated into EU retail channels." data-zh="我們的長期產品交付體系深度融入歐盟零售網路。">Our long-term product delivery network is deeply integrated into EU retail channels.</p>
 
-    <div class="card">
-      <div class="dist-item">
-        <div class="dist-flag">🇸🇮</div>
-        <div>
-          <div class="dist-name">HS PLUS d.o.o. — Slovenia</div>
-          <div class="dist-desc" data-en="Central & Eastern Europe consumer electronics and garden machinery distribution." data-zh="覆蓋中歐及東歐主流消費電子與園林機械通路。">Central & Eastern Europe consumer electronics and garden machinery distribution.</div>
-        </div>
-      </div>
-      <div class="dist-item">
+    <div class="grid-3">
+      <div class="card dist-card">
         <div class="dist-flag">🇭🇷</div>
-        <div>
-          <div class="dist-name">Kenty Adria d.o.o. — Croatia</div>
-          <div class="dist-desc" data-en="Adriatic region core distributor for home goods and kitchenware." data-zh="亞德里亞海地區核心家居與廚房用品分銷商。">Adriatic region core distributor for home goods and kitchenware.</div>
-        </div>
+        <h4 class="dist-name">Dormeo Home</h4>
+        <p class="dist-desc" data-en="20+ European countries, multi-channel network. Sleep & home living expert. 'The Best For You.'"
+           data-zh="覆蓋20多個歐洲國家，多渠道網絡。睡眠與家居生活專家。「為您提供最好的。」">
+          20+ European countries, multi-channel network. Sleep & home living expert. "The Best For You."
+        </p>
       </div>
-      <div class="dist-item">
+      <div class="card dist-card">
         <div class="dist-flag">🇩🇪</div>
-        <div>
-          <div class="dist-name">Lucky Chef GmbH — Germany</div>
-          <div class="dist-desc" data-en="DACH region strategic partner for premium food-contact grade cookware." data-zh="德語區高端食品接觸級廚具策略夥伴。">DACH region strategic partner for premium food-contact grade cookware.</div>
-        </div>
+        <h4 class="dist-name">Tchibo GmbH</h4>
+        <p class="dist-desc" data-en="~550 specialized shops, 18,000+ shop-in-shops. Germany's e-commerce leader. Weekly-changing lifestyle products."
+           data-zh="約550家專賣店，18,000多個店中店。德國電商領導者。每週更換的生活方式產品。">
+          ~550 specialized shops, 18,000+ shop-in-shops. Germany's e-commerce leader. Weekly-changing lifestyle products.
+        </p>
+      </div>
+      <div class="card dist-card">
+        <div class="dist-flag">🇸🇮</div>
+        <h4 class="dist-name">Vitapur</h4>
+        <p class="dist-desc" data-en="40+ brick-and-mortar stores plus CEE e-commerce. Premium bedding & health retail. 'Passion for living.'"
+           data-zh="40多家實體店加上中東歐電商。高端寢具與健康零售。「熱愛生活。」">
+          40+ brick-and-mortar stores plus CEE e-commerce. Premium bedding & health retail. "Passion for living."
+        </p>
+      </div>
+      <div class="card dist-card">
+        <div class="dist-flag">🇩🇪</div>
+        <h4 class="dist-name">Matratzen Concord</h4>
+        <p class="dist-desc" data-en="Close to 600 specialized stores across DE/AT/CH. Europe's largest sleep systems retailer."
+           data-zh="在德國、奧地利、瑞士擁有近600家專賣店。歐洲最大的睡眠系統零售商。">
+          Close to 600 specialized stores across DE/AT/CH. Europe's largest sleep systems retailer.
+        </p>
+      </div>
+      <div class="card dist-card">
+        <div class="dist-flag">🇸🇮</div>
+        <h4 class="dist-name">Mercator</h4>
+        <p class="dist-desc" data-en="1,000+ retail outlets across SEE region. Leading supermarket & hypermarket chain. 'The best neighbour.'"
+           data-zh="在東南歐地區擁有1,000多個零售網點。領先的超市和大賣場連鎖。「最好的鄰居。」">
+          1,000+ retail outlets across SEE region. Leading supermarket & hypermarket chain. "The best neighbour."
+        </p>
+      </div>
+      <div class="card dist-card">
+        <div class="dist-flag">🇭🇷</div>
+        <h4 class="dist-name">Konzum plus d.o.o.</h4>
+        <p class="dist-desc" data-en="600+ physical stores, serving 500k daily customers. Croatia's dominant FMCG retailer."
+           data-zh="600多家實體店，每日服務50萬客戶。克羅埃西亞主導的快消品零售商。">
+          600+ physical stores, serving 500k daily customers. Croatia's dominant FMCG retailer.
+        </p>
+      </div>
+      <div class="card dist-card">
+        <div class="dist-flag">🇭🇷</div>
+        <h4 class="dist-name">Tisak</h4>
+        <p class="dist-desc" data-en="900+ kiosks nationwide. Croatia's largest retail kiosk chain. High-frequency convenience retail."
+           data-zh="全國900多個報亭。克羅埃西亞最大的零售報亭連鎖。高頻便利零售。">
+          900+ kiosks nationwide. Croatia's largest retail kiosk chain. High-frequency convenience retail.
+        </p>
+      </div>
+      <div class="card dist-card">
+        <div class="dist-flag">🇭🇷</div>
+        <h4 class="dist-name">Pevex d.o.o.</h4>
+        <p class="dist-desc" data-en="28 massive hypermarket sales centers. Leading DIY and home improvement retailer in Croatia."
+           data-zh="28個大型超市銷售中心。克羅埃西亞領先的DIY和家居改善零售商。">
+          28 massive hypermarket sales centers. Leading DIY and home improvement retailer in Croatia.
+        </p>
+      </div>
+      <div class="card dist-card">
+        <div class="dist-flag">🇷🇸</div>
+        <h4 class="dist-name">Krafter Serbia</h4>
+        <p class="dist-desc" data-en="Massive DIY warehouse locations. Fast-growing home improvement chain. Professional tools & construction."
+           data-zh="大型DIY倉儲式賣場。快速增長的家居改善連鎖。專業工具與建材。">
+          Massive DIY warehouse locations. Fast-growing home improvement chain. Professional tools & construction.
+        </p>
+      </div>
+      <div class="card dist-card">
+        <div class="dist-flag">🇸🇮</div>
+        <h4 class="dist-name">Vigoshop (HS plus d.o.o.)</h4>
+        <p class="dist-desc" data-en="Millions of shipments across 24+ European nations. Cross-border e-commerce pioneer. Smart lifestyle products."
+           data-zh="在24個以上歐洲國家運送數百萬件商品。跨境電商先驅。智能生活產品。">
+          Millions of shipments across 24+ European nations. Cross-border e-commerce pioneer. Smart lifestyle products.
+        </p>
+      </div>
+      <div class="card dist-card">
+        <div class="dist-flag">🇽🇰</div>
+        <h4 class="dist-name">Viva Fresh Store</h4>
+        <p class="dist-desc" data-en="100+ hypermarkets and express shops. Kosovo's absolute market leader. Modern grocery & household goods."
+           data-zh="100多個超市和便利店。科索沃絕對的市場領導者。現代化雜貨和家居用品。">
+          100+ hypermarkets and express shops. Kosovo's absolute market leader. Modern grocery & household goods.
+        </p>
       </div>
     </div>
 
@@ -973,16 +1079,23 @@
   <section id="panel-services" class="panel">
 
     <div class="hero">
-      <h1 data-en="Rigorous Standards,<br><span class='accent'>End-to-End Service</span>" data-zh="嚴格標準，<br><span class='accent'>端到端全程服務</span>">
-        Rigorous Standards,<br><span class="accent">End-to-End Service</span>
+      <h1 data-en="We Handle All Hassles,<br><span class='accent'>Deliver Complete Solutions</span>" data-zh="我們承擔所有繁雜事務，<br><span class='accent'>交付完整解決方案</span>">
+        We Handle All Hassles,<br><span class="accent">Deliver Complete Solutions</span>
       </h1>
-      <p data-en="From the first factory audit to the final delivery inspection — every step is owned, controlled and guaranteed by Spatz Global."
-         data-zh="從首次工廠審計到最終驗貨出口，每一個步驟均由Spatz Global全程負責、管控與保障。">
-        From the first factory audit to the final delivery inspection — every step is owned, controlled and guaranteed by Spatz Global.
+      <p data-en="From factory selection to container loading — we own the entire process. You get EU-compliant products with zero headaches."
+         data-zh="從工廠篩選到裝櫃出貨 — 我們掌握全程。您獲得歐盟合規產品，零煩惱。">
+        From factory selection to container loading — we own the entire process. You get EU-compliant products with zero headaches.
       </p>
     </div>
 
     <div class="grid-3">
+      <div class="card">
+        <h3 data-en="⚙️ Category Management" data-zh="⚙️ 品類管理">⚙️ Category Management</h3>
+        <p data-en="Strategic procurement planning across 8 core product families. We analyze market trends, supplier capacity, and regulatory requirements to build category roadmaps aligned with your business goals."
+           data-zh="跨越8大核心產品類別的策略性採購規劃。我們分析市場趨勢、供應商產能及法規要求，制定與您業務目標一致的品類路線圖。">
+          Strategic procurement planning across 8 core product families. We analyze market trends, supplier capacity, and regulatory requirements to build category roadmaps aligned with your business goals.
+        </p>
+      </div>
       <div class="card">
         <h3 data-en="⚙ Product Development & IP" data-zh="⚙ 產品開發與專利">⚙ Product Development & IP</h3>
         <p data-en="Product design, development support, and patent solutions ensuring market competitiveness and regulatory compliance."
@@ -998,10 +1111,24 @@
         </p>
       </div>
       <div class="card">
-        <h3 data-en="🚢 Logistics & Quality Control" data-zh="🚢 物流與品質管理">🚢 Logistics & Quality Control</h3>
-        <p data-en="Covering procurement planning, quality inspection and global logistics. Long-term bulk order cooperation builds deep supplier trust and continuously raises QC standards."
-           data-zh="涵蓋採購規劃、品質檢驗至全球物流安排。長期大宗訂單合作與供應商建立深度信任，持續提升品管標準。">
-          Covering procurement planning, quality inspection and global logistics. Long-term bulk order cooperation builds deep supplier trust and continuously raises QC standards.
+        <h3 data-en="✅ Quality Management" data-zh="✅ 品質管理">✅ Quality Management</h3>
+        <p data-en="End-to-end quality assurance from raw material inspection to pre-shipment verification. Our QC team conducts factory audits, in-process checks, and final container loading supervision — ensuring zero-defect delivery."
+           data-zh="從原材料檢驗到出貨前驗證的端到端品質保證。我們的品管團隊執行工廠審核、過程檢查及最終裝櫃監督 — 確保零缺陷交付。">
+          End-to-end quality assurance from raw material inspection to pre-shipment verification. Our QC team conducts factory audits, in-process checks, and final container loading supervision — ensuring zero-defect delivery.
+        </p>
+      </div>
+      <div class="card">
+        <h3 data-en="🚢 Logistics & Consultation" data-zh="🚢 物流與諮詢">🚢 Logistics & Consultation</h3>
+        <p data-en="Global freight management, customs clearance advisory, and Incoterms optimization. We handle FOB, CIF, DDP arrangements — plus regulatory consulting for EU market entry (CE marking, REACH, RoHS)."
+           data-zh="全球貨運管理、清關諮詢及國際貿易術語優化。我們處理FOB、CIF、DDP安排 — 以及歐盟市場准入的法規諮詢（CE標誌、REACH、RoHS）。">
+          Global freight management, customs clearance advisory, and Incoterms optimization. We handle FOB, CIF, DDP arrangements — plus regulatory consulting for EU market entry (CE marking, REACH, RoHS).
+        </p>
+      </div>
+      <div class="card">
+        <h3 data-en="💰 Financing & Insurance" data-zh="💰 融資與保險">💰 Financing & Insurance</h3>
+        <p data-en="HSBC Trade Factoring for cash flow optimization. Sinosure (中國信保) and 中金寶 credit insurance for buyer protection. We structure payment terms to balance your working capital needs with supplier trust."
+           data-zh="匯豐銀行保理服務優化現金流。中國信保與中金寶信用保險保護買家。我們架構付款條款，在您的營運資本需求與供應商信任之間取得平衡。">
+          HSBC Trade Factoring for cash flow optimization. Sinosure (中國信保) and 中金寶 credit insurance for buyer protection. We structure payment terms to balance your working capital needs with supplier trust.
         </p>
       </div>
     </div>
@@ -1009,40 +1136,55 @@
     <div class="divider"></div>
 
     <h2 class="section-title" data-en="Sourcing Process" data-zh="採購流程">Sourcing Process</h2>
-    <span class="hint" data-en="Click a step to explore" data-zh="點擊步驟了解詳情">Click a step to explore</span>
+    <span class="hint" data-en="6-step comprehensive workflow" data-zh="六步驟全方位流程">6-step comprehensive workflow</span>
 
-    <div class="tab-bar" id="proc-tab-bar">
-      <button class="tab-btn active" onclick="switchProcTab('p1')" data-en="1 · Needs Analysis" data-zh="1 · 需求分析">1 · Needs Analysis</button>
-      <button class="tab-btn"        onclick="switchProcTab('p2')" data-en="2 · Supplier Matching" data-zh="2 · 供應商配對">2 · Supplier Matching</button>
-      <button class="tab-btn"        onclick="switchProcTab('p3')" data-en="3 · Inspection & Delivery" data-zh="3 · 驗貨與出貨">3 · Inspection & Delivery</button>
-    </div>
-
-    <div id="p1" class="tab-pane active">
-      <div class="process-box">
-        <h4 data-en="Precision Targeting — Eliminating Waste" data-zh="精準定位，拒絕低效">Precision Targeting — Eliminating Waste</h4>
-        <p data-en="We operate an extensive internal product database and digital management system. When a client request arrives, we rapidly filter out substandard or low-margin sources — no time wasted on unscreened wholesale platforms. We lock directly onto compliant suppliers with proven mass-production capability and quality assurance."
-           data-zh="我們擁有龐大的內部產品資料庫與數位化管理系統。客戶需求一到，我們迅速排查低質或利潤過低的來源，不在未篩選的批發平台上浪費時間，直接鎖定具備量產實力與品質保障的合規供應商。">
-          We operate an extensive internal product database and digital management system. When a client request arrives, we rapidly filter out substandard or low-margin sources — no time wasted on unscreened wholesale platforms. We lock directly onto compliant suppliers with proven mass-production capability and quality assurance.
+    <div class="grid-3">
+      <div class="card process-step">
+        <div class="step-badge">1</div>
+        <h4 data-en="Inquiry & Sourcing Request" data-zh="詢價與採購需求">Inquiry & Sourcing Request</h4>
+        <p data-en="Submit your specifications, target pricing, and compliance requirements. Our team conducts initial feasibility analysis and supplier database screening."
+           data-zh="提交您的規格、目標價格及合規要求。我們的團隊進行初步可行性分析與供應商資料庫篩選。">
+          Submit your specifications, target pricing, and compliance requirements. Our team conducts initial feasibility analysis and supplier database screening.
         </p>
       </div>
-    </div>
-
-    <div id="p2" class="tab-pane">
-      <div class="process-box">
-        <h4 data-en="Leverage Negotiation & Deep Partnership" data-zh="優勢談判與深度合作">Leverage Negotiation & Deep Partnership</h4>
-        <p data-en="Bulk purchasing volume grants us deep factory trust. We don't just compare prices — we evaluate product detail differences, delivery reliability and after-sales protection. Low-tier suppliers unable to provide adequate margin or post-sale guarantees are filtered out, ensuring clients receive genuine value."
-           data-zh="憑藉大宗採購量，我們與工廠建立深度信任。不僅比對價格，更評估產品細節差異、交期穩定性及售後保障。利潤空間不足或無法提供售後保障的低階供應商均被淘汰，確保客戶獲得真正性價比。">
-          Bulk purchasing volume grants us deep factory trust. We don't just compare prices — we evaluate product detail differences, delivery reliability and after-sales protection. Low-tier suppliers unable to provide adequate margin or post-sale guarantees are filtered out, ensuring clients receive genuine value.
+      <div class="card process-step">
+        <div class="step-badge">2</div>
+        <h4 data-en="Customized Service" data-zh="客製化服務">Customized Service</h4>
+        <p data-en="Tailored sourcing strategy based on your volume, timeline, and quality standards. We match you with pre-vetted suppliers from our tiered network."
+           data-zh="根據您的訂單量、時間表及品質標準量身定制採購策略。我們從分級供應商網絡中為您匹配經預審的工廠。">
+          Tailored sourcing strategy based on your volume, timeline, and quality standards. We match you with pre-vetted suppliers from our tiered network.
         </p>
       </div>
-    </div>
-
-    <div id="p3" class="tab-pane">
-      <div class="process-box">
-        <h4 data-en="Rigorous Inspection — We Accept Responsibility" data-zh="嚴格驗貨，承擔責任">Rigorous Inspection — We Accept Responsibility</h4>
-        <p data-en="Pre-shipment inspection is non-negotiable. By sourcing through us, quality oversight responsibility is transferred to Spatz Global — eliminating the post-sale risk most feared in cross-border procurement. Clients receive EU-standard goods with full confidence."
-           data-zh="出貨前嚴格驗貨是我們的堅持。透過我們採購，品質監督責任由Spatz Global承擔，解除跨國採購最擔憂的售後風險，讓客戶安心接收符合歐盟標準的高品質貨物。">
-          Pre-shipment inspection is non-negotiable. By sourcing through us, quality oversight responsibility is transferred to Spatz Global — eliminating the post-sale risk most feared in cross-border procurement. Clients receive EU-standard goods with full confidence.
+      <div class="card process-step">
+        <div class="step-badge">3</div>
+        <h4 data-en="Supplier Selection" data-zh="供應商篩選">Supplier Selection</h4>
+        <p data-en="Factory capability audits, production line inspections, and compliance certificate verification. Only Gold/Silver tier suppliers proceed to quotation stage."
+           data-zh="工廠能力審核、生產線檢查及合規證書驗證。僅金級/銀級供應商進入報價階段。">
+          Factory capability audits, production line inspections, and compliance certificate verification. Only Gold/Silver tier suppliers proceed to quotation stage.
+        </p>
+      </div>
+      <div class="card process-step">
+        <div class="step-badge">4</div>
+        <h4 data-en="Real Pricing & Quality Evaluation" data-zh="真實定價與品質評估">Real Pricing & Quality Evaluation</h4>
+        <p data-en="Transparent cost breakdown: wholesale price + packaging + logistics + QC. We evaluate material samples, compare technical specifications, and negotiate optimal terms."
+           data-zh="透明成本分解：批發價 + 包裝 + 物流 + 品管。我們評估材料樣品、比對技術規格並談判最佳條款。">
+          Transparent cost breakdown: wholesale price + packaging + logistics + QC. We evaluate material samples, compare technical specifications, and negotiate optimal terms.
+        </p>
+      </div>
+      <div class="card process-step">
+        <div class="step-badge">5</div>
+        <h4 data-en="Terms & Contract Optimization" data-zh="條款與合同優化">Terms & Contract Optimization</h4>
+        <p data-en="Payment structure, delivery timelines, warranty clauses, and IP protection agreements. We leverage HSBC factoring and Sinosure insurance to secure favorable terms."
+           data-zh="付款結構、交期時間表、保固條款及智慧財產權保護協議。我們運用匯豐保理與中國信保保險爭取有利條款。">
+          Payment structure, delivery timelines, warranty clauses, and IP protection agreements. We leverage HSBC factoring and Sinosure insurance to secure favorable terms.
+        </p>
+      </div>
+      <div class="card process-step">
+        <div class="step-badge">6</div>
+        <h4 data-en="Container Loading & Delivery" data-zh="裝櫃與交付">Container Loading & Delivery</h4>
+        <p data-en="Pre-shipment inspection (PSI), container loading supervision, and shipping documentation. We handle customs clearance and provide door-to-door tracking until final delivery."
+           data-zh="裝運前檢驗（PSI）、裝櫃監督及運輸文件。我們處理清關並提供門到門追蹤直至最終交付。">
+          Pre-shipment inspection (PSI), container loading supervision, and shipping documentation. We handle customs clearance and provide door-to-door tracking until final delivery.
         </p>
       </div>
     </div>
@@ -1058,9 +1200,9 @@
     <div class="grid-3">
       <div class="card">
         <h3><span class="badge badge-gold" data-en="Gold Tier" data-zh="金級">Gold Tier</span></h3>
-        <p data-en="Canton Fair core exhibitors. Proven export track record, complete EU certificates, high production capacity, and in-house R&D teams capable of design-around IP protection."
-           data-zh="Canton Fair 核心實力參展商。具備成熟外貿出口經驗、完整歐盟證書、高產能及具備防侵權設計規避能力的研發團隊。">
-          Canton Fair core exhibitors. Proven export track record, complete EU certificates, high production capacity, and in-house R&D teams capable of design-around IP protection.
+        <p data-en="<strong>Brand Customer Track Record:</strong> Supply to premium brands (WMF, Orenia, etc.)<br><strong>R&D Capability:</strong> Proprietary design teams with independent IP/patents<br><strong>Testing Infrastructure:</strong> In-house certified testing labs (CNAS, ISO 17025)<br><strong>Engineering:</strong> Dedicated technical teams for rapid prototyping"
+           data-zh="<strong>品牌客戶實績：</strong>供應高端品牌（WMF、Orenia等）<br><strong>研發實力：</strong>自有設計團隊，獨立智慧財產權/專利<br><strong>檢測基建：</strong>內設認證實驗室（CNAS、ISO 17025）<br><strong>工程能力：</strong>專屬技術團隊，快速原型開發">
+          <strong>Brand Customer Track Record:</strong> Supply to premium brands (WMF, Orenia, etc.)<br><strong>R&D Capability:</strong> Proprietary design teams with independent IP/patents<br><strong>Testing Infrastructure:</strong> In-house certified testing labs (CNAS, ISO 17025)<br><strong>Engineering:</strong> Dedicated technical teams for rapid prototyping
         </p>
       </div>
       <div class="card">
@@ -1118,57 +1260,74 @@
       </div>
     </div>
 
-    <span class="hint" data-en="Click a category card to explore" data-zh="點擊品類卡片查看詳情">Click a category card to explore</span>
+    <h2 class="section-title" data-en="Product Families — Lifestyle Context" data-zh="產品家族 — 生活情境">Product Families — Lifestyle Context</h2>
+    <span class="hint" data-en="Professional overview of our 8 core categories" data-zh="我們八大核心品類的專業概覽">Professional overview of our 8 core categories</span>
 
-    <div class="cat-grid" id="cat-grid">
-      <div class="cat-card" data-cat="life">
-        <div class="cat-icon">🏠</div>
-        <div class="cat-name" data-en="Life Quality" data-zh="Life Quality">Life Quality</div>
-        <div class="cat-sub" data-en="Home Textile" data-zh="Home Textile">Home Textile</div>
+    <div class="grid-2">
+      <div class="card product-family-card">
+        <div class="product-family-img">Lifestyle Image Coming Soon</div>
+        <h3 data-en="🏠 Life Quality — Home Textile" data-zh="🏠 Life Quality — 家居紡織">🏠 Life Quality — Home Textile</h3>
+        <p data-en="Bedding sets, mattress protectors, pillows, cushions, curtains, and soft furnishings. Focus on OEKO-TEX, flame retardant compliance, and ergonomic sleep solutions."
+           data-zh="床上用品套裝、床墊保護套、枕頭、靠墊、窗簾及軟裝飾品。專注於OEKO-TEX認證、阻燃合規及人體工學睡眠解決方案。">
+          Bedding sets, mattress protectors, pillows, cushions, curtains, and soft furnishings. Focus on OEKO-TEX, flame retardant compliance, and ergonomic sleep solutions.
+        </p>
       </div>
-      <div class="cat-card" data-cat="kids">
-        <div class="cat-icon">🧸</div>
-        <div class="cat-name" data-en="FOR Kids" data-zh="FOR Kids">FOR Kids</div>
-        <div class="cat-sub" data-en="Toys & Novelties" data-zh="Toys &amp; Novelties">Toys & Novelties</div>
+      <div class="card product-family-card">
+        <div class="product-family-img">Lifestyle Image Coming Soon</div>
+        <h3 data-en="🧸 FOR Kids — Toys & Novelties" data-zh="🧸 FOR Kids — 玩具與新奇產品">🧸 FOR Kids — Toys & Novelties</h3>
+        <p data-en="Educational toys, plush items, outdoor play equipment, and gift novelties. Strict EN 71 toy safety compliance, phthalate-free materials, and child-safe packaging standards."
+           data-zh="教育玩具、毛絨玩偶、戶外遊樂設備及禮品新奇產品。嚴格符合EN 71玩具安全標準、無鄰苯二甲酸鹽材料及兒童安全包裝標準。">
+          Educational toys, plush items, outdoor play equipment, and gift novelties. Strict EN 71 toy safety compliance, phthalate-free materials, and child-safe packaging standards.
+        </p>
       </div>
-      <div class="cat-card" data-cat="cooking">
-        <div class="cat-icon">🍳</div>
-        <div class="cat-name" data-en="Cooking with Joy" data-zh="Cooking with Joy">Cooking with Joy</div>
-        <div class="cat-sub" data-en="Kitchen & Dining" data-zh="Kitchen &amp; Dining">Kitchen & Dining</div>
+      <div class="card product-family-card">
+        <div class="product-family-img">Lifestyle Image Coming Soon</div>
+        <h3 data-en="🍳 Cooking with Joy — Kitchen & Dining" data-zh="🍳 Cooking with Joy — 廚房與餐具">🍳 Cooking with Joy — Kitchen & Dining</h3>
+        <p data-en="Cookware, bakeware, food storage, utensils, and dining accessories. All items food-contact certified (LFGB, FDA), PFOA-free, and dishwasher-safe."
+           data-zh="炊具、烘焙用具、食品儲存、餐具及餐桌配件。所有產品均通過食品接觸認證（LFGB、FDA）、無PFOA及可用洗碗機清洗。">
+          Cookware, bakeware, food storage, utensils, and dining accessories. All items food-contact certified (LFGB, FDA), PFOA-free, and dishwasher-safe.
+        </p>
       </div>
-      <div class="cat-card" data-cat="appliances">
-        <div class="cat-icon">🔌</div>
-        <div class="cat-name" data-en="Small Appliances" data-zh="小型家電">Small Appliances</div>
-        <div class="cat-sub" data-en="Domestic Electrical" data-zh="Domestic Electrical">Domestic Electrical</div>
+      <div class="card product-family-card">
+        <div class="product-family-img">Lifestyle Image Coming Soon</div>
+        <h3 data-en="🔌 Small Domestic Appliances" data-zh="🔌 小型家用電器">🔌 Small Domestic Appliances</h3>
+        <p data-en="Blenders, coffee makers, toasters, irons, hair dryers, and personal grooming tools. Full CE marking, LVD, EMC, and RoHS compliance for EU market entry."
+           data-zh="攪拌機、咖啡機、烤麵包機、熨斗、吹風機及個人護理工具。完整CE標誌、LVD、EMC及RoHS合規，符合歐盟市場准入要求。">
+          Blenders, coffee makers, toasters, irons, hair dryers, and personal grooming tools. Full CE marking, LVD, EMC, and RoHS compliance for EU market entry.
+        </p>
       </div>
-      <div class="cat-card" data-cat="household">
-        <div class="cat-icon">🧹</div>
-        <div class="cat-name" data-en="Household" data-zh="Household">Household</div>
-        <div class="cat-sub" data-en="Cleaning & Garden" data-zh="Cleaning &amp; Garden">Cleaning & Garden</div>
+      <div class="card product-family-card">
+        <div class="product-family-img">Lifestyle Image Coming Soon</div>
+        <h3 data-en="🧹 Household — Cleaning & Garden" data-zh="🧹 Household — 清潔與園藝">🧹 Household — Cleaning & Garden</h3>
+        <p data-en="Vacuum cleaners, mops, storage solutions, laundry aids, garden tools, and outdoor furniture. Durability testing, UV resistance, and eco-friendly material sourcing."
+           data-zh="吸塵器、拖把、收納解決方案、洗衣輔助工具、園藝工具及戶外家具。耐用性測試、抗UV及環保材料採購。">
+          Vacuum cleaners, mops, storage solutions, laundry aids, garden tools, and outdoor furniture. Durability testing, UV resistance, and eco-friendly material sourcing.
+        </p>
       </div>
-      <div class="cat-card" data-cat="travel">
-        <div class="cat-icon">🧳</div>
-        <div class="cat-name" data-en="Travel & Outdoor" data-zh="Travel &amp; Outdoor">Travel & Outdoor</div>
-        <div class="cat-sub" data-en="Luggage & Bags" data-zh="Luggage &amp; Bags">Luggage & Bags</div>
+      <div class="card product-family-card">
+        <div class="product-family-img">Lifestyle Image Coming Soon</div>
+        <h3 data-en="🧳 Travel & Outdoor — Luggage & Bags" data-zh="🧳 Travel & Outdoor — 行李與包袋">🧳 Travel & Outdoor — Luggage & Bags</h3>
+        <p data-en="Hard-shell suitcases, backpacks, travel accessories, and outdoor gear. Impact resistance, TSA lock compatibility, and lightweight construction standards."
+           data-zh="硬殼行李箱、背包、旅行配件及戶外裝備。抗衝擊性、TSA鎖兼容性及輕量化結構標準。">
+          Hard-shell suitcases, backpacks, travel accessories, and outdoor gear. Impact resistance, TSA lock compatibility, and lightweight construction standards.
+        </p>
       </div>
-      <div class="cat-card" data-cat="security">
-        <div class="cat-icon">🔒</div>
-        <div class="cat-name" data-en="Home Security" data-zh="Home Security">Home Security</div>
-        <div class="cat-sub" data-en="Indoor & Outdoor" data-zh="Indoor &amp; Outdoor">Indoor & Outdoor</div>
+      <div class="card product-family-card">
+        <div class="product-family-img">Lifestyle Image Coming Soon</div>
+        <h3 data-en="🔒 Home Security — Indoor & Outdoor" data-zh="🔒 Home Security — 室內與室外">🔒 Home Security — Indoor & Outdoor</h3>
+        <p data-en="Smart locks, alarm systems, surveillance cameras, motion sensors, and access control. IoT security protocols, IP ratings, and GDPR-compliant data handling."
+           data-zh="智能鎖、警報系統、監控攝影機、動作感應器及門禁控制。物聯網安全協議、IP防護等級及符合GDPR的數據處理。">
+          Smart locks, alarm systems, surveillance cameras, motion sensors, and access control. IoT security protocols, IP ratings, and GDPR-compliant data handling.
+        </p>
       </div>
-      <div class="cat-card" data-cat="wellbeing">
-        <div class="cat-icon">💆</div>
-        <div class="cat-name" data-en="Well-being" data-zh="Well-being">Well-being</div>
-        <div class="cat-sub" data-en="Personal Care" data-zh="Personal Care">Personal Care</div>
+      <div class="card product-family-card">
+        <div class="product-family-img">Lifestyle Image Coming Soon</div>
+        <h3 data-en="💆 Well-being — Personal Care" data-zh="💆 Well-being — 個人護理">💆 Well-being — Personal Care</h3>
+        <p data-en="Massage devices, beauty tools, wellness monitors, and ergonomic health products. Medical device classification awareness, skin-contact safety, and EMF emission limits."
+           data-zh="按摩設備、美容工具、健康監測器及人體工學健康產品。醫療器械分類認知、皮膚接觸安全及電磁波發射限制。">
+          Massage devices, beauty tools, wellness monitors, and ergonomic health products. Medical device classification awareness, skin-contact safety, and EMF emission limits.
+        </p>
       </div>
-    </div>
-
-    <div class="cat-detail" id="cat-detail">
-      <h3 id="cat-detail-title" data-en="Select a category above" data-zh="請選擇上方品類">Select a category above</h3>
-      <p id="cat-detail-desc" data-en="Click any product card to explore the detailed range, sourcing capabilities, and EU compliance profile for that category."
-         data-zh="點擊任意產品卡片，了解該品類的詳細產品線、採購能力及歐盟合規概況。">
-        Click any product card to explore the detailed range, sourcing capabilities, and EU compliance profile for that category.
-      </p>
     </div>
 
   </section>
@@ -1176,7 +1335,7 @@
   <!-- ══════════════════ COMPLIANCE & CSR ══════════════════ -->
   <section id="panel-compliance" class="panel">
 
-    <div class="hero" style="background:linear-gradient(135deg,#0F172A 0%,#0D9488 100%);">
+    <div class="hero" style="background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%);">
       <h1 data-en="Compliance, Trust &amp;<br><span class='accent'>Social Responsibility</span>" data-zh="合規、誠信與<br><span class='accent'>企業社會責任</span>">
         Compliance, Trust &amp;<br><span class="accent">Social Responsibility</span>
       </h1>
@@ -1401,9 +1560,9 @@
   <div class="footer-inner">
     <div class="footer-col">
       <h4>SPATZ GLOBAL LIMITED</h4>
-      <p data-en="Create solution in a demanding market.<br>International trade & supply chain management since 2002."
-         data-zh="在嚴苛市場中創造解決方案。<br>自2002年提供國際貿易與供應鏈管理服務。">
-        Create solution in a demanding market.<br>International trade & supply chain management since 2002.
+      <p data-en="Your sourcing agent & full-solution provider.<br>Handling all hassles since 2002 — Shanghai, Hong Kong, Germany."
+         data-zh="您的採購代理與全方位解決方案供應商。<br>自2002年起承擔所有繁雜事務 — 上海、香港、德國。">
+        Your sourcing agent & full-solution provider.<br>Handling all hassles since 2002 — Shanghai, Hong Kong, Germany.
       </p>
     </div>
     <div class="footer-col">
@@ -1503,118 +1662,6 @@
     });
   }
 
-  /* ─── Process tabs ─── */
-  function switchProcTab(id) {
-    document.querySelectorAll('#proc-tab-bar .tab-btn').forEach((b, i) => {
-      b.classList.toggle('active', b.getAttribute('onclick').includes(id));
-    });
-    document.querySelectorAll('#panel-services .tab-pane').forEach(p => {
-      p.classList.toggle('active', p.id === id);
-    });
-  }
-
-  /* ─── Category explorer ─── */
-  const catData = {
-    life: {
-      en: {
-        title: 'Life Quality — Home Textile',
-        desc: 'Bathroom accessories, decorative items, and a comprehensive sleep solution range: mattresses, foam products, pillows, duvets, blankets, towels and bathmats. Sourced from manufacturers with full EU material safety certification.'
-      },
-      zh: {
-        title: 'Life Quality — Home Textile',
-        desc: '衛浴配件、裝飾品及全方位睡眠解決方案：床墊、泡棉產品、枕頭、羽絨被、毛毯、毛巾至地墊，來自具備完整歐盟材料安全認證的製造商。'
-      }
-    },
-    kids: {
-      en: {
-        title: 'FOR Kids — Toys & Novelties',
-        desc: 'Children\'s light-up toys, multi-functional capes, and mother-infant textiles. All products strictly compliant with EU Toy Safety Directive 2009/48/EC, EMC Directive 2014/30/EU, and RoHS. Safety first, always.'
-      },
-      zh: {
-        title: 'FOR Kids — Toys & Novelties',
-        desc: '兒童發光玩具、多功能斗篷及母嬰護理紡織品。所有產品嚴格符合歐盟玩具安全指令2009/48/EC、電磁相容指令2014/30/EU及RoHS，安全第一。'
-      }
-    },
-    cooking: {
-      en: {
-        title: 'Cooking with Joy — Kitchen & Dining',
-        desc: 'Baking tools, kitchen accessories, dining equipment, tabletop décor and kitchen cleaning supplies. Functional meets beautiful — all food-contact items certified under (EC) No 1935/2004.'
-      },
-      zh: {
-        title: 'Cooking with Joy — Kitchen & Dining',
-        desc: '烘焙工具、廚房配件、餐飲設備、桌面擺設及廚房清潔用品。功能與美感兼具，所有食品接觸類產品均依(EC) No 1935/2004認證。'
-      }
-    },
-    appliances: {
-      en: {
-        title: 'Small Domestic Appliances',
-        desc: 'A wide variety of modern small home appliances — from kitchen electrics to personal care devices. All selected factories hold EU LVD and EMC certificates, ensuring product performance and longevity.'
-      },
-      zh: {
-        title: 'Small Domestic Appliances',
-        desc: '種類繁多的現代小型家用電器，從廚房小家電到個人護理電器。所選工廠均持有歐盟低電壓指令（LVD）及電磁相容（EMC）認證，確保產品效能與壽命。'
-      }
-    },
-    household: {
-      en: {
-        title: 'Household — Cleaning & Garden',
-        desc: 'Advanced electric vacuum cleaners, smart mops and comprehensive cleaning solutions. Plus professional-grade electric garden tools for effortless indoor and outdoor maintenance.'
-      },
-      zh: {
-        title: 'Household — Cleaning & Garden',
-        desc: '先進電動吸塵器、智能拖把及全面清潔解決方案，以及專業級電動園藝工具，輕鬆打理室內外環境。'
-      }
-    },
-    travel: {
-      en: {
-        title: 'Travel & Outdoor — Luggage & Bags',
-        desc: 'Trolley luggage in both soft and hard shell, a wide range of travel bags, backpacks and accessories. Designed for durability and compliance with international airline carry-on standards.'
-      },
-      zh: {
-        title: 'Travel & Outdoor — Luggage & Bags',
-        desc: '軟殼與硬殼拉桿行李箱、各類旅行包、背包及配件，注重耐用性並符合國際航空手提行李標準。'
-      }
-    },
-    security: {
-      en: {
-        title: 'Home Security — Indoor & Outdoor',
-        desc: 'Smart indoor and outdoor security systems, cameras, sensors and monitoring solutions. All devices compliant with relevant EU Radio Equipment Directive (RED) and LVD requirements.'
-      },
-      zh: {
-        title: 'Home Security — Indoor & Outdoor',
-        desc: '智能室內外安防系統、攝像頭、感應器及監控解決方案，所有設備符合歐盟無線電設備指令（RED）及低電壓指令（LVD）要求。'
-      }
-    },
-    wellbeing: {
-      en: {
-        title: 'Well-being — Personal Care',
-        desc: 'Health and personal care products spanning massagers, fitness accessories, wellness devices and grooming appliances. Curated for quality, safety and lifestyle relevance.'
-      },
-      zh: {
-        title: 'Well-being — Personal Care',
-        desc: '健康與個人護理產品，涵蓋按摩器、健身配件、健康設備及美容電器，精選品質、安全與生活適用性兼備的產品。'
-      }
-    }
-  };
-
-  document.querySelectorAll('.cat-card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-
-      const key = card.getAttribute('data-cat');
-      const data = catData[key][lang];
-      const detail = document.getElementById('cat-detail');
-
-      detail.style.opacity = '0';
-      setTimeout(() => {
-        document.getElementById('cat-detail-title').textContent = data.title;
-        document.getElementById('cat-detail-desc').textContent  = data.desc;
-        detail.style.opacity = '1';
-      }, 180);
-    });
-  });
-
   /* ─── Mini doughnut chart ─── */
   function buildMiniChart() {
     const canvas = document.getElementById('miniChart');
@@ -1634,7 +1681,7 @@
         ],
         datasets: [{
           data: [40, 30],
-          backgroundColor: ['#0EA5E9', '#0D9488'],
+          backgroundColor: ['#0EA5E9', '#2563EB'],
           borderColor: isDark ? '#0F172A' : '#ffffff',
           borderWidth: 2,
           hoverOffset: 4
