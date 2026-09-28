@@ -3,941 +3,1336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>「傳統是メイド」新啟德青年獅子會一日女僕Cafe籌款企劃案</title>
-    <!-- Tailwind CSS CDN -->
+    <title>「傳統是メイド」慈善女僕咖啡廳籌款企劃書 | 香港新啟德青年獅子會</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Google Fonts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#fdf2f8',
-                            100: '#fce7f3',
-                            200: '#fbcfe8',
-                            300: '#f472b6',
-                            400: '#e11d48',
-                            500: '#be123c',
-                            600: '#9f1239',
-                            warm: '#faf7f2',
-                            card: '#ffffff',
-                            accent: '#d97706',
-                            dark: '#1e293b'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Noto Sans TC', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@300;400;500;600;700;800;900&family=Noto+Serif+HK:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #faf7f2;
-            color: #1e293b;
-            font-family: 'Noto Sans TC', sans-serif;
+            font-family: 'Noto Sans HK', sans-serif;
+            background: #FAFAFA;
+            color: #1A1A1A;
+            line-height: 1.7;
         }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 650px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 320px;
-            max-height: 380px;
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #003B5C 0%, #00517A 50%, #C5A572 100%);
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 360px;
-            }
-        }
-        .tab-active {
-            border-bottom: 3px solid #be123c;
-            color: #be123c;
+
+        .section-title {
+            font-family: 'Noto Serif HK', serif;
             font-weight: 700;
+            color: #003B5C;
+            border-left: 5px solid #C5A572;
+            padding-left: 1rem;
+            margin-bottom: 2rem;
         }
-        /* Custom scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+
+        .card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
         }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
+
+        .nav-item {
+            position: relative;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+
+        .nav-item:hover {
+            background: rgba(197, 165, 114, 0.1);
+        }
+
+        .nav-item.active {
+            border-bottom-color: #C5A572;
+            background: rgba(197, 165, 114, 0.05);
+            font-weight: 600;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: #C5A572;
+            transform: translateY(-4px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #003B5C;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6B7280;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        table th {
+            background: #003B5C;
+            color: white;
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.875rem;
+        }
+
+        table td {
+            padding: 1rem;
+            border-bottom: 1px solid #E5E7EB;
+            font-size: 0.875rem;
+        }
+
+        table tbody tr:hover {
+            background: #F9FAFB;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: #C5A572;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #C5A572;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 12px;
+            bottom: 0;
+            width: 2px;
+            background: #E5E7EB;
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-primary {
+            background: #003B5C;
+            color: white;
+        }
+
+        .badge-secondary {
+            background: #C5A572;
+            color: white;
+        }
+
+        .badge-success {
+            background: #10B981;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #F59E0B;
+            color: white;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .card {
+                box-shadow: none;
+                border: 1px solid #E5E7EB;
+                page-break-inside: avoid;
+            }
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-pink-200 selection:text-pink-900">
+<body>
 
-    <!-- Chosen Palette: Warm Neutral & Maid Rose Pink (Base: #faf7f2, Primary: #be123c, Accent: #d97706, Text: #1e293b) -->
-    <!-- Application Structure Plan: 
-         Designed as an executive interactive report for Leo Club stakeholders and organizers:
-         1. Overview & Strategy: Event vision, Carlos president cross-dressing highlight, core target groups (Leo Club + Maid subculture fans).
-         2. Full Schedule (16:00-23:59): 8-hour breakdown with interactive stage filters (Setup, Cafe Service, Live Show, Cheki Sprint, Cleanup).
-         3. Financial Model & Simulator: Dynamic calculator featuring exact pricing rules (Cheki $60 w/ $30 split, Shukudai $80 w/ $40 split, Live ticket $90 w/ $45 split, Drink $40 w/ $20 split, Film cost $135/20pcs, Maid Base $60/hr) with Chart.js visualization.
-         4. Service Blueprint & Blueprint Flow: Interactive 7-stage maid service flow based on YouTube maid cafe standards + "萌之公約" safety taboos.
-         5. Kwun Tong E11 Space & F&B Engineering: Spatial setup diagram, non-refrigerated F&B supply chain, drink formulas (milk, soda, tea, syrups).
-         6. Roster & Risk Contingency: Carlos, Queenie, Paid maids (Cotton, Morie, Nana, April Rabbit), Leo volunteer maids, and risk handling SOPs. -->
-    <!-- Visualization & Content Choices:
-         - Key Metrics Summary: Stat cards for instant executive preview.
-         - Financial Simulator: Range sliders connected to dynamic Chart.js bar graph and summary breakdown table.
-         - Timeline Navigation: Filterable phase buttons for 16:00-23:59 schedule.
-         - Service Blueprint: Step-by-step interactive stepper with dual Customer vs Maid action views.
-         - Layout Map: Responsive HTML CSS Grid diagram mapping E11 Space setup.
-         - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All visual indicators use styled HTML/CSS & Unicode emoji icons. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
-    <!-- Top Navigation Header -->
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-rose-100 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center space-x-3">
-                    <span class="text-2xl">🎀</span>
-                    <div>
-                        <h1 class="text-lg font-bold text-gray-900 leading-tight">「傳統是メイド」慈善女僕珈琲體驗日</h1>
-                        <p class="text-xs text-rose-600 font-medium">香港新啟德青年獅子會 企劃研究暨營運可行性報告</p>
-                    </div>
-                </div>
-                <div class="hidden md:flex space-x-1 lg:space-x-3 text-sm font-medium">
-                    <button onclick="switchTab('overview')" id="nav-overview" class="nav-btn px-3 py-2 tab-active">企劃概要</button>
-                    <button onclick="switchTab('schedule')" id="nav-schedule" class="nav-btn px-3 py-2 text-gray-600 hover:text-rose-600">全日排程</button>
-                    <button onclick="switchTab('finance')" id="nav-finance" class="nav-btn px-3 py-2 text-gray-600 hover:text-rose-600">財務試算</button>
-                    <button onclick="switchTab('journey')" id="nav-journey" class="nav-btn px-3 py-2 text-gray-600 hover:text-rose-600">服務藍圖</button>
-                    <button onclick="switchTab('venue')" id="nav-venue" class="nav-btn px-3 py-2 text-gray-600 hover:text-rose-600">場地餐飲</button>
-                    <button onclick="switchTab('organization')" id="nav-organization" class="nav-btn px-3 py-2 text-gray-600 hover:text-rose-600">人員風險</button>
-                </div>
+<!-- Header -->
+<header class="hero-gradient text-white py-16 no-print">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <div class="text-sm font-medium text-gray-200 mb-2">LEO CLUB OF NEW KAI TAK, HONG KONG</div>
+                <h1 class="text-4xl font-bold font-serif mb-2">「傳統是メイド」慈善女僕咖啡廳籌款企劃書</h1>
+                <p class="text-lg text-gray-100">Traditional Maid Café Charity Fundraising Event Proposal</p>
             </div>
-            <!-- Mobile Navigation Bar -->
-            <div class="flex md:hidden overflow-x-auto py-2 space-x-2 text-xs border-t border-gray-100">
-                <button onclick="switchTab('overview')" id="mnav-overview" class="m-nav-btn px-2.5 py-1.5 rounded-full bg-rose-100 text-rose-700 font-semibold whitespace-nowrap">概要</button>
-                <button onclick="switchTab('schedule')" id="mnav-schedule" class="m-nav-btn px-2.5 py-1.5 rounded-full bg-gray-100 text-gray-600 whitespace-nowrap">排程</button>
-                <button onclick="switchTab('finance')" id="mnav-finance" class="m-nav-btn px-2.5 py-1.5 rounded-full bg-gray-100 text-gray-600 whitespace-nowrap">財務</button>
-                <button onclick="switchTab('journey')" id="mnav-journey" class="m-nav-btn px-2.5 py-1.5 rounded-full bg-gray-100 text-gray-600 whitespace-nowrap">藍圖</button>
-                <button onclick="switchTab('venue')" id="mnav-venue" class="m-nav-btn px-2.5 py-1.5 rounded-full bg-gray-100 text-gray-600 whitespace-nowrap">場地餐飲</button>
-                <button onclick="switchTab('organization')" id="mnav-organization" class="m-nav-btn px-2.5 py-1.5 rounded-full bg-gray-100 text-gray-600 whitespace-nowrap">人員風險</button>
+            <div class="text-right">
+                <div class="text-6xl font-black text-leo-gold opacity-90">2026</div>
             </div>
         </div>
-    </header>
 
-    <!-- Main Application Body -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-
-        <!-- SECTION 1: OVERVIEW & STRATEGY -->
-        <section id="sec-overview" class="tab-content space-y-6">
-            <!-- Executive Context -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100">
-                <h2 class="text-xl font-bold text-gray-900 mb-2 flex items-center">
-                    <span class="mr-2">🎯</span> 專案簡介與策略定位
-                </h2>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    本報告針對香港新啟德青年獅子會主辦之「傳統是メイド」慈善女僕珈琲體驗日進行可行性規劃。專案創新融合日本秋葉原次文化與青年公益，最大亮點為會長 Carlos 破天荒「下海」反串女僕執勤帶動募款，並邀請專業客席女僕與青獅幹事共同參與。活動於觀塘 E11 Space 舉辦，總時長 8 小時（16:00-23:59），含 2 小時進場佈置及 1 小時復原撤場。
-                </p>
+        <div class="grid grid-cols-4 gap-6 mt-12">
+            <div class="text-center">
+                <div class="text-3xl font-black">8 hrs</div>
+                <div class="text-sm text-gray-200 mt-1">活動總時長</div>
             </div>
-
-            <!-- Key Metrics Overview Cards -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-rose-100 flex flex-col justify-between">
-                    <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">活動時間總長</div>
-                    <div class="mt-2 text-2xl font-black text-rose-600">8 小時</div>
-                    <div class="mt-1 text-xs text-gray-500">16:00 - 23:59 (含搭拆)</div>
-                </div>
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-rose-100 flex flex-col justify-between">
-                    <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">預估出席目標</div>
-                    <div class="mt-2 text-2xl font-black text-rose-600">20 - 30 人</div>
-                    <div class="mt-1 text-xs text-gray-500">損益平衡點 15 人</div>
-                </div>
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-rose-100 flex flex-col justify-between">
-                    <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">入場門票套票</div>
-                    <div class="mt-2 text-2xl font-black text-rose-600">HK$ 260</div>
-                    <div class="mt-1 text-xs text-gray-500">含$60相券/糕點/特調/Penlight</div>
-                </div>
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-rose-100 flex flex-col justify-between">
-                    <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">客席女僕底薪</div>
-                    <div class="mt-2 text-2xl font-black text-emerald-600">HK$ 60 / hr</div>
-                    <div class="mt-1 text-xs text-gray-500">18:00-22:30 當值 4.5 小時</div>
-                </div>
+            <div class="text-center">
+                <div class="text-3xl font-black">20-30</div>
+                <div class="text-sm text-gray-200 mt-1">預期參與人數</div>
             </div>
-
-            <!-- Core Pillars & Audience Strategy -->
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100">
-                    <div class="w-10 h-10 rounded-xl bg-pink-100 text-rose-600 flex items-center justify-center font-bold text-lg mb-4">01</div>
-                    <h3 class="font-bold text-gray-900 text-base mb-2">青獅與友會支持為本</h3>
-                    <p class="text-xs text-gray-600 leading-relaxed">
-                        以青獅幹事、母會大獅及屬會友會圈子為核心客群（預計20-30人），主打體驗傳統正統女僕文化，給予會長 Carlos 著女僕裝執勤「比面」支持。
-                    </p>
-                </div>
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100">
-                    <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-lg mb-4">02</div>
-                    <h3 class="font-bold text-gray-900 text-base mb-2">會長反串話題募款</h3>
-                    <p class="text-xs text-gray-600 leading-relaxed">
-                        Carlos 會長親自下海穿著女僕裝巡桌互動，其個人 Cheki（$60）及宿題（$80）合照收益 100% 不拆帳，全數撥捐青獅慈善專款。
-                    </p>
-                </div>
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100">
-                    <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-lg mb-4">03</div>
-                    <h3 class="font-bold text-gray-900 text-base mb-2">雙軌女僕與無雪櫃工程</h3>
-                    <p class="text-xs text-gray-600 leading-relaxed">
-                        受薪客席女僕（棉花、Morie、Nana、四月兔等）帶領現場魔法與畫碟；青獅女女（Tanika、Naomi等）義務協助；克服 E11 Space 無雪櫃限制提供常溫餐飲。
-                    </p>
-                </div>
+            <div class="text-center">
+                <div class="text-3xl font-black">HK$ 260</div>
+                <div class="text-sm text-gray-200 mt-1">標準門票套票</div>
             </div>
-        </section>
-
-        <!-- SECTION 2: FULL SCHEDULE (16:00 - 23:59) -->
-        <section id="sec-schedule" class="tab-content hidden space-y-6">
-            <!-- Context -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100">
-                <h2 class="text-xl font-bold text-gray-900 mb-2 flex items-center">
-                    <span class="mr-2">⏱️</span> 全日營運排程與敏捷時程管理 (16:00 - 23:59)
-                </h2>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    活動包含 2 小時前置場置與造型（16:00-18:00）、4.5 小時珈琲廳營運與 Live 表演（18:00-22:30），以及 1.5 小時撤場還原（22:30-23:59）。點擊下方標籤可動態篩選各時段的核心任務與負責人員。
-                </p>
+            <div class="text-center">
+                <div class="text-3xl font-black">16 人</div>
+                <div class="text-sm text-gray-200 mt-1">損益平衡點</div>
             </div>
+        </div>
+    </div>
+</header>
 
-            <!-- Timeline Filter Buttons -->
-            <div class="flex flex-wrap gap-2 justify-center">
-                <button onclick="filterSchedule('all', this)" class="sched-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-rose-600 text-white shadow-sm">全部時段 (16:00-23:59)</button>
-                <button onclick="filterSchedule('setup', this)" class="sched-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white text-gray-600 border border-gray-200 hover:border-rose-300">進場佈置與女裝 (16:00-18:00)</button>
-                <button onclick="filterSchedule('cafe', this)" class="sched-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white text-gray-600 border border-gray-200 hover:border-rose-300">珈琲廳營運 (18:00-21:00)</button>
-                <button onclick="filterSchedule('live', this)" class="sched-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white text-gray-600 border border-gray-200 hover:border-rose-300">舞台表演 (21:00-21:30)</button>
-                <button onclick="filterSchedule('cheki', this)" class="sched-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white text-gray-600 border border-gray-200 hover:border-rose-300">Cheki 最終衝刺 (21:30-22:30)</button>
-                <button onclick="filterSchedule('cleanup', this)" class="sched-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white text-gray-600 border border-gray-200 hover:border-rose-300">撤場還原 (22:30-23:59)</button>
+<!-- Navigation -->
+<nav class="bg-white shadow-sm sticky top-0 z-50 no-print">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex space-x-1">
+            <div class="nav-item active" onclick="showSection('executive')">執行摘要</div>
+            <div class="nav-item" onclick="showSection('objectives')">專案目標</div>
+            <div class="nav-item" onclick="showSection('operations')">營運計劃</div>
+            <div class="nav-item" onclick="showSection('finance')">財務分析</div>
+            <div class="nav-item" onclick="showSection('organization')">組織架構</div>
+            <div class="nav-item" onclick="showSection('risk')">風險管理</div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto px-6 py-12">
+
+    <!-- Section 1: Executive Summary -->
+    <section id="section-executive" class="mb-16">
+        <h2 class="section-title text-3xl mb-8">一、執行摘要 Executive Summary</h2>
+
+        <div class="card p-8 mb-8">
+            <h3 class="text-xl font-bold text-leo-navy mb-4">專案概述</h3>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                香港新啟德青年獅子會擬於2026年舉辦「傳統是メイド」慈善女僕咖啡廳體驗日，融合日本秋葉原正統女僕文化與公益募款。活動最大亮點為會長 Carlos Yin 親自反串女僕執勤，帶動獅友參與支持。專案選址觀塘 E11 Space，總時長8小時（16:00-23:59），包含場地佈置、4.5小時珈琲廳營運、舞台表演及撤場。
+            </p>
+            <p class="text-gray-700 leading-relaxed">
+                活動邀請專業客席女僕（Cotton棉花、Morie、Nana等）提供標準化服務，配合青獅義務女僕團隊，由營運總監 Queenie Li（<strong>HK$ 70/小時</strong>）統籌現場管理。目標客群為青獅幹事、母會獅友及友會網絡，預計參與人數20-30人，財務損益平衡點僅需16人，風險可控。
+            </p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-6">
+            <div class="stat-card">
+                <div class="stat-number">HK$ 5,200</div>
+                <div class="stat-label">目標情境門票收入 (20人)</div>
             </div>
-
-            <!-- Timeline List -->
-            <div id="timeline-container" class="grid gap-4">
-                <!-- Timeline items injected dynamically by JS -->
+            <div class="stat-card">
+                <div class="stat-number">HK$ 6,810</div>
+                <div class="stat-label">預估專案總成本</div>
             </div>
-        </section>
-
-        <!-- SECTION 3: FINANCIAL MODEL & SIMULATOR -->
-        <section id="sec-finance" class="tab-content hidden space-y-6">
-            <!-- Context -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100">
-                <h2 class="text-xl font-bold text-gray-900 mb-2 flex items-center">
-                    <span class="mr-2">💰</span> 財務試算與籌款收益模型
-                </h2>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    本試算模型嚴格根據討論定價精算：門票 HK$260（內含 $60 相券、糕點、特調券與 Penlight）；常規 Cheki HK$60（女僕拆帳 $30）；宿題 Cheki HK$80（女僕拆帳 $40）；表演券 HK$90（女僕拆帳 $45）；特調券 HK$40（女僕拆帳 $20）；相紙成本 HK$135/20張（$6.75/張）；受薪女僕底薪 HK$60/小時（執勤 4.5 小時 = $270/人）。您可以透過滑桿動態模擬收支。
-                </p>
+            <div class="stat-card">
+                <div class="stat-number">HK$ 1,900</div>
+                <div class="stat-label">預期淨籌款額 (20人情境)</div>
             </div>
+        </div>
+    </section>
 
-            <!-- Simulator Controls & Chart Grid -->
-            <div class="grid lg:grid-cols-12 gap-6">
-                <!-- Controls Panel (5 cols) -->
-                <div class="lg:col-span-5 bg-white rounded-2xl p-6 shadow-sm border border-rose-100 space-y-5">
-                    <h3 class="font-bold text-gray-900 text-base border-b border-gray-100 pb-2">🎛️ 參數動態模擬</h3>
-                    
-                    <!-- Presets -->
-                    <div>
-                        <label class="text-xs font-semibold text-gray-500 block mb-2">快速載入預設情境：</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button onclick="applyPreset(15, 1, 10, 3)" class="py-1.5 text-xs font-medium rounded-lg bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100">保底 (15人)</button>
-                            <button onclick="applyPreset(20, 1.5, 15, 5)" class="py-1.5 text-xs font-medium rounded-lg bg-rose-600 text-white shadow-sm hover:bg-rose-700">目標 (20人)</button>
-                            <button onclick="applyPreset(30, 2, 25, 8)" class="py-1.5 text-xs font-medium rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100">樂觀 (30人)</button>
-                        </div>
-                    </div>
+    <!-- Section 2: Objectives & Strategy -->
+    <section id="section-objectives" class="mb-16 hidden">
+        <h2 class="section-title text-3xl mb-8">二、專案目標與策略定位 Objectives & Strategy</h2>
 
-                    <!-- Attendance Slider -->
-                    <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <label class="text-xs font-bold text-gray-700">付費入場人數：</label>
-                            <span id="slider-guests-val" class="text-sm font-black text-rose-600">20 人</span>
-                        </div>
-                        <input type="range" id="slider-guests" min="10" max="40" value="20" step="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-rose-600" oninput="updateFinanceData()">
-                        <div class="flex justify-between text-[10px] text-gray-400 mt-1">
-                            <span>10人</span>
-                            <span>15人 (損益平衡)</span>
-                            <span>40人 (爆滿)</span>
-                        </div>
-                    </div>
-
-                    <!-- Cheki Per Guest Slider -->
-                    <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <label class="text-xs font-bold text-gray-700">每人平均加購 Cheki ($60)：</label>
-                            <span id="slider-cheki-val" class="text-sm font-black text-rose-600">1.5 張</span>
-                        </div>
-                        <input type="range" id="slider-cheki" min="0" max="4" value="1.5" step="0.5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-rose-600" oninput="updateFinanceData()">
-                    </div>
-
-                    <!-- Carlos Cheki Slider -->
-                    <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <label class="text-xs font-bold text-gray-700">Carlos 會長特別版 Cheki 總銷量 ($60/$80)：</label>
-                            <span id="slider-carlos-val" class="text-sm font-black text-amber-600">15 張</span>
-                        </div>
-                        <input type="range" id="slider-carlos" min="5" max="35" value="15" step="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-amber-500" oninput="updateFinanceData()">
-                    </div>
-
-                    <!-- Live Show Ticket Slider -->
-                    <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <label class="text-xs font-bold text-gray-700">舞台表演券加購總張數 ($90)：</label>
-                            <span id="slider-live-val" class="text-sm font-black text-purple-600">5 張</span>
-                        </div>
-                        <input type="range" id="slider-live" min="0" max="15" value="5" step="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" oninput="updateFinanceData()">
-                    </div>
-
-                    <!-- Summary Box -->
-                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-2 text-xs">
-                        <div class="flex justify-between text-gray-600">
-                            <span>專案總營業收入 (Gross Revenue):</span>
-                            <span id="calc-gross" class="font-bold text-gray-900">HK$ 8,330</span>
-                        </div>
-                        <div class="flex justify-between text-gray-600">
-                            <span>專案總支出 (Costs + Maid Splits):</span>
-                            <span id="calc-cost" class="font-bold text-gray-900">HK$ 7,120</span>
-                        </div>
-                        <div class="border-t border-slate-200 pt-2 flex justify-between text-sm font-bold">
-                            <span>青獅慈善專款淨盈餘:</span>
-                            <span id="calc-net" class="text-emerald-600">+ HK$ 1,210</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Visualization Chart (7 cols) -->
-                <div class="lg:col-span-7 bg-white rounded-2xl p-6 shadow-sm border border-rose-100 flex flex-col justify-between">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-bold text-gray-900 text-base">📊 收支結構與淨籌款額分析</h3>
-                        <span class="text-xs text-gray-400">即時動態 Chart.js 圖表</span>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="financeChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Detailed Cost Matrix Table -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100 overflow-hidden">
-                <h3 class="font-bold text-gray-900 text-base mb-4">📋 拆帳與定價規則明細表</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-rose-50 text-rose-900 font-bold border-b border-rose-100">
-                            <tr>
-                                <th class="p-3">項目名稱</th>
-                                <th class="p-3">賓客支付牌價</th>
-                                <th class="p-3">客席女僕拆帳提成</th>
-                                <th class="p-3">直接物料成本</th>
-                                <th class="p-3 bg-rose-100/50">青獅會淨留存收益</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100 text-gray-600">
-                            <tr>
-                                <td class="p-3 font-semibold text-gray-800">活動門票套票</td>
-                                <td class="p-3 font-bold text-gray-900">HK$ 260 / 位</td>
-                                <td class="p-3">HK$ 30 (門票內含$60相券拆帳)</td>
-                                <td class="p-3">HK$ 44.75 (相紙$6.75+糕點$20+特調$6+手燈$12)</td>
-                                <td class="p-3 font-bold text-emerald-700 bg-rose-50/30">HK$ 185.25 / 位</td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-semibold text-gray-800">加購常規 Cheki (拍立得)</td>
-                                <td class="p-3 font-bold text-gray-900">HK$ 60 / 張</td>
-                                <td class="p-3 text-rose-600 font-medium">HK$ 30 / 張</td>
-                                <td class="p-3">HK$ 6.75 (相紙 $135/20張)</td>
-                                <td class="p-3 font-bold text-emerald-700 bg-rose-50/30">HK$ 23.25 / 張</td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-semibold text-gray-800">加購宿題 Cheki (深度簽繪)</td>
-                                <td class="p-3 font-bold text-gray-900">HK$ 80 / 張</td>
-                                <td class="p-3 text-rose-600 font-medium">HK$ 40 / 張</td>
-                                <td class="p-3">HK$ 6.75 (相紙 $135/20張)</td>
-                                <td class="p-3 font-bold text-emerald-700 bg-rose-50/30">HK$ 33.25 / 張</td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-semibold text-gray-800">舞台歌舞表演券 (Live Show)</td>
-                                <td class="p-3 font-bold text-gray-900">HK$ 90 / 首</td>
-                                <td class="p-3 text-purple-600 font-medium">HK$ 45 / 首</td>
-                                <td class="p-3">HK$ 0.00 (純演藝)</td>
-                                <td class="p-3 font-bold text-emerald-700 bg-rose-50/30">HK$ 45.00 / 首</td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-semibold text-gray-800">加購特調飲品 (Drink)</td>
-                                <td class="p-3 font-bold text-gray-900">HK$ 40 / 杯</td>
-                                <td class="p-3 text-rose-600 font-medium">HK$ 20 / 杯</td>
-                                <td class="p-3">HK$ 6.00 (糖漿、乳品、梳打)</td>
-                                <td class="p-3 font-bold text-emerald-700 bg-rose-50/30">HK$ 14.00 / 杯</td>
-                            </tr>
-                            <tr class="bg-amber-50/50">
-                                <td class="p-3 font-bold text-amber-900">Carlos 會長反串 Cheki/宿題</td>
-                                <td class="p-3 font-bold text-amber-900">HK$ 60 / $80</td>
-                                <td class="p-3 text-amber-700 font-bold">HK$ 0 (100% 義賣捐贈)</td>
-                                <td class="p-3">HK$ 6.75 (相紙)</td>
-                                <td class="p-3 font-bold text-emerald-700 bg-amber-100/40">HK$ 53.25 / $73.25</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 4: SERVICE BLUEPRINT & JOURNEY -->
-        <section id="sec-journey" class="tab-content hidden space-y-6">
-            <!-- Context -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100">
-                <h2 class="text-xl font-bold text-gray-900 mb-2 flex items-center">
-                    <span class="mr-2">🎀</span> 傳統女僕文化服務藍圖與體驗旅程
-                </h2>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    本服務藍圖參考正統女僕咖啡廳標準流向（YouTube Maid Service Standard），建構從接待迎賓、帶位入座、糕點畫碟、美味魔法注入、Live 應援至 Cheki 簽繪的 7 大標準化階段。
-                </p>
-            </div>
-
-            <!-- Stepper Interactive Box -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100 space-y-4">
-                <div class="flex overflow-x-auto space-x-2 pb-2 border-b border-gray-100" id="stepper-nav">
-                    <!-- Dynamic stepper buttons injected by JS -->
-                </div>
-
-                <!-- Step Detail Container -->
-                <div id="step-detail-container" class="bg-rose-50/50 rounded-2xl p-6 border border-rose-100 transition-all min-h-[220px]">
-                    <!-- Step detail injected by JS -->
-                </div>
-            </div>
-
-            <!-- Maid Rulebook ("萌之公約") Grid -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100 space-y-4">
-                <h3 class="font-bold text-gray-900 text-base flex items-center">
-                    <span class="mr-2">🛡️</span> 現場賓客行為守則（萌之公約）
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div class="card p-8">
+                <h3 class="text-xl font-bold text-leo-navy mb-4 flex items-center">
+                    <span class="text-2xl mr-3">🎯</span>
+                    核心目標
                 </h3>
-                <div class="grid md:grid-cols-3 gap-4">
-                    <div class="p-4 rounded-xl bg-red-50 border border-red-100">
-                        <div class="font-bold text-red-800 text-sm mb-1">🚫 1. 嚴禁私人資訊打聽</div>
-                        <p class="text-xs text-red-600 leading-relaxed">
-                            嚴禁向客席女僕或青獅女僕打聽真實姓名、電話、社交帳號或私人住址等隱私。
-                        </p>
-                    </div>
-                    <div class="p-4 rounded-xl bg-red-50 border border-red-100">
-                        <div class="font-bold text-red-800 text-sm mb-1">📷 2. 嚴禁未經許可單獨攝影</div>
-                        <p class="text-xs text-red-600 leading-relaxed">
-                            場內僅能拍攝自身桌上餐點與舞台表演。女僕肖像拍攝嚴格限制於購買官方 Cheki。
-                        </p>
-                    </div>
-                    <div class="p-4 rounded-xl bg-red-50 border border-red-100">
-                        <div class="font-bold text-red-800 text-sm mb-1">🤝 3. 肢體接觸零容忍</div>
-                        <p class="text-xs text-red-600 leading-relaxed">
-                            全場禁止與女僕發生任何肢體觸碰（握手/搭肩等），合照需保持至少 30 公分安全距離。
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 5: VENUE & F&B ENGINEERING -->
-        <section id="sec-venue" class="tab-content hidden space-y-6">
-            <!-- Context -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100">
-                <h2 class="text-xl font-bold text-gray-900 mb-2 flex items-center">
-                    <span class="mr-2">🏰</span> 觀塘 E11 Space 場地佈置與無雪櫃餐飲工程
-                </h2>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    選址觀塘 E11 Space，需要團隊於 16:00-18:00 自行 set 檯、鋪檯布、擺設 Reception 與舞台裝飾。因應場地無雪櫃與無明火限制，餐飲採取常溫/即時送達糕點，配合「保冷箱 + 倉庫原物料」調製特調飲品。
-                </p>
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <span class="text-leo-gold mr-2 font-bold">•</span>
+                        <span class="text-gray-700"><strong>文化推廣：</strong>向香港獅友圈介紹日本正統女僕咖啡廳文化，打破刻板印象</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-leo-gold mr-2 font-bold">•</span>
+                        <span class="text-gray-700"><strong>慈善籌款：</strong>通過創新主題活動為青獅慈善專款籌集資金</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-leo-gold mr-2 font-bold">•</span>
+                        <span class="text-gray-700"><strong>會員凝聚：</strong>會長親自參與帶動，強化青獅團隊凝聚力</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-leo-gold mr-2 font-bold">•</span>
+                        <span class="text-gray-700"><strong>品牌建立：</strong>展現青獅創新形象，吸引年輕世代關注公益</span>
+                    </li>
+                </ul>
             </div>
 
-            <!-- Venue Layout Map (HTML CSS Grid Diagram) -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100 space-y-4">
-                <h3 class="font-bold text-gray-900 text-base flex items-center justify-between">
-                    <span>📍 觀塘 E11 Space 空間佈置與動線規劃圖</span>
-                    <span class="text-xs font-normal text-gray-500">16:00 - 18:00 團隊自主 Setup</span>
+            <div class="card p-8">
+                <h3 class="text-xl font-bold text-leo-navy mb-4 flex items-center">
+                    <span class="text-2xl mr-3">📊</span>
+                    關鍵成功因素
                 </h3>
-                <div class="grid grid-cols-12 gap-3 p-4 bg-slate-100 rounded-xl border border-slate-200 text-xs text-center font-medium min-h-[260px]">
-                    <!-- Entrance Reception -->
-                    <div class="col-span-12 md:col-span-3 bg-amber-100 text-amber-900 p-4 rounded-lg border border-amber-300 flex flex-col justify-center items-center">
-                        <span class="text-lg mb-1">🚪</span>
-                        <span class="font-bold">門口 Reception 接待處</span>
-                        <span class="text-[10px] text-amber-700 mt-1">氣球拱門裝飾 / 門票核銷 / 派發相券/特調券/Penlight / 歡迎歸家</span>
-                    </div>
-                    <!-- Main Cafe & Stage -->
-                    <div class="col-span-12 md:col-span-6 grid grid-rows-3 gap-2">
-                        <div class="row-span-1 bg-purple-100 text-purple-900 p-2 rounded-lg border border-purple-200 flex items-center justify-center">
-                            <span>🎤 中央舞台區 (Live Show / 燈光幕布 / Cheki 拍攝點)</span>
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <span class="text-leo-gold mr-2 font-bold">•</span>
+                        <span class="text-gray-700"><strong>會長示範效應：</strong>Carlos 反串女僕執勤，獅友「比面」支持參與</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-leo-gold mr-2 font-bold">•</span>
+                        <span class="text-gray-700"><strong>專業服務品質：</strong>受薪客席女僕帶領，確保正統體驗標準</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-leo-gold mr-2 font-bold">•</span>
+                        <span class="text-gray-700"><strong>封閉圈層營運：</strong>以獅友網絡為主，降低公開活動風險</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-leo-gold mr-2 font-bold">•</span>
+                        <span class="text-gray-700"><strong>低損益平衡點：</strong>16人即可收支平衡，財務安全邊際高</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card p-8">
+            <h3 class="text-xl font-bold text-leo-navy mb-6">目標客群分析</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%">客群類別</th>
+                        <th style="width: 15%">預估人數</th>
+                        <th style="width: 35%">客群特徵</th>
+                        <th style="width: 30%">推廣策略</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-semibold">青獅幹事</td>
+                        <td>8-12 人</td>
+                        <td>核心成員，文化接受度高，支持會長決策</td>
+                        <td>內部動員，會長親自邀約</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">母會大獅</td>
+                        <td>4-8 人</td>
+                        <td>資深獅友，願意支持青獅會創新嘗試</td>
+                        <td>正式邀請函，強調文化體驗與慈善意義</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">屬會友會</td>
+                        <td>6-10 人</td>
+                        <td>其他獅子會/青獅會友好成員</td>
+                        <td>跨會宣傳，友誼支持</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">特邀嘉賓</td>
+                        <td>2-4 人</td>
+                        <td>次文化KOL、媒體友好、潛在贊助商</td>
+                        <td>個別邀請，提供專屬體驗</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Section 3: Operations Plan -->
+    <section id="section-operations" class="mb-16 hidden">
+        <h2 class="section-title text-3xl mb-8">三、營運計劃 Operations Plan</h2>
+
+        <div class="card p-8 mb-8">
+            <h3 class="text-xl font-bold text-leo-navy mb-6">3.1 活動時程規劃（16:00 - 23:59）</h3>
+
+            <div class="space-y-0">
+                <div class="timeline-item">
+                    <div class="ml-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-bold text-gray-900">Phase 1: 場地佈置與人員準備</h4>
+                            <span class="badge badge-primary">16:00 - 18:00</span>
                         </div>
-                        <div class="row-span-2 bg-pink-100 text-rose-900 p-4 rounded-lg border border-pink-200 flex flex-col justify-center items-center">
-                            <span class="text-lg mb-1">☕</span>
-                            <span class="font-bold">主 Cafe 用餐區 (自行 Set 檯 + 鋪黑白蕾絲檯布)</span>
-                            <span class="text-[10px] text-pink-700">女僕帶位 / 朱古力筆桌边畫碟 / 美味魔法注入 / 1.5m 通道</span>
-                        </div>
+                        <ul class="text-sm text-gray-600 space-y-1 ml-4">
+                            <li>• 16:00-17:00: 進駐 E11 Space，擺設桌椅、鋪設檯布、搭建 Reception 接待處與舞台裝飾</li>
+                            <li>• 17:00-17:45: Carlos 會長女裝化妝造型，全體女僕更衣、勤前簡報</li>
+                            <li>• 17:45-18:00: 服務流程彩排，確認畫碟物料、特調原料、Cheki 相機測試</li>
+                        </ul>
                     </div>
-                    <!-- Backstage & Bar -->
-                    <div class="col-span-12 md:col-span-3 bg-blue-100 text-blue-900 p-4 rounded-lg border border-blue-300 flex flex-col justify-center items-center">
-                        <span class="text-lg mb-1">🧊</span>
-                        <span class="font-bold">後勤 Bar 台 & Carlos 化妝間</span>
-                        <span class="text-[10px] text-blue-700 mt-1">保溫冰桶 / 常溫特調流水線 / Carlos 女裝化妝更衣區</span>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="ml-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-bold text-gray-900">Phase 2: 迎賓與糕點服務</h4>
+                            <span class="badge badge-secondary">18:00 - 19:30</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 space-y-1 ml-4">
+                            <li>• 18:00: 開門迎賓，Reception 核銷門票，派發相券、特調券、Penlight</li>
+                            <li>• 18:00-18:30: 女僕帶位入座，宣讀「萌之公約」行為守則</li>
+                            <li>• 18:30-19:30: 呈遞糕點與特調飲品，桌邊朱古力筆畫碟，美味魔法注入儀式</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="ml-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-bold text-gray-900">Phase 3: 會長巡桌與加購催銷</h4>
+                            <span class="badge badge-secondary">19:30 - 21:00</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 space-y-1 ml-4">
+                            <li>• 19:30: Carlos 會長女僕裝亮相，全場巡桌互動</li>
+                            <li>• 19:30-21:00: Queenie 營運總監帶領流動推銷加購 Cheki、宿題、表演券</li>
+                            <li>• 持續桌邊服務，補充飲品，維持現場氣氛</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="ml-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-bold text-gray-900">Phase 4: 舞台歌舞表演</h4>
+                            <span class="badge badge-success">21:00 - 21:30</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 space-y-1 ml-4">
+                            <li>• 21:00: 燈光切換，客人揮舞 Penlight 應援</li>
+                            <li>• 21:00-21:25: 受薪客席女僕登台歌舞表演（每首 $90 表演券）</li>
+                            <li>• 21:25-21:30: Carlos 會長致辭感謝獅友支持，宣傳青獅慈善專款用途</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="ml-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-bold text-gray-900">Phase 5: Cheki 拍立得最終衝刺</h4>
+                            <span class="badge badge-warning">21:30 - 22:30</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 space-y-1 ml-4">
+                            <li>• 21:30: 開放雙拍照機位（機位A：客席女僕，機位B：Carlos 會長特別版）</li>
+                            <li>• 現場漆筆簽繪塗鴉，控時 60 秒/張</li>
+                            <li>• 22:15: 宣告 Last Order，停止接受新訂單</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="ml-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-bold text-gray-900">Phase 6: 謝客與場地復原</h4>
+                            <span class="badge badge-primary">22:30 - 23:59</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 space-y-1 ml-4">
+                            <li>• 22:30: 女僕列隊門口送行「請主人路上小心」</li>
+                            <li>• 22:30-23:30: 全體幹部收拾檯布裝飾，清潔桌面，分類垃圾</li>
+                            <li>• 23:30-23:59: 復原 E11 Space 原始會議佈局，結算女僕薪酬，場地交接驗收</li>
+                        </ul>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- F&B Engineering & Drink Recipes -->
+        <div class="card p-8 mb-8">
+            <h3 class="text-xl font-bold text-leo-navy mb-6">3.2 服務藍圖 Service Blueprint</h3>
+            <p class="text-gray-600 text-sm mb-6">根據日本正統女僕咖啡廳標準流程設計的七階段客戶旅程：</p>
+
             <div class="grid md:grid-cols-2 gap-6">
-                <!-- Food Strategy Card -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100 space-y-3">
-                    <h3 class="font-bold text-gray-900 text-base flex items-center text-rose-600">
-                        <span class="mr-2">🧇</span> 無雪櫃糕點供應與畫碟適配
-                    </h3>
-                    <ul class="space-y-2 text-xs text-gray-600">
-                        <li class="p-2.5 bg-rose-50/50 rounded-lg border border-rose-100">
-                            <strong class="text-gray-800">事先準備/定點直送糕點：</strong> 嚴選無需現場冷藏之高品質西點（如比利時鬆餅、長崎蛋糕、瑪德蓮或指定時間直送蛋糕）。
-                        </li>
-                        <li class="p-2.5 bg-rose-50/50 rounded-lg border border-rose-100">
-                            <strong class="text-gray-800">巧克力/果醬醬筆畫碟：</strong> 配備獨立軟管朱古力筆與草莓醬筆，供女僕於白瓷碟邊緣即興繪製卡通圖案與寫客名。
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Drink Formulas Card -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100 space-y-3">
-                    <h3 class="font-bold text-gray-900 text-base flex items-center text-amber-600">
-                        <span class="mr-2">🍹</span> 特調飲品倉庫原物料與配方
-                    </h3>
-                    <div class="p-3 bg-amber-50 rounded-xl border border-amber-100 text-xs space-y-2">
-                        <p class="font-bold text-amber-900">📦 原物料庫存：</p>
-                        <p class="text-amber-800 leading-relaxed">
-                            鮮奶、豆漿、無糖茶（烏龍/綠茶）、罐裝梳打水、淘寶風味糖漿（藍柑橘/草莓/白桃等）、食用冰塊（保溫箱儲存）。
-                        </p>
+                <div class="border-2 border-leo-gold rounded-lg p-5">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full bg-leo-navy text-white flex items-center justify-center font-bold mr-3">1</div>
+                        <h4 class="font-bold text-gray-900">Reception 接待核銷</h4>
                     </div>
-                    <ul class="space-y-1.5 text-xs text-gray-600">
-                        <li>• <strong>奶類特調：</strong> 草莓歐蕾 (糖漿 + 保鮮鮮奶/豆漿 + 冰塊 + 漸層分層)</li>
-                        <li>• <strong>梳打類特調：</strong> 蔚藍海岸 (藍柑橘糖漿 + 梳打水 + 檸檬片 + 氣泡感)</li>
-                        <li>• <strong>無糖茶特調：</strong> 白桃烏龍 (白桃糖漿 + 無糖烏龍茶 + 解膩清爽)</li>
+                    <div class="text-sm text-gray-600 ml-13">
+                        <p class="mb-2"><strong>賓客行為：</strong>抵達 E11 Space，出示門票憑證</p>
+                        <p><strong>女僕服務：</strong>核銷門票，派發 $60 相券、特調券及 Penlight 應援棒</p>
+                    </div>
+                </div>
+
+                <div class="border-2 border-leo-gold rounded-lg p-5">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full bg-leo-navy text-white flex items-center justify-center font-bold mr-3">2</div>
+                        <h4 class="font-bold text-gray-900">歡迎歸家儀式</h4>
+                    </div>
+                    <div class="text-sm text-gray-600 ml-13">
+                        <p class="mb-2"><strong>賓客行為：</strong>踏入場地，感受二次元氛圍</p>
+                        <p><strong>女僕服務：</strong>搖鈴齊聲鞠躬「歡迎主人/大小姐回家！」</p>
+                    </div>
+                </div>
+
+                <div class="border-2 border-leo-gold rounded-lg p-5">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full bg-leo-navy text-white flex items-center justify-center font-bold mr-3">3</div>
+                        <h4 class="font-bold text-gray-900">帶位與規約宣讀</h4>
+                    </div>
+                    <div class="text-sm text-gray-600 ml-13">
+                        <p class="mb-2"><strong>賓客行為：</strong>由女僕引導就座，瀏覽菜單</p>
+                        <p><strong>女僕服務：</strong>單膝跪地呈上菜單，宣讀「萌之公約」行為守則</p>
+                    </div>
+                </div>
+
+                <div class="border-2 border-leo-gold rounded-lg p-5">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full bg-leo-navy text-white flex items-center justify-center font-bold mr-3">4</div>
+                        <h4 class="font-bold text-gray-900">桌邊畫碟與呈餐</h4>
+                    </div>
+                    <div class="text-sm text-gray-600 ml-13">
+                        <p class="mb-2"><strong>賓客行為：</strong>點選糕點，指定繪製圖案或寫姓名</p>
+                        <p><strong>女僕服務：</strong>持朱古力/果醬筆進行 3-5 分鐘桌邊即興畫碟</p>
+                    </div>
+                </div>
+
+                <div class="border-2 border-leo-gold rounded-lg p-5">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full bg-leo-navy text-white flex items-center justify-center font-bold mr-3">5</div>
+                        <h4 class="font-bold text-gray-900">美味魔法注入</h4>
+                    </div>
+                    <div class="text-sm text-gray-600 ml-13">
+                        <p class="mb-2"><strong>賓客行為：</strong>雙手比愛心，隨女僕朗誦魔法咒語</p>
+                        <p><strong>女僕服務：</strong>帶領齊聲「おいしくな〜れ、萌え萌えキュン！」</p>
+                    </div>
+                </div>
+
+                <div class="border-2 border-leo-gold rounded-lg p-5">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full bg-leo-navy text-white flex items-center justify-center font-bold mr-3">6</div>
+                        <h4 class="font-bold text-gray-900">舞台表演應援</h4>
+                    </div>
+                    <div class="text-sm text-gray-600 ml-13">
+                        <p class="mb-2"><strong>賓客行為：</strong>揮舞 Penlight，打 Call 應援</p>
+                        <p><strong>女僕服務：</strong>受薪女僕登台歌舞展演，Carlos 會長致辭</p>
+                    </div>
+                </div>
+
+                <div class="border-2 border-leo-gold rounded-lg p-5">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full bg-leo-navy text-white flex items-center justify-center font-bold mr-3">7</div>
+                        <h4 class="font-bold text-gray-900">Cheki 簽繪與送行</h4>
+                    </div>
+                    <div class="text-sm text-gray-600 ml-13">
+                        <p class="mb-2"><strong>賓客行為：</strong>憑券與女僕/Carlos 合照，接過手繪 Cheki</p>
+                        <p><strong>女僕服務：</strong>漆筆簽繪，列隊送行「請主人路上小心！」</p>
+                    </div>
+                </div>
+
+                <div class="col-span-2 bg-red-50 border-2 border-red-200 rounded-lg p-5">
+                    <h4 class="font-bold text-red-800 mb-3 flex items-center">
+                        <span class="text-xl mr-2">⚠️</span>
+                        萌之公約 Maid Café Code of Conduct
+                    </h4>
+                    <div class="grid md:grid-cols-3 gap-4 text-sm">
+                        <div>
+                            <p class="font-semibold text-red-700">🚫 嚴禁私人資訊打聽</p>
+                            <p class="text-gray-700">禁止打聽女僕真實姓名、電話、社交帳號或住址</p>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-red-700">📷 嚴禁未經許可攝影</p>
+                            <p class="text-gray-700">女僕肖像拍攝嚴格限制於購買官方 Cheki</p>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-red-700">🤝 零容忍肢體接觸</p>
+                            <p class="text-gray-700">全場禁止與女僕肢體觸碰，合照保持 30cm 距離</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-8">
+            <h3 class="text-xl font-bold text-leo-navy mb-6">3.3 場地與餐飲工程</h3>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-3 flex items-center">
+                        <span class="text-xl mr-2">🏢</span>
+                        觀塘 E11 Space 場地條件
+                    </h4>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-leo-gold mr-2">▸</span>
+                            <span><strong>地址：</strong>觀塘開源道 E11 Space 11樓</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-leo-gold mr-2">▸</span>
+                            <span><strong>租用時段：</strong>16:00 - 23:59（8小時）</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-leo-gold mr-2">▸</span>
+                            <span><strong>場地成本：</strong>HK$ 4,000</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-leo-gold mr-2">▸</span>
+                            <span><strong>限制條件：</strong>無雪櫃、無明火，需自行 Set 檯佈置</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-leo-gold mr-2">▸</span>
+                            <span><strong>裝飾佈置：</strong>黑白蕾絲檯布、氣球拱門、舞台幕布燈光（預算 HK$ 500）</span>
+                        </li>
                     </ul>
                 </div>
-            </div>
-        </section>
 
-        <!-- SECTION 6: ORGANIZATION & RISK CONTROL -->
-        <section id="sec-organization" class="tab-content hidden space-y-6">
-            <!-- Context -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100">
-                <h2 class="text-xl font-bold text-gray-900 mb-2 flex items-center">
-                    <span class="mr-2">👥</span> 人員編制、分工矩陣與風險預案
-                </h2>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    本企劃由「會長反串帶頭募款、受薪專業女僕帶動現場、青獅幹事後勤支援」三方構成。下方列出完整人員編制表及突發風險應變 SOP。
-                </p>
-            </div>
-
-            <!-- Roster Table -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100 overflow-hidden">
-                <h3 class="font-bold text-gray-900 text-base mb-4">👥 團隊崗位與薪酬拆帳矩陣</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-100 text-slate-800 font-bold">
-                            <tr>
-                                <th class="p-3">崗位類別</th>
-                                <th class="p-3">成員代表</th>
-                                <th class="p-3">核心職責</th>
-                                <th class="p-3">薪酬與拆帳規則</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100 text-gray-600">
-                            <tr class="bg-rose-50/30">
-                                <td class="p-3 font-bold text-rose-900">專案總指揮 / 特命女僕</td>
-                                <td class="p-3 font-semibold">Carlos Yin (會長)</td>
-                                <td class="p-3">16:00-18:00女裝化妝，18:00起「下海」反串女僕巡桌帶動課金、致辭</td>
-                                <td class="p-3 text-rose-700 font-medium">義務奉獻，個人 Cheki/宿題 100% 捐贈慈善專款</td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-bold text-gray-800">營運總監與 MC 主持</td>
-                                <td class="p-3 font-semibold">李凌佳 Queenie</td>
-                                <td class="p-3">時程控場、舞台演藝 MC 主持、帶動 Cheki 催趕拍立得銷售</td>
-                                <td class="p-3">義務參與 / 獲頒專案貢獻感謝狀</td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-bold text-gray-800">專案顧問</td>
-                                <td class="p-3 font-semibold">Qubeley Advisory (Q Sir)</td>
-                                <td class="p-3">提案整合、邀約嘉賓名單、服務標準監控、餐飲保冷指導</td>
-                                <td class="p-3">專業顧問支持</td>
-                            </tr>
-                            <tr class="bg-pink-50/30">
-                                <td class="p-3 font-bold text-pink-900">受薪客席專業女僕</td>
-                                <td class="p-3 font-semibold">Cotton (棉花), Morie, Nana, 四月兔 (及 Milky Way 備選)</td>
-                                <td class="p-3">桌邊畫碟、美味魔法、舞台 Live 歌舞表演、Cheki 簽繪互動</td>
-                                <td class="p-3 text-pink-700 font-medium">底薪 HK$60/hr (18:00-22:30共$270) + 相/券/表演階梯拆帳</td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-bold text-gray-800">青獅義務女僕組</td>
-                                <td class="p-3 font-semibold">Tanika, Naomi, Suet, Rachel</td>
-                                <td class="p-3">門口 Reception 帶位、遞送餐飲、協助桌邊清潔、維護排隊秩序</td>
-                                <td class="p-3">青獅義務幹部（免底薪），獲文化服務證書</td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-bold text-gray-800">男青獅後勤技術組</td>
-                                <td class="p-3 font-semibold">男青獅幹部 (2-3名)</td>
-                                <td class="p-3">16:00-18:00 場地 Set 檯/檯布/裝飾、影音燈光控制、Bar台調飲、22:30-23:59 清潔復原</td>
-                                <td class="p-3">青獅義務幹部</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-3 flex items-center">
+                        <span class="text-xl mr-2">🧇</span>
+                        無雪櫃餐飲解決方案
+                    </h4>
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-gray-50 p-3 rounded">
+                            <p class="font-semibold text-gray-800 mb-1">糕點供應：</p>
+                            <p class="text-gray-700">事先準備或定點直送無需冷藏之高品質西點（比利時鬆餅、長崎蛋糕、瑪德蓮等），單位成本 HK$ 20/份</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded">
+                            <p class="font-semibold text-gray-800 mb-1">畫碟工具：</p>
+                            <p class="text-gray-700">獨立軟管朱古力筆與草莓醬筆，供女僕於白瓷碟邊緣繪製圖案與寫客名</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded">
+                            <p class="font-semibold text-gray-800 mb-1">特調飲品：</p>
+                            <p class="text-gray-700">保溫冰桶儲存鮮奶、豆漿、梳打水，配合淘寶風味糖漿（藍柑橘/草莓/白桃）現場調製，單位成本 HK$ 6/杯</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded">
+                            <p class="font-semibold text-gray-800 mb-1">配方範例：</p>
+                            <p class="text-gray-700">草莓歐蕾（糖漿+鮮奶+冰塊）、蔚藍海岸（藍柑橘糖漿+梳打水+檸檬片）、白桃烏龍（白桃糖漿+無糖烏龍茶）</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Risk Matrix Accordion -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100 space-y-3">
-                <h3 class="font-bold text-gray-900 text-base mb-2 flex items-center">
-                    <span class="mr-2">🚨</span> 突發風險評估與應急處理 SOP
+    <!-- Section 4: Financial Analysis -->
+    <section id="section-finance" class="mb-16 hidden">
+        <h2 class="section-title text-3xl mb-8">四、財務分析 Financial Analysis</h2>
+
+        <div class="card p-8 mb-8">
+            <h3 class="text-xl font-bold text-leo-navy mb-6">4.1 定價結構與拆帳規則</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%">項目名稱</th>
+                        <th style="width: 15%">賓客支付</th>
+                        <th style="width: 20%">客席女僕拆帳</th>
+                        <th style="width: 20%">直接物料成本</th>
+                        <th style="width: 25%">青獅會淨留存</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-semibold">活動門票套票</td>
+                        <td class="font-bold">HK$ 260</td>
+                        <td>HK$ 30</td>
+                        <td>HK$ 44.75</td>
+                        <td class="font-bold text-green-600">HK$ 185.25</td>
+                    </tr>
+                    <tr>
+                        <td class="text-xs text-gray-500" colspan="5">
+                            套票內含：$60 相券（女僕拆 $30）+ 糕點 $20 + 特調券 $40（成本 $6）+ Penlight $12 + 相紙成本 $6.75
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">加購常規 Cheki</td>
+                        <td class="font-bold">HK$ 60</td>
+                        <td>HK$ 30</td>
+                        <td>HK$ 6.75</td>
+                        <td class="font-bold text-green-600">HK$ 23.25</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">加購宿題 Cheki</td>
+                        <td class="font-bold">HK$ 80</td>
+                        <td>HK$ 40</td>
+                        <td>HK$ 6.75</td>
+                        <td class="font-bold text-green-600">HK$ 33.25</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">舞台表演券</td>
+                        <td class="font-bold">HK$ 90</td>
+                        <td>HK$ 45</td>
+                        <td>HK$ 0</td>
+                        <td class="font-bold text-green-600">HK$ 45.00</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">加購特調飲品</td>
+                        <td class="font-bold">HK$ 40</td>
+                        <td>HK$ 20</td>
+                        <td>HK$ 6</td>
+                        <td class="font-bold text-green-600">HK$ 14.00</td>
+                    </tr>
+                    <tr class="bg-amber-50">
+                        <td class="font-bold">Carlos 會長 Cheki</td>
+                        <td class="font-bold">HK$ 60 / $80</td>
+                        <td class="font-bold text-amber-700">HK$ 0</td>
+                        <td>HK$ 6.75</td>
+                        <td class="font-bold text-amber-700">HK$ 53.25 / $73.25</td>
+                    </tr>
+                    <tr class="text-xs text-gray-500">
+                        <td colspan="5">註：Carlos 會長反串 Cheki/宿題 100% 義賣捐贈，不拆帳給女僕，全數撥入青獅慈善專款</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card p-8 mb-8">
+            <h3 class="text-xl font-bold text-leo-navy mb-6">4.2 三情境財務模型</h3>
+
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 30%">財務項目</th>
+                            <th style="width: 22%" class="text-center">保底情境<br/><span class="text-xs font-normal">(16人)</span></th>
+                            <th style="width: 24%" class="text-center bg-leo-navy">目標情境<br/><span class="text-xs font-normal">(20人)</span></th>
+                            <th style="width: 24%" class="text-center">樂觀情境<br/><span class="text-xs font-normal">(25人)</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-gray-50">
+                            <td colspan="4" class="font-bold text-gray-800">收入結構 Revenue</td>
+                        </tr>
+                        <tr>
+                            <td>門票收入 (HK$ 260/人)</td>
+                            <td class="text-center">HK$ 4,160</td>
+                            <td class="text-center bg-blue-50">HK$ 5,200</td>
+                            <td class="text-center">HK$ 6,500</td>
+                        </tr>
+                        <tr>
+                            <td>加購 Cheki (平均 1.0/1.5/2.0 張)</td>
+                            <td class="text-center">HK$ 960</td>
+                            <td class="text-center bg-blue-50">HK$ 1,800</td>
+                            <td class="text-center">HK$ 3,000</td>
+                        </tr>
+                        <tr>
+                            <td>Carlos 會長 Cheki (12/18/24 張)</td>
+                            <td class="text-center">HK$ 840</td>
+                            <td class="text-center bg-blue-50">HK$ 1,260</td>
+                            <td class="text-center">HK$ 1,680</td>
+                        </tr>
+                        <tr>
+                            <td>舞台表演券 (3/5/8 首)</td>
+                            <td class="text-center">HK$ 270</td>
+                            <td class="text-center bg-blue-50">HK$ 450</td>
+                            <td class="text-center">HK$ 720</td>
+                        </tr>
+                        <tr class="font-bold bg-gray-100">
+                            <td>總收入 Total Revenue</td>
+                            <td class="text-center">HK$ 6,230</td>
+                            <td class="text-center bg-blue-100">HK$ 8,710</td>
+                            <td class="text-center">HK$ 11,900</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td colspan="4" class="font-bold text-gray-800 pt-4">成本結構 Costs</td>
+                        </tr>
+                        <tr>
+                            <td>場地租金 E11 Space</td>
+                            <td class="text-center">HK$ 4,000</td>
+                            <td class="text-center bg-blue-50">HK$ 4,000</td>
+                            <td class="text-center">HK$ 4,000</td>
+                        </tr>
+                        <tr>
+                            <td>裝飾佈置物料</td>
+                            <td class="text-center">HK$ 500</td>
+                            <td class="text-center bg-blue-50">HK$ 500</td>
+                            <td class="text-center">HK$ 500</td>
+                        </tr>
+                        <tr>
+                            <td>受薪女僕底薪 (3人 × $60/hr × 4.5hr)</td>
+                            <td class="text-center">HK$ 810</td>
+                            <td class="text-center bg-blue-50">HK$ 810</td>
+                            <td class="text-center">HK$ 810</td>
+                        </tr>
+                        <tr class="bg-amber-50">
+                            <td class="font-semibold">營運總監 Queenie ($70/hr × 4.5hr)</td>
+                            <td class="text-center font-semibold">HK$ 315</td>
+                            <td class="text-center bg-amber-100 font-semibold">HK$ 315</td>
+                            <td class="text-center font-semibold">HK$ 315</td>
+                        </tr>
+                        <tr>
+                            <td>門票內含物料成本</td>
+                            <td class="text-center">HK$ 716</td>
+                            <td class="text-center bg-blue-50">HK$ 895</td>
+                            <td class="text-center">HK$ 1,119</td>
+                        </tr>
+                        <tr>
+                            <td>女僕拆帳提成總額</td>
+                            <td class="text-center">HK$ 705</td>
+                            <td class="text-center bg-blue-50">HK$ 1,290</td>
+                            <td class="text-center">HK$ 2,130</td>
+                        </tr>
+                        <tr class="font-bold bg-gray-100">
+                            <td>總成本 Total Costs</td>
+                            <td class="text-center">HK$ 7,046</td>
+                            <td class="text-center bg-blue-100">HK$ 7,810</td>
+                            <td class="text-center">HK$ 8,874</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td colspan="4" class="font-bold text-gray-800 pt-4">淨損益 Net Result</td>
+                        </tr>
+                        <tr class="font-bold text-lg">
+                            <td>青獅慈善專款淨盈餘</td>
+                            <td class="text-center text-red-600">- HK$ 816</td>
+                            <td class="text-center bg-green-100 text-green-700">+ HK$ 900</td>
+                            <td class="text-center text-green-700">+ HK$ 3,026</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
+                <p class="text-sm text-gray-700"><strong>財務結論：</strong>損益平衡點為 16 人（保底情境虧損 HK$ 816，接近平衡）。目標情境 20 人可淨籌款 HK$ 900，樂觀情境 25 人可淨籌款 HK$ 3,026。以青獅及母會友會圈層動員能力，達標 20-25 人屬合理預期，財務風險可控。</p>
+            </div>
+        </div>
+
+        <div class="card p-8">
+            <h3 class="text-xl font-bold text-leo-navy mb-6">4.3 互動財務模擬器</h3>
+            <p class="text-sm text-gray-600 mb-6">調整下方參數，即時計算不同情境下的淨籌款額：</p>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">入場人數：<span id="calc-guests" class="text-leo-navy">20</span> 人</label>
+                        <input type="range" id="slider-guests" min="10" max="40" value="20" class="w-full" oninput="calculateFinance()">
+                        <div class="flex justify-between text-xs text-gray-500 mt-1">
+                            <span>10人</span>
+                            <span>25人</span>
+                            <span>40人</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">人均加購 Cheki：<span id="calc-cheki-avg" class="text-leo-navy">1.5</span> 張</label>
+                        <input type="range" id="slider-cheki" min="0" max="4" step="0.5" value="1.5" class="w-full" oninput="calculateFinance()">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Carlos 會長 Cheki：<span id="calc-carlos" class="text-leo-navy">18</span> 張</label>
+                        <input type="range" id="slider-carlos" min="5" max="35" value="18" class="w-full" oninput="calculateFinance()">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">舞台表演券：<span id="calc-live" class="text-leo-navy">5</span> 首</label>
+                        <input type="range" id="slider-live" min="0" max="15" value="5" class="w-full" oninput="calculateFinance()">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="bg-gradient-to-br from-leo-navy to-gray-800 text-white rounded-lg p-8 h-full flex flex-col justify-center">
+                        <div class="text-center mb-6">
+                            <div class="text-sm font-medium text-gray-300 mb-2">青獅慈善專款淨籌款額</div>
+                            <div id="calc-result" class="text-5xl font-black mb-2">HK$ 1,900</div>
+                            <div id="calc-status" class="text-sm text-green-300">✓ 盈餘</div>
+                        </div>
+
+                        <div class="space-y-2 text-sm border-t border-gray-600 pt-4">
+                            <div class="flex justify-between">
+                                <span class="text-gray-300">總收入：</span>
+                                <span id="calc-revenue" class="font-semibold">HK$ 8,710</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-300">總成本：</span>
+                                <span id="calc-costs" class="font-semibold">HK$ 6,810</span>
+                            </div>
+                        </div>
+
+                        <button onclick="resetCalculator()" class="mt-6 bg-white text-leo-navy px-4 py-2 rounded font-semibold text-sm hover:bg-gray-100 transition">
+                            重設為目標情境
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Organization Structure -->
+    <section id="section-organization" class="mb-16 hidden">
+        <h2 class="section-title text-3xl mb-8">五、組織架構與人員編制 Organization Structure</h2>
+
+        <div class="card p-8 mb-8">
+            <h3 class="text-xl font-bold text-leo-navy mb-6">5.1 團隊架構圖</h3>
+
+            <div class="space-y-6">
+                <!-- Level 1: 專案總指揮 -->
+                <div class="flex justify-center">
+                    <div class="bg-gradient-to-r from-leo-navy to-leo-gold text-white px-8 py-4 rounded-lg shadow-lg text-center">
+                        <div class="text-sm font-medium mb-1">專案總指揮 / 特命女僕</div>
+                        <div class="text-xl font-bold">Carlos Yin 會長</div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center">
+                    <div class="w-1 h-8 bg-gray-300"></div>
+                </div>
+
+                <!-- Level 2: 專案顧問 + 營運總監 -->
+                <div class="grid grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="bg-gray-100 border-2 border-gray-300 px-6 py-4 rounded-lg text-center">
+                        <div class="text-sm font-medium text-gray-600 mb-1">專案顧問</div>
+                        <div class="text-lg font-bold text-gray-900">Qubeley Advisory</div>
+                        <div class="text-xs text-gray-500 mt-1">提案整合 / 服務標準監控</div>
+                    </div>
+                    <div class="bg-amber-100 border-2 border-amber-400 px-6 py-4 rounded-lg text-center">
+                        <div class="text-sm font-medium text-amber-800 mb-1">營運總監與 MC 主持</div>
+                        <div class="text-lg font-bold text-amber-900">Queenie Li 李凌佳</div>
+                        <div class="text-xs text-amber-700 mt-1">HK$ 70/hr × 4.5hr = HK$ 315</div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center">
+                    <div class="w-1 h-8 bg-gray-300"></div>
+                </div>
+
+                <!-- Level 3: 執行團隊 -->
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="bg-pink-50 border-2 border-pink-300 p-6 rounded-lg">
+                        <div class="text-center mb-4">
+                            <div class="text-sm font-semibold text-pink-800 mb-1">受薪客席女僕組</div>
+                            <div class="text-xs text-pink-600">HK$ 60/hr × 4.5hr</div>
+                        </div>
+                        <ul class="text-sm text-gray-700 space-y-1">
+                            <li>• Cotton 棉花</li>
+                            <li>• Morie</li>
+                            <li>• Nana</li>
+                            <li class="text-xs text-gray-500 pt-2">畫碟/魔法/Live表演/Cheki</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-blue-50 border-2 border-blue-300 p-6 rounded-lg">
+                        <div class="text-center mb-4">
+                            <div class="text-sm font-semibold text-blue-800 mb-1">青獅義務女僕組</div>
+                            <div class="text-xs text-blue-600">義務參與 / 服務證書</div>
+                        </div>
+                        <ul class="text-sm text-gray-700 space-y-1">
+                            <li>• Tanika</li>
+                            <li>• Naomi</li>
+                            <li>• Suet</li>
+                            <li>• Rachel</li>
+                            <li class="text-xs text-gray-500 pt-2">Reception/帶位/遞送</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-gray-50 border-2 border-gray-300 p-6 rounded-lg">
+                        <div class="text-center mb-4">
+                            <div class="text-sm font-semibold text-gray-800 mb-1">男青獅後勤技術組</div>
+                            <div class="text-xs text-gray-600">義務參與</div>
+                        </div>
+                        <ul class="text-sm text-gray-700 space-y-1">
+                            <li>• 男青獅幹部 2-3 名</li>
+                            <li class="text-xs text-gray-500 pt-2">Set檯/影音/Bar台/撤場</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-8">
+            <h3 class="text-xl font-bold text-leo-navy mb-6">5.2 人員職責矩陣 RACI Matrix</h3>
+
+            <div class="overflow-x-auto">
+                <table class="text-xs">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%">工作項目</th>
+                            <th style="width: 15%">Carlos<br/>會長</th>
+                            <th style="width: 15%">Queenie<br/>營運總監</th>
+                            <th style="width: 15%">客席<br/>女僕</th>
+                            <th style="width: 15%">青獅<br/>女僕</th>
+                            <th style="width: 15%">後勤<br/>技術組</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-semibold">16:00-18:00 場地佈置 Setup</td>
+                            <td class="text-center"><span class="badge badge-secondary">A</span></td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                            <td class="text-center">-</td>
+                            <td class="text-center"><span class="badge" style="background:#6B7280;color:white">C</span></td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">18:00-18:30 Reception 迎賓核銷</td>
+                            <td class="text-center"><span class="badge" style="background:#6B7280;color:white">I</span></td>
+                            <td class="text-center"><span class="badge badge-secondary">A</span></td>
+                            <td class="text-center">-</td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                            <td class="text-center">-</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">18:30-19:30 糕點呈遞與畫碟</td>
+                            <td class="text-center">-</td>
+                            <td class="text-center"><span class="badge badge-secondary">A</span></td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                            <td class="text-center"><span class="badge" style="background:#6B7280;color:white">C</span></td>
+                            <td class="text-center">-</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">19:30-21:00 會長巡桌與催銷</td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                            <td class="text-center"><span class="badge" style="background:#6B7280;color:white">C</span></td>
+                            <td class="text-center"><span class="badge" style="background:#6B7280;color:white">C</span></td>
+                            <td class="text-center">-</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">21:00-21:30 舞台 Live 表演</td>
+                            <td class="text-center"><span class="badge badge-secondary">A</span></td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                            <td class="text-center">-</td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">21:30-22:30 Cheki 拍攝簽繪</td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                            <td class="text-center"><span class="badge badge-secondary">A</span></td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                            <td class="text-center"><span class="badge" style="background:#6B7280;color:white">C</span></td>
+                            <td class="text-center">-</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">22:30-23:59 撤場復原</td>
+                            <td class="text-center"><span class="badge badge-secondary">A</span></td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                            <td class="text-center">-</td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                            <td class="text-center"><span class="badge badge-primary">R</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 flex gap-4 text-xs">
+                <div><span class="badge badge-primary">R</span> = Responsible 執行者</div>
+                <div><span class="badge badge-secondary">A</span> = Accountable 負責人</div>
+                <div><span class="badge" style="background:#6B7280;color:white">C</span> = Consulted 諮詢者</div>
+                <div><span class="badge" style="background:#6B7280;color:white">I</span> = Informed 知會者</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Risk Management -->
+    <section id="section-risk" class="mb-16 hidden">
+        <h2 class="section-title text-3xl mb-8">六、風險管理與應急預案 Risk Management</h2>
+
+        <div class="card p-8 mb-8">
+            <h3 class="text-xl font-bold text-leo-navy mb-6">6.1 風險評估矩陣</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 5%">編號</th>
+                        <th style="width: 25%">風險項目</th>
+                        <th style="width: 10%">發生機率</th>
+                        <th style="width: 10%">影響程度</th>
+                        <th style="width: 50%">應急預案</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center font-bold">R1</td>
+                        <td class="font-semibold">參與人數不足16人（損益平衡點以下）</td>
+                        <td class="text-center"><span class="badge badge-warning">中</span></td>
+                        <td class="text-center"><span class="badge badge-warning">中</span></td>
+                        <td class="text-sm">
+                            • 提前2週確認報名人數，若低於14人立即啟動第二輪邀約<br/>
+                            • 考慮開放友會公開報名或調整活動規模<br/>
+                            • 縮減受薪女僕人數至2人（成本減 HK$ 270）
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-bold">R2</td>
+                        <td class="font-semibold">現場賓客行為越矩（肢體接觸、言語騷擾）</td>
+                        <td class="text-center"><span class="badge" style="background:#10B981;color:white">低</span></td>
+                        <td class="text-center"><span class="badge" style="background:#DC2626;color:white">高</span></td>
+                        <td class="text-sm">
+                            • 入場時由女僕宣讀「萌之公約」並要求口頭確認<br/>
+                            • 男青獅後勤組全程在場，發現越矩立即隔離勸阻<br/>
+                            • 嚴重違規者立即終止體驗並請離場，門票不退
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-bold">R3</td>
+                        <td class="font-semibold">食品衛生問題（無雪櫃保存不當）</td>
+                        <td class="text-center"><span class="badge badge-warning">中</span></td>
+                        <td class="text-center"><span class="badge" style="background:#DC2626;color:white">高</span></td>
+                        <td class="text-sm">
+                            • 鮮奶/豆漿未開封置於保溫冰桶，開封後2小時內用罄<br/>
+                            • 備餐人員全程配戴手套及口罩<br/>
+                            • 糕點採用常溫保存或即時直送，避免需冷藏品項
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-bold">R4</td>
+                        <td class="font-semibold">Cheki 相紙耗盡或相機故障</td>
+                        <td class="text-center"><span class="badge badge-warning">中</span></td>
+                        <td class="text-center"><span class="badge badge-warning">中</span></td>
+                        <td class="text-sm">
+                            • 預先準備120%底片庫存（預估需60張，備80張）<br/>
+                            • 準備2部 Cheki 相機互為備援<br/>
+                            • 指定1名幹部待命至觀塘商圈緊急補購
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-bold">R5</td>
+                        <td class="font-semibold">客席女僕臨時缺席（生病、交通延誤）</td>
+                        <td class="text-center"><span class="badge" style="background:#10B981;color:white">低</span></td>
+                        <td class="text-center"><span class="badge badge-warning">中</span></td>
+                        <td class="text-sm">
+                            • 簽約時明確告知違約責任<br/>
+                            • 準備1名候補客席女僕名單，可緊急遞補<br/>
+                            • 若無法遞補則由青獅女僕團隊加強服務密度
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-bold">R6</td>
+                        <td class="font-semibold">撤場超時導致額外場地費用</td>
+                        <td class="text-center"><span class="badge" style="background:#10B981;color:white">低</span></td>
+                        <td class="text-center"><span class="badge" style="background:#10B981;color:white">低</span></td>
+                        <td class="text-sm">
+                            • 22:15 宣告 Last Order，嚴格控制結束時間<br/>
+                            • 全體幹部分工明確，撤場 SOP 標準化<br/>
+                            • 預留30分鐘緩衝時間（23:30 完成，23:59 交接）
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-bold">R7</td>
+                        <td class="font-semibold">負面輿論或媒體誤解</td>
+                        <td class="text-center"><span class="badge" style="background:#10B981;color:white">低</span></td>
+                        <td class="text-center"><span class="badge badge-warning">中</span></td>
+                        <td class="text-sm">
+                            • 定位為「封閉式獅友文化體驗活動」，不對外公開宣傳<br/>
+                            • 事先準備標準應對稿，強調「正統日本文化推廣」與「慈善籌款」定位<br/>
+                            • 會長 Carlos 作為活動代表，親自參與展現嚴肅性
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="card p-8">
+                <h3 class="text-xl font-bold text-leo-navy mb-4 flex items-center">
+                    <span class="text-2xl mr-3">✅</span>
+                    成功關鍵要素
                 </h3>
-                <div class="space-y-2 text-xs">
-                    <div class="p-3 rounded-xl border border-rose-200 bg-rose-50/40">
-                        <div class="font-bold text-rose-900 mb-1">⚠️ 風險 1：現場言語或肢體越矩 (萌之公約違規)</div>
-                        <p class="text-gray-700 leading-relaxed">
-                            <strong>應變預案：</strong> 男青獅後勤組與 Queenie 立即介入隔離；給予口頭警告；若勸阻無效，終止其體驗並請離場地，門票不予退還。
-                        </p>
-                    </div>
-                    <div class="p-3 rounded-xl border border-amber-200 bg-amber-50/40">
-                        <div class="font-bold text-amber-900 mb-1">⚠️ 風險 2：無雪櫃食品衛生疑慮</div>
-                        <p class="text-gray-700 leading-relaxed">
-                            <strong>應變預案：</strong> 鮮奶與豆漿未開封置於保溫冰桶；開封後 2 小時內用罄；備餐人員全程配戴手套及口罩。
-                        </p>
-                    </div>
-                    <div class="p-3 rounded-xl border border-blue-200 bg-blue-50/40">
-                        <div class="font-bold text-blue-900 mb-1">⚠️ 風險 3：Cheki 底片耗盡或相紙故障</div>
-                        <p class="text-gray-700 leading-relaxed">
-                            <strong>應變預案：</strong> 預先準備 120% 底片庫存 (每盒 $135/20張)；機動幹部待命至觀塘開源道商圈連鎖店緊急補購。
-                        </p>
-                    </div>
-                    <div class="p-3 rounded-xl border border-purple-200 bg-purple-50/40">
-                        <div class="font-bold text-purple-900 mb-1">⚠️ 風險 4：22:30 - 23:59 撤場超時</div>
-                        <p class="text-gray-700 leading-relaxed">
-                            <strong>應變預案：</strong> 22:15 宣告 Last Order 並停止新單；22:30 準時謝客；全體幹部按藍圖復原 E11 Space 檯椅佈局。
-                        </p>
-                    </div>
+                <ul class="space-y-3 text-sm">
+                    <li class="flex items-start">
+                        <span class="text-green-600 mr-2 font-bold">✓</span>
+                        <span><strong>會長親身參與：</strong>Carlos 反串女僕執勤，展現誠意，帶動獅友「比面」支持</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-600 mr-2 font-bold">✓</span>
+                        <span><strong>專業服務品質：</strong>受薪客席女僕確保正統女僕文化體驗標準</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-600 mr-2 font-bold">✓</span>
+                        <span><strong>封閉圈層運作：</strong>以獅友網絡為主，避免公開活動風險與誤解</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-600 mr-2 font-bold">✓</span>
+                        <span><strong>低損益平衡點：</strong>16人即可收支平衡，財務安全邊際高</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-600 mr-2 font-bold">✓</span>
+                        <span><strong>標準化流程：</strong>服務藍圖清晰，RACI 職責明確，可複製性強</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card p-8">
+                <h3 class="text-xl font-bold text-leo-navy mb-4 flex items-center">
+                    <span class="text-2xl mr-3">📋</span>
+                    行動檢查清單
+                </h3>
+                <div class="space-y-2 text-sm">
+                    <label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="checkbox" class="mr-3 w-4 h-4">
+                        <span>D-30: 確認 E11 Space 場地預訂與租金</span>
+                    </label>
+                    <label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="checkbox" class="mr-3 w-4 h-4">
+                        <span>D-30: 簽約客席女僕（Cotton, Morie, Nana）</span>
+                    </label>
+                    <label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="checkbox" class="mr-3 w-4 h-4">
+                        <span>D-30: 確認營運總監 Queenie 檔期 (HK$ 70/hr)</span>
+                    </label>
+                    <label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="checkbox" class="mr-3 w-4 h-4">
+                        <span>D-21: 發送正式邀請函至母會、友會獅友</span>
+                    </label>
+                    <label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="checkbox" class="mr-3 w-4 h-4">
+                        <span>D-14: 採購裝飾物料、Cheki 相紙、餐飲原料</span>
+                    </label>
+                    <label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="checkbox" class="mr-3 w-4 h-4">
+                        <span>D-7: 確認最終報名人數，若低於14人啟動補救方案</span>
+                    </label>
+                    <label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="checkbox" class="mr-3 w-4 h-4">
+                        <span>D-3: 全體團隊勤前簡報，分發職責清單</span>
+                    </label>
+                    <label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="checkbox" class="mr-3 w-4 h-4">
+                        <span>D-1: Carlos 會長試妝，確認女僕裝尺寸</span>
+                    </label>
+                    <label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="checkbox" class="mr-3 w-4 h-4">
+                        <span>D-Day: 16:00 準時進場，18:00 開門迎賓</span>
+                    </label>
+                    <label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <input type="checkbox" class="mr-3 w-4 h-4">
+                        <span>D+1: 財務結算，撥款至青獅慈善專款帳戶</span>
+                    </label>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-    </main>
+</main>
 
-    <!-- Page Footer -->
-    <footer class="bg-white border-t border-gray-100 py-6 mt-12 text-center text-xs text-gray-500">
-        <p>香港新啟德青年獅子會 Leo Club of New Kai Tak © 2026. All Rights Reserved.</p>
-        <p class="mt-1 text-[11px] text-gray-400">專案負責人：Carlos Yin (會長) | 營運諮詢：Qubeley Advisory & Queenie Li</p>
-    </footer>
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-8 mt-16">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+        <div class="mb-4">
+            <h3 class="text-2xl font-bold font-serif mb-2">Leo Club of New Kai Tak, Hong Kong</h3>
+            <p class="text-gray-400 text-sm">香港新啟德青年獅子會</p>
+        </div>
+        <div class="border-t border-gray-700 pt-4">
+            <p class="text-sm text-gray-400">「傳統是メイド」慈善女僕咖啡廳籌款企劃書 © 2026</p>
+            <p class="text-xs text-gray-500 mt-2">
+                專案負責人：Carlos Yin (會長) | 營運總監：Queenie Li 李凌佳 (HK$ 70/hr) | 專案顧問：Qubeley Advisory
+            </p>
+        </div>
+    </div>
+</footer>
 
-    <!-- JS Application Logic -->
-    <script>
-        // Global Application State
-        const appState = {
-            currentTab: 'overview',
-            finance: {
-                guests: 20,
-                extraChekiPerGuest: 1.5,
-                carlosChekiCount: 15,
-                liveTicketCount: 5,
-                ticketPrice: 260,
-                chekiPrice: 60,
-                shukudaiPrice: 80,
-                livePrice: 90,
-                drinkPrice: 40,
-                filmCostPerSheet: 6.75, // $135 / 20
-                venueCost: 4000,
-                decorCost: 500,
-                paidMaidCount: 4,
-                maidBaseRate: 60, // $60/hr
-                maidDutyHours: 4.5 // 18:00 - 22:30
-            },
-            currentStep: 0
-        };
+<script>
+    // Navigation
+    function showSection(sectionId) {
+        // Hide all sections
+        const sections = document.querySelectorAll('section[id^="section-"]');
+        sections.forEach(section => section.classList.add('hidden'));
 
-        // Timeline Schedule Data (16:00 - 23:59)
-        const scheduleData = [
-            { id: 1, type: 'setup', time: '16:00 - 17:00', title: '進場 Setup 與場地裝飾', team: '男青獅幹部, Carlos, Q Sir', detail: '進駐 觀塘 E11 Space，自行 Set 檯、鋪設黑白蕾絲檯布，搭設門口 Reception 接待處拱門與舞台裝飾。' },
-            { id: 2, type: 'setup', time: '17:00 - 18:00', title: 'Carlos 會長女裝化與全體彩排', team: 'Carlos, Queenie, 全體女僕', detail: '會長 Carlos 進行女裝彩妝、佩戴假髮與女僕裝造型；全體女僕召開勤前會議，校準「歡迎主人回家」口訣與動作。' },
-            { id: 3, type: 'cafe', time: '18:00 - 18:30', title: 'Doors Open 迎賓與帶位入座', team: 'Reception 接待組, 青獅女僕', detail: '大門 Reception 核銷門票，派發相券 ($60)、特調券 ($40) 及 Penlight；搖鈴齊聲行禮「歡迎主人回家」，引導客人就座。' },
-            { id: 4, type: 'cafe', time: '18:30 - 19:45', title: '享用糕點特調與桌邊畫碟', team: '客席女僕, 青獅女僕, Bar台組', detail: '呈遞事先準備之糕點與特調飲品（鮮奶/豆漿/梳打類）；女僕攜朱古力/果醬筆進行 3-5 分鐘桌邊畫碟與美味魔法注入。' },
-            { id: 5, type: 'cafe', time: '19:45 - 21:00', title: 'Carlos 會長下海巡桌與次輪加購', team: 'Carlos, Queenie, 流動收銀', detail: 'Carlos 會長以特製女僕裝登場巡桌互動合照，炒熱氣氛；Queenie 與流動收銀巡迴遊說加購 Cheki、宿題與表演券。' },
-            { id: 6, type: 'live', time: '21:00 - 21:30', title: '舞台歌舞表演時間 (Live Show)', team: '客席女僕, Queenie (MC), 音控組', detail: '場內切換燈光，客人揮舞 Penlight 應援；當值受薪女僕登台進行歌舞跳唱表演；Carlos 登台致辭感謝獅友課金支持。' },
-            { id: 7, type: 'cheki', time: '21:30 - 22:30', title: 'Cheki 拍立得合照最終衝刺', team: '全體女僕, Carlos, 攝影助理', detail: '開放雙拍照機位（機位A 客席女僕，機位B Carlos 特別版）；現場漆筆簽繪塗鴉 (控時60秒/張)；22:15 宣告 Last Order。' },
-            { id: 8, type: 'cleanup', time: '22:30 - 23:30', title: '謝客送別與現場撤場清潔', team: '全體青獅幹部義工', detail: '女僕於門口行禮謝客「請主人路上小心」；工作人員收拾檯布與裝飾，分類打包垃圾，擦拭桌面。' },
-            { id: 9, type: 'cleanup', time: '23:30 - 23:59', title: '傢俬復原與場地交接驗收', team: 'Carlos, Q Sir, 後勤組', detail: '將 E11 Space 檯椅完全復原為標準會議排列；結算客席女僕底薪與拆帳提成；與場地負責人驗收交接。' }
-        ];
-
-        // Service Blueprint Data (7 Stages)
-        const stepData = [
-            { step: 1, title: '抵達與 Reception 核銷', icon: '🚪', location: '門口 Reception 接待處', customer: '抵達 觀塘 E11 Space 11樓，出示門票憑證', maid: '接待核銷，派發 $60 相券、特調券及 Penlight 應援棒' },
-            { step: 2, title: '歸家迎賓禮', icon: '🔔', location: '門口玄關拱門', customer: '踏入場地，感受二次元氛圍', maid: '女僕輕搖黃銅手鈴，齊聲鞠躬：「歡迎主人/大小姐回家！」' },
-            { step: 3, title: '帶位與宣讀規約', icon: '📜', location: '主 Cafe 用餐區', customer: '由女僕引導拉椅就座，瀏覽菜單', maid: '單膝跪地呈上菜單，宣讀「萌之公約」（嚴禁肢體接觸/未許可攝影/隱私打聽）' },
-            { step: 4, title: '呈餐與桌邊畫碟', icon: '🎨', location: '主 Cafe 用餐區', customer: '點選糕點，指定動漫圖案或寫姓名', maid: '送上糕點，持朱古力/果醬筆進行 3-5 分鐘桌邊即興畫碟與親切對話' },
-            { step: 5, title: '注入美味魔法', icon: '✨', location: '主 Cafe 用餐區', customer: '雙手比愛心，隨女僕朗誦魔法咒語', maid: '帶領客人齊聲念：「おいしくな〜れ、萌え萌えキュン！」，攪拌特調飲品' },
-            { step: 6, title: '舞台 Live 應援', icon: '🎤', location: '中央舞台區', customer: '點亮 Penlight，揮舞打 Call 應援', maid: '受薪女僕登台歌舞展演；Carlos 會長女裝亮相致辭帶動氛圍' },
-            { step: 7, title: 'Cheki 簽繪與離邸送行', icon: '📸', location: 'Cheki 拍照區 & 門口', customer: '憑券與女僕/Carlos合照，接過手繪 Cheki', maid: '現場漆筆簽繪塗鴉；門口列隊送行：「請主人路上小心，期待再次回家！」' }
-        ];
-
-        // Chart.js Instance Variable
-        let financeChartInstance = null;
-
-        // Navigation Tab Switcher
-        function switchTab(tabId) {
-            appState.currentTab = tabId;
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            const sec = document.getElementById(`sec-${tabId}`);
-            if (sec) sec.classList.remove('hidden');
-
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('tab-active', 'text-rose-600');
-                btn.classList.add('text-gray-600');
-            });
-            const activeNav = document.getElementById(`nav-${tabId}`);
-            if (activeNav) activeNav.classList.add('tab-active');
-
-            // Mobile Nav UI update
-            document.querySelectorAll('.m-nav-btn').forEach(btn => {
-                btn.classList.remove('bg-rose-100', 'text-rose-700', 'font-semibold');
-                btn.classList.add('bg-gray-100', 'text-gray-600');
-            });
-            const activeMNav = document.getElementById(`mnav-${tabId}`);
-            if (activeMNav) activeMNav.classList.add('bg-rose-100', 'text-rose-700', 'font-semibold');
-
-            if (tabId === 'journey') {
-                renderStepper();
-            }
-
-            if (tabId === 'finance' && financeChartInstance) {
-                financeChartInstance.resize();
-            }
+        // Show selected section
+        const targetSection = document.getElementById('section-' + sectionId);
+        if (targetSection) {
+            targetSection.classList.remove('hidden');
         }
 
-        // Timeline Filter Rendering
-        function filterSchedule(category, el) {
-            const container = document.getElementById('timeline-container');
-            if (!container) return;
-            container.innerHTML = '';
+        // Update navigation active state
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => item.classList.remove('active'));
+        event.target.classList.add('active');
+    }
 
-            const filtered = category === 'all' ? scheduleData : scheduleData.filter(item => item.type === category);
+    // Financial Calculator
+    function calculateFinance() {
+        const guests = parseInt(document.getElementById('slider-guests').value);
+        const chekiAvg = parseFloat(document.getElementById('slider-cheki').value);
+        const carlosCheki = parseInt(document.getElementById('slider-carlos').value);
+        const liveTickets = parseInt(document.getElementById('slider-live').value);
 
-            filtered.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'bg-white rounded-xl p-4 shadow-sm border border-rose-100 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:border-rose-300 transition-all';
-                card.innerHTML = `
-                    <div class="flex items-start space-x-3">
-                        <span class="px-2.5 py-1 rounded-lg bg-rose-100 text-rose-800 text-xs font-bold whitespace-nowrap">${item.time}</span>
-                        <div>
-                            <h4 class="font-bold text-gray-900 text-sm">${item.title}</h4>
-                            <p class="text-xs text-gray-500 mt-0.5">${item.detail}</p>
-                        </div>
-                    </div>
-                    <div class="text-right md:min-w-[140px]">
-                        <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600">👤 ${item.team}</span>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+        // Update display values
+        document.getElementById('calc-guests').textContent = guests;
+        document.getElementById('calc-cheki-avg').textContent = chekiAvg.toFixed(1);
+        document.getElementById('calc-carlos').textContent = carlosCheki;
+        document.getElementById('calc-live').textContent = liveTickets;
 
-            // Safe button styling update
-            document.querySelectorAll('.sched-filter-btn').forEach(btn => {
-                btn.classList.remove('bg-rose-600', 'text-white');
-                btn.classList.add('bg-white', 'text-gray-600');
-            });
+        // Calculate revenue
+        const ticketRevenue = guests * 260;
+        const extraChekiCount = Math.round(guests * chekiAvg);
+        const extraChekiRevenue = extraChekiCount * 60;
+        const carlosRevenue = carlosCheki * 60;
+        const liveRevenue = liveTickets * 90;
+        const totalRevenue = ticketRevenue + extraChekiRevenue + carlosRevenue + liveRevenue;
 
-            if (el && el.classList) {
-                el.classList.remove('bg-white', 'text-gray-600');
-                el.classList.add('bg-rose-600', 'text-white');
-            } else {
-                const defaultBtn = document.querySelector('.sched-filter-btn');
-                if (defaultBtn) {
-                    defaultBtn.classList.remove('bg-white', 'text-gray-600');
-                    defaultBtn.classList.add('bg-rose-600', 'text-white');
-                }
-            }
+        // Calculate costs
+        const venueCost = 4000;
+        const decorCost = 500;
+        const maidBaseCost = 3 * 60 * 4.5; // 3 maids × $60/hr × 4.5hr = 810
+        const queenieCost = 315; // $70/hr × 4.5hr
+        const ticketMaterialCost = guests * 44.75; // 相紙$6.75 + 糕點$20 + 特調$6 + Penlight$12
+        const ticketPhotoSplit = guests * 30; // 門票內含相券拆帳
+        const extraChekiSplit = extraChekiCount * 30; // 加購 Cheki 拆帳
+        const liveSplit = liveTickets * 45; // Live 表演券拆帳
+        const totalFilmSheets = guests + extraChekiCount + carlosCheki;
+        const filmCost = Math.round(totalFilmSheets * 6.75);
+
+        const totalCosts = venueCost + decorCost + maidBaseCost + queenieCost +
+                          ticketMaterialCost + ticketPhotoSplit + extraChekiSplit + liveSplit + filmCost;
+
+        const netResult = totalRevenue - totalCosts;
+
+        // Update display
+        document.getElementById('calc-revenue').textContent = 'HK$ ' + totalRevenue.toLocaleString();
+        document.getElementById('calc-costs').textContent = 'HK$ ' + totalCosts.toLocaleString();
+
+        const resultEl = document.getElementById('calc-result');
+        const statusEl = document.getElementById('calc-status');
+
+        if (netResult >= 0) {
+            resultEl.textContent = 'HK$ ' + netResult.toLocaleString();
+            resultEl.className = 'text-5xl font-black mb-2 text-green-300';
+            statusEl.textContent = '✓ 盈餘';
+            statusEl.className = 'text-sm text-green-300';
+        } else {
+            resultEl.textContent = '- HK$ ' + Math.abs(netResult).toLocaleString();
+            resultEl.className = 'text-5xl font-black mb-2 text-red-300';
+            statusEl.textContent = '✗ 虧損';
+            statusEl.className = 'text-sm text-red-300';
         }
+    }
 
-        // Service Blueprint Stepper Renderer
-        function renderStepper() {
-            const navContainer = document.getElementById('stepper-nav');
-            if (!navContainer) return;
-            navContainer.innerHTML = '';
+    function resetCalculator() {
+        document.getElementById('slider-guests').value = 20;
+        document.getElementById('slider-cheki').value = 1.5;
+        document.getElementById('slider-carlos').value = 18;
+        document.getElementById('slider-live').value = 5;
+        calculateFinance();
+    }
 
-            stepData.forEach((st, idx) => {
-                const btn = document.createElement('button');
-                btn.className = `px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap flex items-center space-x-1 transition-all ${idx === appState.currentStep ? 'bg-rose-600 text-white shadow-sm' : 'bg-gray-100 text-gray-600 hover:bg-rose-50'}`;
-                btn.onclick = () => selectStep(idx);
-                btn.innerHTML = `<span>${st.icon}</span><span>${st.step}. ${st.title}</span>`;
-                navContainer.appendChild(btn);
-            });
+    // Initialize calculator on page load
+    window.addEventListener('DOMContentLoaded', () => {
+        calculateFinance();
+    });
+</script>
 
-            const current = stepData[appState.currentStep];
-            const detailContainer = document.getElementById('step-detail-container');
-            if (!detailContainer) return;
-            detailContainer.innerHTML = `
-                <div class="flex items-center justify-between border-b border-rose-200/60 pb-3 mb-4">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-2xl">${current.icon}</span>
-                        <div>
-                            <h4 class="font-bold text-rose-900 text-base">階段 ${current.step}：${current.title}</h4>
-                            <span class="text-xs text-rose-600 font-medium">📍 服務區域：${current.location}</span>
-                        </div>
-                    </div>
-                    <span class="text-xs font-bold text-rose-700 bg-rose-100 px-2.5 py-1 rounded-full">階段 ${current.step} / 7</span>
-                </div>
-                <div class="grid md:grid-cols-2 gap-4 text-xs">
-                    <div class="bg-white p-4 rounded-xl border border-rose-100 shadow-xs">
-                        <div class="font-bold text-gray-800 mb-1 flex items-center">
-                            <span class="mr-1">👤</span> 賓客體驗行為 (Customer Journey)
-                        </div>
-                        <p class="text-gray-600 leading-relaxed">${current.customer}</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-rose-100 shadow-xs">
-                        <div class="font-bold text-rose-800 mb-1 flex items-center">
-                            <span class="mr-1">🎀</span> 女僕服務規範 (Maid Action)
-                        </div>
-                        <p class="text-rose-900 leading-relaxed">${current.maid}</p>
-                    </div>
-                </div>
-            `;
-        }
-
-        function selectStep(idx) {
-            appState.currentStep = idx;
-            renderStepper();
-        }
-
-        // Financial Calculation Logic according to explicit prompt rules
-        function updateFinanceData() {
-            const guestsEl = document.getElementById('slider-guests');
-            if (!guestsEl) return;
-            
-            const guests = parseInt(guestsEl.value);
-            const extraCheki = parseFloat(document.getElementById('slider-cheki').value);
-            const carlosCheki = parseInt(document.getElementById('slider-carlos').value);
-            const liveTickets = parseInt(document.getElementById('slider-live').value);
-
-            document.getElementById('slider-guests-val').innerText = `${guests} 人`;
-            document.getElementById('slider-cheki-val').innerText = `${extraCheki} 張`;
-            document.getElementById('slider-carlos-val').innerText = `${carlosCheki} 張`;
-            document.getElementById('slider-live-val').innerText = `${liveTickets} 張`;
-
-            // Revenues
-            const ticketRev = guests * 260; // HK$260
-            const extraChekiCount = Math.round(guests * extraCheki);
-            const extraChekiRev = extraChekiCount * 60; // HK$60
-            const carlosChekiRev = carlosCheki * 60; // HK$60 (100% donated)
-            const liveRev = liveTickets * 90; // HK$90
-            const grossRev = ticketRev + extraChekiRev + carlosChekiRev + liveRev;
-
-            // Fixed Costs
-            const venueCost = 4000;
-            const decorCost = 500;
-            const paidMaids = 4;
-            const maidBaseTotal = paidMaids * (60 * 4.5); // $60/hr x 4.5 hrs x 4 maids = $1080
-
-            // Variable Costs & Splits
-            const ticketIncludesCost = guests * (20 + 6 + 12); 
-            const ticketPhotoSplit = guests * 30; // $30 split for ticket photo
-            const extraChekiSplit = extraChekiCount * 30; // $30 split for extra cheki
-            const liveSplit = liveTickets * 45; // $45 split for live ticket
-            
-            // Film Costs: $135 / 20 = $6.75
-            const totalFilmSheets = guests + extraChekiCount + carlosCheki;
-            const filmTotalCost = Math.round(totalFilmSheets * 6.75);
-
-            const totalCost = venueCost + decorCost + maidBaseTotal + ticketIncludesCost + ticketPhotoSplit + extraChekiSplit + liveSplit + filmTotalCost;
-            const netSurplus = grossRev - totalCost;
-
-            // Update Summary UI
-            document.getElementById('calc-gross').innerText = `HK$ ${grossRev.toLocaleString()}`;
-            document.getElementById('calc-cost').innerText = `HK$ ${totalCost.toLocaleString()}`;
-            const netEl = document.getElementById('calc-net');
-            if (netSurplus >= 0) {
-                netEl.innerText = `+ HK$ ${netSurplus.toLocaleString()}`;
-                netEl.className = 'text-emerald-600 font-bold';
-            } else {
-                netEl.innerText = `- HK$ ${Math.abs(netSurplus).toLocaleString()}`;
-                netEl.className = 'text-rose-600 font-bold';
-            }
-
-            // Update Chart.js Data
-            if (financeChartInstance) {
-                financeChartInstance.data.datasets[0].data = [ticketRev, venueCost + decorCost + maidBaseTotal];
-                financeChartInstance.data.datasets[1].data = [extraChekiRev + carlosChekiRev, ticketPhotoSplit + extraChekiSplit + filmTotalCost];
-                financeChartInstance.data.datasets[2].data = [liveRev, ticketIncludesCost + liveSplit];
-                financeChartInstance.update();
-            }
-        }
-
-        function applyPreset(guests, extraCheki, carlosCheki, liveTickets) {
-            document.getElementById('slider-guests').value = guests;
-            document.getElementById('slider-cheki').value = extraCheki;
-            document.getElementById('slider-carlos').value = carlosCheki;
-            document.getElementById('slider-live').value = liveTickets;
-            updateFinanceData();
-        }
-
-        // Chart.js Initialization
-        function initChart() {
-            const canvas = document.getElementById('financeChart');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            financeChartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['營業收入來源', '專案成本與提成'],
-                    datasets: [
-                        {
-                            label: '門票收入 / 固定支出與底薪',
-                            data: [5200, 5580],
-                            backgroundColor: '#be123c',
-                            borderRadius: 6
-                        },
-                        {
-                            label: 'Cheki加購與會長義賣 / 相紙與拆帳',
-                            data: [2700, 1800],
-                            backgroundColor: '#f472b6',
-                            borderRadius: 6
-                        },
-                        {
-                            label: '舞台表演券 / 餐飲耗材提成',
-                            data: [450, 740],
-                            backgroundColor: '#d97706',
-                            borderRadius: 6
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: { font: { family: 'Noto Sans TC', size: 11 } }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.dataset.label}: HK$ ${context.raw.toLocaleString()}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: { stacked: true },
-                        y: { stacked: true, beginAtZero: true }
-                    }
-                }
-            });
-        }
-
-        // Initialize Application safely
-        window.addEventListener('DOMContentLoaded', () => {
-            filterSchedule('all', null);
-            renderStepper();
-            initChart();
-            updateFinanceData();
-        });
-    </script>
 </body>
 </html>
